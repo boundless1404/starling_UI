@@ -1,42 +1,16 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    <example-component
-      title="Example component"
-      active
-      :todos="todos"
-      :meta="meta"
-    ></example-component>
+  <q-page class="q-mx-md">
+    <page-carousel />
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { Todo, Meta } from 'components/models';
-import ExampleComponent from 'components/ExampleComponent.vue';
+import PageCarousel from '../components/PageCarousel.vue';
 import { ref } from 'vue';
 
-const todos = ref<Todo[]>([
-  {
-    id: 1,
-    content: 'ct1'
-  },
-  {
-    id: 2,
-    content: 'ct2'
-  },
-  {
-    id: 3,
-    content: 'ct3'
-  },
-  {
-    id: 4,
-    content: 'ct4'
-  },
-  {
-    id: 5,
-    content: 'ct5'
-  }
-]);
-const meta = ref<Meta>({
-  totalCount: 1200
-});
+// const carouselFiles = ref<{ name: string; src: string }[]>([
+//   { name: 'perfect-business-stay', src: 'assets/perfect-business-stay-1.png' },
+//   { name: 'excuisite-room', src: 'assets/exquisite-room-1.png' },
+//   { name: 'service-apartment', src: 'assets/service-apartment-1.png' },
+// ]);
 </script>
