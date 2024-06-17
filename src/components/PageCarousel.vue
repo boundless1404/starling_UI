@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-carousel">
     <q-carousel
       v-model="carousel"
       swipeable
@@ -15,12 +15,13 @@
       @mouseleave="autoplay = true"
       padding
       arrows
-      height="80vh"
+      :height="height"
       infinite
     >
       <template v-if="carouselFiles">
         <q-carousel-slide
-          v-for="file of carouselFiles"
+          v-for="(file, index) in carouselFiles"
+          :key="index"
           :name="file.name"
           :img-src="file.src"
         ></q-carousel-slide>
@@ -28,16 +29,37 @@
       <template v-else>
         <q-carousel-slide
           name="business-stay"
-          img-src="assets/business-stay-1.png"
-        ></q-carousel-slide>
+          img-src="assets/perfect-business-stay-1.png"
+        >
+          <div
+            class="headline-text perfect-business-stay flex column items-end q-mt-xl q-mr-lg"
+          >
+            <span class="q-mt-lg">Find Your Perfect</span>
+            <span>Business Stay</span>
+          </div>
+        </q-carousel-slide>
         <q-carousel-slide
           name="exquisite-room"
           img-src="assets/exquisite-room-1.png"
-        ></q-carousel-slide>
+        >
+          <div
+            class="headline-text exquisite-room flex column justify-end q-mt-xl items-center text-bolder"
+          >
+            <span class="q-mt-lg">Exquisite Hotel Rooms</span>
+          </div>
+        </q-carousel-slide>
         <q-carousel-slide
           name="service-apartment"
           img-src="assets/service-apartment-1.png"
-        ></q-carousel-slide>
+        >
+          <div
+            class="headline-text service-apartment flex column items-start q-mt-md q-ml-xl"
+          >
+            <span class="q-mt-lg">Comfortable</span>
+            <span>Service</span>
+            <span>Apartments</span>
+          </div>
+        </q-carousel-slide>
       </template>
     </q-carousel>
   </div>
@@ -55,16 +77,42 @@ export type PageCarouselProps = {
   carouselFiles?: { name: string; src: string }[];
 };
 
-defineProps<{
-  carouselFiles?: { name: string; src: string }[];
-}>();
+// defineProps<{
+//   carouselFiles?: { name: string; src: string }[];
+//   height?: string;
+// }>();
 
-// withDefaults(defineProps<PageCarouselProps>(), {
-//   name: '',
-//   carouselFiles: [],
-// });
+withDefaults(
+  defineProps<{
+    carouselFiles?: { name: string; src: string }[];
+    height?: string;
+  }>(),
+  {
+    height: '80vh',
+  }
+);
 
 defineComponent({
   name: 'PageCarousel',
 });
 </script>
+<style lang="scss" scoped>
+.page-carousel {
+  & .headline-text {
+    font-size: 4.2rem;
+  }
+  & .perfect-business-stay {
+    color: #9fd2d3;
+  }
+
+  .exquisite-room {
+    color: #052409;
+    height: 100%;
+  }
+
+  .service-apartment {
+    color: #603f;
+    margin-left: 12rem;
+  }
+}
+</style>

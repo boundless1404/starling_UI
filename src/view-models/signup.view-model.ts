@@ -11,7 +11,6 @@ export class SignupViewModel extends ViewModelBase<SignupModel> {
       await this.invokevalidation(onError);
       delete this.model.errors;
 
-      debugger;
       const authToken = await requestSignup(this.model);
       // await this.authStore.handleAuthToken(authToken);
       onSuccess?.();
