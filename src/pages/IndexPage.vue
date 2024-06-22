@@ -5,15 +5,18 @@
       <div style="position: relative">
         <q-img src="assets/Polygon 1.svg" />
         <div
-          class="flex column items center text-center"
-          style="
-            position: absolute;
-            height: 50%;
-            width: max-content;
-            font-size: 2rem;
-            top: 15vh;
-            left: 10vw;
-          "
+          class="flex column items-center text-center"
+          :style="{
+            position: 'absolute',
+            width: 'max-content',
+            fontSize: $q.screen.gt.md
+              ? '2rem'
+              : $q.screen.lt.md
+              ? '1rem'
+              : '1.6rem',
+            top: $q.screen.gt.md ? '15vh' : $q.screen.lt.md ? '5vh' : '10vh',
+            left: '10vw',
+          }"
         >
           <span>"Plan, Book, and Enjoy -</span>
           <span> All in One App!"</span>
@@ -32,13 +35,10 @@
         <q-img src="assets/Rectangle 100.svg" />
       </div>
       <div
-        style="
-          position: absolute;
-          right: 20vw;
-          top: 31vh;
-          height: 40vh;
-          width: 40vw;
-        "
+        style="position: absolute; right: 20vw; height: 40vh; width: 40vw"
+        :style="{
+          top: $q.screen.gt.sm ? '31vh' : '15vh',
+        }"
       >
         <q-img src="assets/Rectangle 101.png" />
       </div>
@@ -48,27 +48,32 @@
       style="
         position: relative;
         height: 25vh;
-        margin: 20rem 0 10rem 0;
+        margin: 20vh 0 10vh 0;
         padding-top: 5rem;
       "
     >
       <div
-        style="width: 100%; font-size: 7rem; color: #603f8b; text-align: center"
+        style="
+          width: 100%;
+          font-size: calc(2rem + 4vw);
+          color: #603f8b;
+          text-align: center;
+        "
       >
         Your Ultimate Travel Companion
       </div>
       <div
         class="flex column text-right"
-        style="width: 100%; font-size: 3rem; padding: 0 7rem"
+        style="width: 100%; font-size: calc(0.5rem + 2.5vw); padding: 0 6vw"
       >
         <span>Explore the world effortlessly with our</span>
         <span>comprehensive travel and hospitality solutions</span>
       </div>
       <div
-        class="circle"
+        class="circle bulge"
         style="
-          width: 10rem;
-          height: 10rem;
+          width: 10vw;
+          height: 10vw;
           opacity: 0.5;
           position: absolute;
           top: 0;
@@ -76,10 +81,10 @@
         "
       ></div>
       <div
-        class="circle"
+        class="circle bulge"
         style="
-          width: 10rem;
-          height: 10rem;
+          width: 10vw;
+          height: 10vw;
           opacity: 0.9;
           position: absolute;
           top: 30vh;
@@ -87,10 +92,10 @@
         "
       ></div>
       <div
-        class="circle"
+        class="circle bulge"
         style="
-          width: 3rem;
-          height: 3rem;
+          width: 3vw;
+          height: 3vw;
           opacity: 0.5;
           position: absolute;
           top: 2vh;
@@ -99,22 +104,22 @@
       ></div>
 
       <div
-        class="circle"
+        class="circle bulge"
         style="
-          width: 1.5rem;
-          height: 1.5rem;
+          width: 1.5vw;
+          height: 1.5vw;
           opacity: 0.5;
           position: absolute;
-          top: 25;
+          top: 25vh;
           left: 50vw;
         "
       ></div>
 
       <div
-        class="circle"
+        class="circle bulge"
         style="
-          width: 3rem;
-          height: 3rem;
+          width: 3vw;
+          height: 3vw;
           opacity: 0.8;
           position: absolute;
           top: 23vh;
@@ -123,10 +128,10 @@
       ></div>
 
       <div
-        class="circle"
+        class="circle bulge"
         style="
-          width: 8rem;
-          height: 8rem;
+          width: 8vw;
+          height: 8vw;
           opacity: 0.3;
           position: absolute;
           top: 15vh;
@@ -134,14 +139,47 @@
         "
       ></div>
       <div
-        class="circle"
+        class="circle bulge"
         style="
-          width: 6rem;
-          height: 6rem;
+          width: 6vw;
+          height: 6vw;
           opacity: 0.9;
           position: absolute;
           top: 0;
           left: 70vw;
+        "
+      ></div>
+      <div
+        class="circle bulge"
+        style="
+          width: 6vw;
+          height: 6vw;
+          opacity: 0.3;
+          position: absolute;
+          top: 30vh;
+          left: 70vw;
+        "
+      ></div>
+      <div
+        class="circle bulge"
+        style="
+          width: 3vw;
+          height: 3vw;
+          opacity: 0.8;
+          position: absolute;
+          top: 35vh;
+          left: 35vw;
+        "
+      ></div>
+      <div
+        class="circle bulge"
+        style="
+          width: 1.5vw;
+          height: 1.5vw;
+          opacity: 0.8;
+          position: absolute;
+          top: 40vh;
+          left: 50vw;
         "
       ></div>
     </div>
@@ -151,7 +189,7 @@
       style="
         width: 100%;
         position: relative;
-        margin-top: 15rem;
+        margin-top: calc(8rem + 7vh);
         padding-top: 15rem;
       "
     >
@@ -162,36 +200,44 @@
         <div class="flex column flex-center text-center">
           <div
             class="text-center"
-            style="font-size: 2rem; width: 18rem; padding-right: 5rem"
+            style="
+              font-size: calc(0.5rem + 1.5vw);
+              width: calc(6rem + 12vw);
+              padding-right: calc(0.5rem + 4.5vw);
+            "
           >
             Find Best Deals On
           </div>
           <div
             class="flex row flex-center q-mr-xl shadow-box"
             style="
-              border-top-left-radius: 1rem;
-              border-top-right-radius: 3.5rem;
-              border-bottom-right-radius: 1rem;
-              border-bottom-left-radius: 3rem;
+              border-top-left-radius: 1vw;
+              border-top-right-radius: 3.5vw;
+              border-bottom-right-radius: 1vw;
+              border-bottom-left-radius: 3vw;
               transform: rotate(45deg);
-              padding: 6rem;
+              padding: 6vw;
               border-width: 1.2rem;
               border-color: #fbb96f;
               border-style: solid;
               background-color: #9aceca;
-              width: 20rem;
-              height: 20rem;
-              margin-top: 5rem;
+              width: calc(4rem + 16vw);
+              height: calc(4rem + 16vw);
+              margin-top: calc(1.2rem + 4vh);
             "
           >
-            <div style="transform: rotate(-45deg); font-size: 4rem">Hotels</div>
+            <div
+              style="transform: rotate(-45deg); font-size: calc(0.8rem + 3.2vw)"
+            >
+              Hotels
+            </div>
           </div>
         </div>
       </div>
       <div
         style="
-          width: 60rem;
-          height: 50rem;
+          width: calc(7rem + 48vw);
+          height: calc(12rem + 42vh);
           position: absolute;
           bottom: -8vh;
           left: -2vw;
@@ -215,23 +261,33 @@
       >
         <div
           class="text-center"
-          style="width: 100%; font-size: 3.8rem; padding: 8vh 8vw"
+          style="width: 100%; font-size: calc(0.8rem + 3vw); padding: 8vh 8vw"
         >
           Enjoy personalized recommendations and seamless bookings
         </div>
-        <div class="text-center text-h5 q-mb-md">
-          <span class="q-ma-xl">Etensive Search and Seamless bookings</span
+        <div
+          class="text-center q-mb-md"
+          style="font-size: calc(0.6rem + 0.8vw)"
+        >
+          <span class="q-ma-lg">Etensive Search and Seamless bookings</span
           ><q-btn
-            class="bg-primary text-white q-px-lg"
+            class="bg-primary text-white q-px-md"
             label="Get Started"
             rounded
+            no-caps
           />
         </div>
         <div class="flex column items-center justify-start" style="width: 100%">
-          <div style="border-radius: 10rem; width: 40rem; height: 40rem">
+          <div
+            style="
+              border-radius: 10rem;
+              width: calc(10rem + 30vw);
+              height: calc(10rem + 30vw);
+            "
+          >
             <q-img src="assets/booking-search-1.jpg" fit="fill" />
           </div>
-          <div class="text-subtitle1 text-bold">
+          <div class="text-bold" style="font-size: calc(0.2rem + 1vw)">
             <q-icon class="q-mr-sm" name="search" />Easily search and book
             accommodations, flights, and tours.
           </div>
@@ -239,33 +295,33 @@
       </div>
     </div>
     <!-- partners -->
-    <div class="q-px-md" style="margin: 35vh 0 20vh 0; height: 12vh">
-      <div class="text-h4">Our Partners</div>
-      <div class="flex row justify-around items-center" style="width: 100%">
+    <div class="q-px-md" style="margin: 20vw 0 5vw 0; height: 8vw">
+      <div style="font-size: calc(0.5rem + 2vw)">Our Partners</div>
+      <div class="flex row justify-center items-center" style="width: 100%">
         <div>
-          <q-btn color="primary" round outline>
+          <q-btn color="primary" round outline size="1vw">
             <q-icon name="arrow_left" color="primary" />
           </q-btn>
         </div>
-        <div style="width: 92%" class="flex row justify-around">
-          <div style="width: 8rem; height: 6rem">
+        <div style="width: 78vw" class="flex row justify-around">
+          <div style="width: calc(2rem + 6vw); height: calc(0.8rem + 5vh)">
             <q-img src="assets/hilton.png" />
           </div>
-          <div style="width: 8rem; height: 6rem">
+          <div style="width: calc(2rem + 6vw); height: calc(0.8rem + 5vh)">
             <q-img src="assets/marriot.png" />
           </div>
-          <div style="width: 8rem; height: 6rem">
+          <div style="width: calc(2rem + 6vw); height: calc(0.8rem + 5vh)">
             <q-img src="assets/radisson.png" />
           </div>
-          <!-- <div style="width: 8rem; height: 6rem">
+          <!-- <div style="width: calc(2rem + 6vw); height: calc(1rem + 5vh)">
             <q-img src="assets/hilton.png" />
           </div>
-          <div style="width: 8rem; height: 6rem">
+          <div style="width: calc(2rem + 6vw); height: calc(1rem + 5vh)">
             <q-img src="assets/marriot.png" />
           </div> -->
         </div>
         <div>
-          <q-btn color="primary" round outline>
+          <q-btn color="primary" round outline size="1vw">
             <q-icon name="arrow_right" color="primary" />
           </q-btn>
         </div>
@@ -287,6 +343,14 @@ const circlePositionX = ref('50%'); // Default horizontal position (centered)
 .circle {
   border-radius: 50%;
   background: linear-gradient(180deg, #fbae66, #603f8b);
+}
+
+.bulge {
+  animation: grow-shrink 5s infinite;
+
+  &:nth-of-type(odd) {
+    animation-delay: 2.5s;
+  }
 }
 
 @keyframes grow-shrink {
@@ -311,6 +375,6 @@ const circlePositionX = ref('50%'); // Default horizontal position (centered)
 }
 
 .shadow-box-1 {
-  box-shadow: rgba(154, 206, 202, 0.5) 6px 8px 8px 20px;
+  box-shadow: rgba(154, 206, 202, 0.5) 0.4vw 0.5vw 0.5vw 1.2vw;
 }
 </style>
