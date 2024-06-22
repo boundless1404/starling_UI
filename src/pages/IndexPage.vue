@@ -189,9 +189,12 @@
       style="
         width: 100%;
         position: relative;
-        margin-top: calc(8rem + 7vh);
+        margin-top: calc(10rem + 5vw);
         padding-top: 15rem;
       "
+      :style="{
+        ...($q.screen.md ? { marginTop: 'calc(15rem + 2vw)' } : {}),
+      }"
     >
       <div
         class="flex column items-end"
@@ -295,7 +298,10 @@
       </div>
     </div>
     <!-- partners -->
-    <div class="q-px-md" style="margin: 20vw 0 5vw 0; height: 8vw">
+    <div
+      class="q-px-md"
+      style="margin: calc(10rem + 15vw) 0 calc(2rem + 5vw) 0; height: 8vw"
+    >
       <div style="font-size: calc(0.5rem + 2vw)">Our Partners</div>
       <div class="flex row justify-center items-center" style="width: 100%">
         <div>
