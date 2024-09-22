@@ -1,5 +1,5 @@
 import { api } from 'src/boot/axios';
-import { UrlPathsEnum } from '../enums/urlPaths.enum';
+import { AuthUrlsEnum } from '../enums/urlPaths.enum';
 import { requestApi } from './default.request';
 // export async function requestSignin(signinModel: SigninModel) {
 //   const serverResponse = await api.post(UrlPathsEnum.SIGNIN, signinModel, {
@@ -18,7 +18,7 @@ import { requestApi } from './default.request';
 // }
 
 export async function requestSignup(signupModel: unknown) {
-  const serverResponse = await api.post(UrlPathsEnum.AUTH_SIGNUP, signupModel, {
+  const serverResponse = await api.post(AuthUrlsEnum.SIGNUP, signupModel, {
     headers: {
       Authorization: undefined,
     },
@@ -35,7 +35,7 @@ export async function requestSignup(signupModel: unknown) {
 }
 
 export async function requestVerify(verificationToken: string, email: string) {
-  return requestApi(UrlPathsEnum.AUTH_VERIFY, 'post', {
+  return requestApi(AuthUrlsEnum.VERIFY, 'post', {
     body: { token: verificationToken, email, tokenPurpose: 'sign_up' },
   });
 }

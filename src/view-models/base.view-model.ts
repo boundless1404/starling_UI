@@ -1,3 +1,7 @@
+import {
+  requestApi,
+  RequestApiParamsType,
+} from 'src/lib/requests.ts/default.request';
 import { BaseModel } from 'src/models/base.model';
 
 export class ViewModelBase<T extends BaseModel> {
@@ -5,6 +9,10 @@ export class ViewModelBase<T extends BaseModel> {
 
   constructor(model: T) {
     this.model = model;
+  }
+
+  async requestApi(...args: RequestApiParamsType) {
+    return requestApi(...args);
   }
 
   async validateModel() {

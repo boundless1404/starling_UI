@@ -56,6 +56,7 @@
             rounded
             outline
             no-caps
+            to="/signup"
           />
         </div>
         <q-btn color="primary" v-if="$q.screen.lt.md" flat round dense>
@@ -97,7 +98,9 @@
               class="text-white text-center"
               style="position: absolute; bottom: 0; z-index: 9999; width: 100%"
             >
-              <span>&copy;2024</span> | <span>boundlessedge</span>
+              <span>&copy;2024</span> | <span>Starlings Properties</span>
+              <span> | </span>
+              <span>Powered by: boundlessedge</span>
             </div>
           </div>
         </div>

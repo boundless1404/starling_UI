@@ -1,7 +1,6 @@
 import localforage from 'localforage';
-import { Pinia } from 'pinia';
 import { boot } from 'quasar/wrappers';
-import { AuthUserData, StorageNamesEnum } from 'src/stores';
+import { StorageNamesEnum } from 'src/stores';
 import { storeforage } from 'src/stores';
 
 const forageGetItem = async <T>(
@@ -26,7 +25,6 @@ const forageSetItem = async <T>(
     await storeforage.setItem(key, stringifiedData);
   } catch (error) {
     console.log('this is the error from storeforage: ', error);
-    // TODO: handle localforage setItem error
     callback?.(error);
   }
 };

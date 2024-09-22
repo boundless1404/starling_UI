@@ -3,6 +3,8 @@ import useAuthStore from 'src/stores/auth-store';
 import { ViewModelBase } from './base.view-model';
 import { requestSignup } from 'src/lib/requests.ts/auth.request';
 import { ViewModelDefaultFunctionArgs } from 'src/lib/types';
+import { AuthUrlsEnum } from 'src/lib/enums/urlPaths.enum';
+import { AxiosError } from 'axios';
 
 export class SignupViewModel extends ViewModelBase<SignupModel> {
   authStore = useAuthStore();
@@ -11,17 +13,24 @@ export class SignupViewModel extends ViewModelBase<SignupModel> {
       await this.invokevalidation(onError);
       delete this.model.errors;
 
-      const authToken = await requestSignup(this.model);
-      // await this.authStore.handleAuthToken(authToken);
+      await requestSignup(this.model);
       onSuccess?.();
-
-      // if (authToken) {
-      //   onSuccess?.();
-      // } else {
-      //   onError?.('Auth token not received.');
-      // }
     } catch (error) {
-      onError?.((error as Error).message);
+      debugger;
+      onError?.(
+        ((error as AxiosError).response?.data as { message: string }).message
+      );
+    }
+  }
+
+  async resendToken({ onError, onSuccess }: ViewModelDefaultFunctionArgs = {}) {
+    try {
+      await this.requestApi(AuthUrlsEnum.RESEND_TOKEN, 'post', {
+        body: { email: this.model.email },
+      });
+      onSuccess?.();
+    } catch (e) {
+      onError?.((e as Error).message);
     }
   }
 }

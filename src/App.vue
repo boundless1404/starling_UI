@@ -3,11 +3,15 @@
 </template>
 
 <script setup lang="ts">
-import { useQuasar } from 'quasar';
+import { useMeta, useQuasar } from 'quasar';
 import { watch } from 'vue';
 const $q = useQuasar();
 
 $q.screen.setSizes({ sm: 300, md: 500, lg: 1000, xl: 2000 });
+
+useMeta({
+  title: 'Starlings Hospitality',
+});
 
 watch(
   () => [

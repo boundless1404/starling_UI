@@ -8,7 +8,7 @@ import localforage from 'localforage';
  */
 localforage.config({
   name: 'Lawma_app_quasar',
-  storeName: 'Lawma_app_storage',
+  storeName: 'Starlingshsp',
   driver: [localforage.INDEXEDDB, localforage.LOCALSTORAGE],
 });
 

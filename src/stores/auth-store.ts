@@ -21,12 +21,11 @@ const useAuthStore = defineStore('auth', {
     },
   },
   actions: {
-    async handleAuthToken(tokenString: string) {
-      this.token = tokenString;
-      // TODO: decrpyt token populate user data and profile
+    async handleAuthToken(authUserData: AuthUserData) {
+      this.$patch(() => ({ ...authUserData }));
       await forageSetItem(
         StorageNamesEnum.AUTH_USER_DATA,
-        { ...this.$state },
+        { ...authUserData },
         (err) => {
           // TODO: handle error
         }
