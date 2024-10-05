@@ -13,17 +13,35 @@ const routes: RouteRecordRaw[] = [
     children: [{ path: '', component: () => import('pages/SignupPage.vue') }],
   },
   {
+    path: '/signin',
+    name: 'signin',
+    component: () => import('src/layouts/UnautLayout.vue'),
+    children: [{ path: '', component: () => import('pages/SigninPage.vue') }],
+  },
+  {
     path: '/services',
     name: 'services',
     component: () => import('layouts/AuthLayout.vue'),
-    children: [{ path: '', component: () => import('pages/ServicesPage.vue') }],
+    children: [
+      { path: '', component: () => import('pages/ServicesPage.vue') },
+      {
+        path: ':serviceId/suites',
+        component: () => import('pages/SuitesPage.vue'),
+      },
+      {
+        path: ':serviceId/suites/:suitePropertyId',
+        component: () => import('pages/SuiteBookingPage.vue'),
+      },
+    ],
+    props: true,
   },
-  {
-    path: '/suites',
-    name: 'suites',
-    component: () => import('layouts/AuthLayout.vue'),
-    children: [{ path: '', component: () => import('pages/SuitesPage.vue') }],
-  },
+  // {
+  //   path: '/suites/:serviceId',
+  //   name: 'suites',
+  //   component: () => import('layouts/AuthLayout.vue'),
+  //   children: [{ path: '', component: () => import('pages/SuitesPage.vue') }],
+  //   props: true,
+  // },
 
   // Always leave this as last one,
   // but you can also remove it

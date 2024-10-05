@@ -177,15 +177,25 @@
                   ]"
                   style="width: 100%; color: #fff; margin-top: 2rem"
                 >
-                  <q-btn
-                    class="bg-primary q-py-sm q-px-sm q-mx-auto"
-                    label="Register"
-                    style="font-size: 1rem"
-                    rounded
-                    no-caps
-                    @click="register"
-                    :disable="requestingServer"
-                  />
+                  <div style="width: 100%" class="flex column items-center">
+                    <q-btn
+                      class="bg-primary q-py-sm q-px-sm q-mx-auto q-mb-sm"
+                      label="Register"
+                      style="font-size: 1rem"
+                      rounded
+                      no-caps
+                      @click="register"
+                      :disable="requestingServer"
+                    />
+                    <p class="text-secondary">
+                      Have existing account?
+                      <span
+                        class="text-primary text-bolder cursor-pointer"
+                        @click="$router.push('/signin')"
+                        >Signin</span
+                      >.
+                    </p>
+                  </div>
                 </div>
               </div>
             </q-form>
@@ -360,7 +370,7 @@ async function register() {
   useRequestionProcessingChecker(requestingServer);
 
   if (!isfullModelValid()) {
-    await signupFormRef.value?.validate();
+    await signupFormRef.value?.validate(true);
     return;
   }
 

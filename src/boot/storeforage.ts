@@ -1,3 +1,4 @@
+import { isJSON } from 'class-validator';
 import localforage from 'localforage';
 import { boot } from 'quasar/wrappers';
 import { StorageNamesEnum } from 'src/stores';
@@ -9,7 +10,7 @@ const forageGetItem = async <T>(
 ) => {
   try {
     const data = await storeforage.getItem<T>(key);
-    return data;
+    return typeof data === 'string' && isJSON(data) ? JSON.parse(data) : data;
   } catch (error) {
     callback?.(error);
   }

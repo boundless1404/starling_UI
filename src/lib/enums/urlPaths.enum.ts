@@ -9,6 +9,8 @@ export enum AuthUrlsEnum {
 
 export enum ServiceUrlEnum {
   GET_SERVICES = '/services',
+  Get_SUITES = '/services/suites',
+  GET_CATEGORIES = '/services/suites/categories',
 }
 
 export enum ProfileTypes {

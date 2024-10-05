@@ -18,9 +18,9 @@ declare module '@vue/runtime-core' {
 // for each client)
 // const api = axios.create({ baseURL: 'http://localhost:5100' });
 
-const authUserData = JSON.parse(
-  (await forageGetItem(StorageNamesEnum.AUTH_USER_DATA)) as string
-) as AuthUserData;
+const authUserData = (await forageGetItem(
+  StorageNamesEnum.AUTH_USER_DATA
+)) as AuthUserData;
 
 const api = axios.create({
   baseURL: process.env.DEV

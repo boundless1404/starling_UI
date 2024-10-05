@@ -4,6 +4,7 @@ import { ViewModelDefaultFunctionArgs } from 'src/lib/types';
 import { AuthUrlsEnum } from 'src/lib/enums/urlPaths.enum';
 import { AxiosError } from 'axios';
 import { SigninModel } from 'src/models/signin.model';
+import { AuthUserData } from 'src/stores';
 
 export class SigninViewModel extends ViewModelBase<SigninModel> {
   authStore = useAuthStore();
@@ -12,7 +13,21 @@ export class SigninViewModel extends ViewModelBase<SigninModel> {
       await this.invokevalidation(onError);
       delete this.model.errors;
 
-      await this.requestApi(AuthUrlsEnum.SIGNIN, 'post', { body: this.model });
+      const tokenResponse = (await this.requestApi(
+        AuthUrlsEnum.SIGNIN,
+        'post',
+        { body: this.model }
+      )) as { token: string };
+      // fetch user data
+      const userData = (await this.requestApi(AuthUrlsEnum.USER, 'get', {
+        headers: {
+          Authorization: `Bearer ${tokenResponse.token}`,
+        },
+      })) as AuthUserData;
+      await this.authStore.handleAuthToken({
+        ...userData,
+        token: tokenResponse.token,
+      });
       onSuccess?.();
     } catch (error) {
       debugger;

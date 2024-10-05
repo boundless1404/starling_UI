@@ -11,7 +11,6 @@ export async function requestApi(
     headers?: Record<string, unknown>;
   } = {}
 ) {
-  debugger;
   const serverResponse = await api({
     url,
     method,
