@@ -50,12 +50,13 @@
         </div>
         <div class="text-primary q-mr-xl">
           <q-btn
-            class="q-px-lg"
+            class="q-px-lg cursor-pointer"
             label="Get Started"
             :size="$q.screen.lt.lg ? '0.6rem' : '1.2rem'"
             rounded
             outline
             no-caps
+            @click="handleGetStarted"
           />
         </div>
         <q-btn color="primary" v-if="$q.screen.lt.md" flat round dense>
@@ -77,7 +78,8 @@
       </q-toolbar>
     </q-header>
     <q-page-container class="alegreya" style="max-height: 100vh">
-      <router-view />
+      <loading-spinner v-if="isLoading" :loading="isLoading" />
+      <router-view v-else />
       <!-- footer -->
       <div
         class="bg-white"
@@ -97,7 +99,9 @@
               class="text-white text-center"
               style="position: absolute; bottom: 0; z-index: 9999; width: 100%"
             >
-              <span>&copy;2024</span> | <span>boundlessedge</span>
+              <span>&copy;2024</span> | <span>Starlings Properties</span>
+              <span> | </span>
+              <span>Powered by: boundlessedge</span>
             </div>
           </div>
         </div>
@@ -107,14 +111,48 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import LoadingSpinner from 'src/components/LoadingSpinner.vue';
 
+// consts
+const router = useRouter();
+
+// refs
+const isLoading = ref(false);
 const menuIsActive = ref(false);
 
 // methods
+const handleGetStarted = () => {
+  // isLoading.value = true;
+  router.push('/signup');
+  // .then(() => {
+  //   isLoading.value = false;
+  // });
+};
+
 function toggleMenu() {
   menuIsActive.value = !menuIsActive.value;
 }
+
+const startLoading = () => {
+  isLoading.value = true;
+};
+
+const stopLoading = () => {
+  isLoading.value = false;
+};
+
+onMounted(() => {
+  router.beforeEach((to, from, next) => {
+    startLoading();
+    next();
+  });
+
+  router.afterEach(() => {
+    setTimeout(stopLoading, 500); // Add a small delay for better visual effect
+  });
+});
 </script>
 
 <style lang="scss" scoped>

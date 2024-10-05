@@ -1,130 +1,201 @@
 <template>
-  <q-page class="flex row signup-page-font-size" style="max-width: 100vw">
+  <q-page
+    :class="[
+      `${isGtMd ? 'flex row justify-end' : ''}`,
+      'signup-page-font-size',
+    ]"
+    :style-fn="stylefn"
+  >
     <!-- left-side -->
-    <div class="q-pa-xl" style="width: 55%; overflow-y: scroll">
+    <div
+      :style="{
+        width: isGtMd ? 'calc(0.8rem + 52vw)' : '100vw',
+        overflow: 'hidden',
+        backgroundImage: isGtMd ? '' : 'url(/assets/hotel_reception.png)',
+      }"
+    >
       <div
-        class="text-h2 text-bolder q-mb-md"
-        style="font-size: 5rem; letter-spacing: 1px; font-weight: 900"
+        class="text-h2 text-bolder q-mb-sm"
+        style="
+          font-size: calc(2.4vh + 0.6vw);
+          letter-spacing: 1px;
+          font-weight: 900;
+        "
       >
         Sign up
       </div>
       <q-tab-panels
         v-model="currentPanel"
-        style="width: 100%; height: 100%"
+        :style="{
+          width: isGtMd ? '100%' : '100vw',
+          height: isGtMd ? '100%' : '100vh',
+          backgroundColor: 'transparent',
+        }"
         animated
       >
-        <q-tab-panel :name="SignupPanels.SIGNUP_FORM" style="width: 100%">
-          <div style="width: 100%">
-            <q-form style="width: 100%" ref="signupFormRef">
-              <div class="flex column q-gutter-lg" style="width: 100%">
+        <q-tab-panel
+          :name="SignupPanels.SIGNUP_FORM"
+          style="width: 100%"
+          class="form-panel"
+        >
+          <div style="width: 100%; height: 60vh">
+            <q-form ref="signupFormRef">
+              <div
+                :class="[
+                  'flex column q-pa-md',
+                  isGtMd ? '' : isGtSm ? 'grt-sm' : 'lst-sm',
+                ]"
+                style="
+                  background-color: rgba(255, 255, 255, 0.7);
+                  font-weight: 600;
+                "
+              >
                 <div
-                  style="height: 50vh; width: 80%"
-                  class="flex row q-gutter-lg q-ml-md items-end justify-center"
+                  :class="[
+                    'flex',
+                    isGtMd
+                      ? 'row items-end justify-around'
+                      : isGtSm
+                      ? 'row items-end justify-around'
+                      : 'column flex-center',
+                  ]"
                 >
-                  <!-- left-side -->
-                  <div class="flex column q-gutter-lg" style="width: 46%">
-                    <div class="flex column">
-                      <span class="q-ml-lg">First Name</span>
-                      <q-input
-                        color="secondary"
-                        outlined
-                        rounded
-                        v-model="signupModel.firstName"
-                        :rules="[
-                          () => $validateField(signupModel, 'firstName'),
-                        ]"
-                      />
-                    </div>
-                    <div class="flex column">
-                      <span class="q-ml-lg">Email</span>
-                      <q-input
-                        color="secondary"
-                        outlined
-                        rounded
-                        v-model="signupModel.email"
-                        :rules="[() => $validateField(signupModel, 'email')]"
-                      />
-                    </div>
-                    <div class="flex column">
-                      <span class="q-ml-lg">Password</span>
-                      <q-input
-                        outlined
-                        rounded
-                        type="password"
-                        v-model="signupModel.password"
-                        :rules="[() => $validateField(signupModel, 'password')]"
-                      />
-                    </div>
+                  <div class="flex column field">
+                    <span class="q-ml-lg">First Name</span>
+                    <q-input
+                      color="secondary"
+                      outlined
+                      rounded
+                      v-model="signupModel.firstName"
+                      :rules="[() => $validateField(signupModel, 'firstName')]"
+                    />
                   </div>
-                  <!-- right-side -->
-                  <div class="flex column q-gutter-lg" style="width: 46%">
-                    <div class="flex column">
-                      <span class="q-ml-lg">Last Name</span>
-                      <q-input
-                        color="secondary"
+                  <div class="flex column field">
+                    <span class="q-ml-lg">Last Name</span>
+                    <q-input
+                      color="secondary"
+                      outlined
+                      rounded
+                      v-model="signupModel.lastName"
+                      :rules="[() => $validateField(signupModel, 'lastName')]"
+                    />
+                  </div>
+                </div>
+                <div
+                  :class="[
+                    'flex',
+                    isGtMd
+                      ? 'row items-end justify-around'
+                      : isGtSm
+                      ? 'row items-end justify-around'
+                      : 'column flex-center',
+                  ]"
+                >
+                  <div class="flex column field">
+                    <span class="q-ml-lg">Email</span>
+                    <q-input
+                      color="black"
+                      outlined
+                      rounded
+                      v-model="signupModel.email"
+                      :rules="[() => $validateField(signupModel, 'email')]"
+                    />
+                  </div>
+                  <div class="flex column field">
+                    <span class="q-ml-lg">Phone Number</span>
+                    <div class="flex row q-mr-sm">
+                      <q-select
                         outlined
                         rounded
-                        v-model="signupModel.lastName"
-                        :rules="[() => $validateField(signupModel, 'lastName')]"
+                        :style="{
+                          width: isGtMd ? '20%' : '40%',
+                        }"
+                        v-model="signupModel.phoneCodeId"
+                        :options="phoneCodeIdOptions"
+                        class="text-bolder"
+                        bg-color="secondary"
+                        :rules="[
+                          () => $validateField(signupModel, 'phoneCodeId'),
+                        ]"
+                        emit-value
+                        map-options
                       />
-                    </div>
-                    <div class="flex column">
-                      <span class="q-ml-lg">Phone Number</span>
-                      <div class="flex row">
-                        <q-select
-                          outlined
-                          rounded
-                          :style="{
-                            width: '20%',
-                          }"
-                          v-model="signupModel.phoneCodeId"
-                          :options="phoneCodeIdOptions"
-                          class="text-bolder"
-                          bg-color="secondary"
-                          :rules="[
-                            () => $validateField(signupModel, 'phoneCodeId'),
-                          ]"
-                          emit-value
-                          map-options
-                        />
-                        <q-input
-                          :style="{
-                            width: '80%',
-                          }"
-                          color="secondary"
-                          v-model="signupModel.phone"
-                          outlined
-                          rounded
-                          :rules="[() => $validateField(signupModel, 'phone')]"
-                        />
-                      </div>
-                    </div>
-                    <div class="flex column">
-                      <span class="q-ml-lg">Confirm Password</span>
                       <q-input
-                        type="password"
+                        :style="{
+                          width: isGtMd ? '80%' : '60%',
+                        }"
+                        color="secondary"
+                        v-model="signupModel.phone"
                         outlined
                         rounded
-                        v-model="confirmPassword"
-                        color="secondary"
-                        :rules="[validateConfirmPassword]"
+                        :rules="[() => $validateField(signupModel, 'phone')]"
                       />
                     </div>
                   </div>
                 </div>
                 <div
-                  class="flex row flex-center"
-                  style="width: 75%; color: #fff"
+                  :class="[
+                    'flex',
+                    isGtMd
+                      ? 'row items-end justify-around'
+                      : isGtSm
+                      ? 'row items-end justify-around'
+                      : 'column flex-center',
+                  ]"
                 >
-                  <q-btn
-                    class="bg-primary q-py-sm q-px-sm"
-                    label="Register"
-                    style="width: 60%; font-size: 1.2rem"
-                    rounded
-                    no-caps
-                    @click="register"
-                    :disable="requestingServer"
-                  />
+                  <div class="flex column field">
+                    <span class="q-ml-lg">Password</span>
+                    <q-input
+                      outlined
+                      rounded
+                      type="password"
+                      v-model="signupModel.password"
+                      :rules="[() => $validateField(signupModel, 'password')]"
+                    />
+                  </div>
+                  <div class="flex column field">
+                    <span class="q-ml-lg">Confirm Password</span>
+                    <q-input
+                      type="password"
+                      outlined
+                      rounded
+                      v-model="confirmPassword"
+                      color="secondary"
+                      :rules="[validateConfirmPassword]"
+                    />
+                  </div>
+                </div>
+
+                <div
+                  :class="[
+                    'flex',
+                    isGtMd
+                      ? 'row items-end justify-around'
+                      : isGtSm
+                      ? 'row items-end justify-around'
+                      : 'column flex-center',
+                  ]"
+                  style="width: 100%; color: #fff; margin-top: 2rem"
+                >
+                  <div style="width: 100%" class="flex column items-center">
+                    <q-btn
+                      class="bg-primary q-py-sm q-px-sm q-mx-auto q-mb-sm"
+                      label="Register"
+                      style="font-size: 1rem"
+                      rounded
+                      no-caps
+                      @click="register"
+                      :disable="requestingServer"
+                    />
+                    <p class="text-secondary">
+                      Have existing account?
+                      <span
+                        class="text-primary text-bolder cursor-pointer"
+                        @click="$router.push('/signin')"
+                        >Signin</span
+                      >.
+                    </p>
+                  </div>
                 </div>
               </div>
             </q-form>
@@ -143,15 +214,17 @@
                     <div class="q-mt-sm">
                       <div class="flex row">
                         <q-input
-                          style="width: 80%"
+                          style="width: 58%"
+                          input-style="letter-spacing: 2vw; text-align: center"
                           rounded
                           outlined
                           v-model="tokenCoirmationModel.code"
                           color="secondary"
+                          maxlength="6"
                         />
 
                         <q-btn
-                          class="q-px-lg q-ml-md bg-secondary text-white"
+                          class="q-px-md q-ml-md bg-secondary text-white"
                           icon="trending_flat"
                           rounded
                           @click="submitToken"
@@ -163,11 +236,12 @@
                           </q-tooltip>
                         </q-btn>
                       </div>
-                      <div class="text-center" style="width: 80%">
+                      <div class="text-center q-mt-sm" style="width: 80%">
                         <span>Didn't Receive code? </span
                         ><span
                           class="text-secondary q-ml-md"
                           style="cursor: pointer"
+                          @click="resendToken"
                           >Resend Verification Code</span
                         >
                       </div>
@@ -182,12 +256,12 @@
       </q-tab-panels>
     </div>
     <!-- right-side -->
-    <div class="signup-right-side" style="width: 45%">
-      <q-img
-        style="height: 100vh"
-        src="/assets/hotel_reception.png"
-        fit="fill"
-      />
+    <div
+      v-if="isGtMd"
+      class="signup-right-side flex row justify-end"
+      style="height: 100vh; width: 100%; width: 45vw; overflow: hidden"
+    >
+      <q-img src="/assets/hotel_reception.png" fit="fill" />
       <q-img
         class="logo-img"
         src="/assets/starglings_logo_bird_text 2_xpoint75.png"
@@ -205,7 +279,7 @@ import { useRouter } from 'vue-router';
 import { SignupModel } from 'src/models/signup.model';
 import { SignupViewModel } from 'src/view-models/signup.view-model';
 import { TokenConfirmationViewModel } from 'src/view-models/tokenConfirmation.view-model';
-import {
+import useUiProcessHandler, {
   useNotify,
   useRequestionProcessingChecker,
   useRequestionProcessingNotification,
@@ -217,10 +291,18 @@ import { loadingTimeout } from 'src/lib/projectConstants';
 const $q = useQuasar();
 const router = useRouter();
 let postSignupTimer: NodeJS.Timeout;
+const screen = $q.screen;
 
 enum SignupPanels {
   SIGNUP_FORM = 'signup-form',
   CONFIRMATION = 'confirmation',
+}
+
+function stylefn() {
+  return {
+    height: 'fit-content',
+    width: '100vw',
+  };
 }
 
 // refs
@@ -244,6 +326,12 @@ const signupModel = reactive(signupViewModel.model);
 const tokenCoirmationModel = reactive(tokenConfirmationViewModel.model);
 
 // computed
+const isGtSm = computed(() => {
+  return screen.gt.sm;
+});
+const isGtMd = computed(() => {
+  return screen.gt.md;
+});
 asyncComputed(async () => {
   await signupModel.validate();
 });
@@ -282,7 +370,7 @@ async function register() {
   useRequestionProcessingChecker(requestingServer);
 
   if (!isfullModelValid()) {
-    await signupFormRef.value?.validate();
+    await signupFormRef.value?.validate(true);
     return;
   }
 
@@ -322,6 +410,22 @@ async function register() {
   // currentPanel.value = SignupPanels.CONFIRMATION;
 }
 
+async function resendToken() {
+  //
+  await useUiProcessHandler({
+    async process() {
+      signupViewModel.resendToken({
+        async onSuccess() {
+          //
+        },
+      });
+    },
+    loader: $q.loading,
+    loaderMessage: 'Requesting',
+    useNotifer: true,
+  });
+}
+
 function validateConfirmPassword(value: string) {
   confirmPasswordIsValid.value = !!value && value === signupModel.password;
   return confirmPasswordIsValid.value || 'Value must match Password value.';
@@ -333,6 +437,28 @@ function isfullModelValid() {
 </script>
 
 <style lang="scss" scoped>
+.form-panel {
+  & .field {
+    width: 40%;
+  }
+
+  & .grt-sm .field {
+    width: 40%;
+  }
+
+  & .lst-sm .field {
+    width: 80%;
+  }
+
+  & button {
+    width: 60%;
+  }
+
+  & .grt-sm button,
+  & .grt-sm button {
+    width: 80%;
+  }
+}
 .signup-right-side {
   position: relative;
 }
@@ -344,7 +470,7 @@ function isfullModelValid() {
 }
 
 .signup-page-font-size {
-  font-size: 1.2rem;
+  font-size: calc(0.2rem + 0.2vw + 1vh);
 }
 
 .input-focus:focus-within {
@@ -352,4 +478,3 @@ function isfullModelValid() {
   border-color: solid var(--q-primary);
 }
 </style>
-../models/signup.model src/composables/useNotify.composable

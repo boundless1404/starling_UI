@@ -272,12 +272,13 @@
           class="text-center q-mb-md"
           style="font-size: calc(0.6rem + 0.8vw)"
         >
-          <span class="q-ma-lg">Etensive Search and Seamless bookings</span
+          <span class="q-ma-lg">Extensive Search and Seamless bookings</span
           ><q-btn
             class="bg-primary text-white q-px-md"
             label="Get Started"
             rounded
             no-caps
+            to="/signup"
           />
         </div>
         <div class="flex column items-center justify-start" style="width: 100%">

@@ -41,3 +41,10 @@ export function clearUIEffects({
 export function isModelValid(model: BaseModel) {
   return !model.errors?.length;
 }
+
+export function toSentenceCase(str: string) {
+  return str
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}

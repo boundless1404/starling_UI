@@ -2,31 +2,40 @@ import { defineStore } from 'pinia';
 import { AuthUserData, StorageNamesEnum } from '.';
 import { forageGetItem, forageSetItem } from 'src/boot/storeforage';
 
-const authUserData =
-  (forageGetItem<AuthUserData>(
-    StorageNamesEnum.AUTH_USER_DATA
-  ) as AuthUserData) || {};
-// authUserData.token = 'this is the token'
+let authUserData: AuthUserData | null = null;
 const useAuthStore = defineStore('auth', {
-  state: (): AuthUserData => {
-    return {
-      token: authUserData.token,
-      userData: authUserData.userData,
-      profile: authUserData.profile,
-    };
-  },
+  state: (): AuthUserData => ({
+    token: undefined,
+    userData: undefined,
+    profile: undefined,
+  }),
   getters: {
     getToken(): string {
       return this.token as string;
     },
+
+    getField(): (
+      field: keyof AuthUserData
+    ) => AuthUserData[keyof AuthUserData] {
+      return (field: keyof AuthUserData) => {
+        return this[field];
+      };
+    },
   },
   actions: {
-    async handleAuthToken(tokenString: string) {
-      this.token = tokenString;
-      // TODO: decrpyt token populate user data and profile
+    async initializeStore() {
+      if (!authUserData) {
+        authUserData = await forageGetItem<AuthUserData>(
+          StorageNamesEnum.AUTH_USER_DATA
+        );
+      }
+      this.$patch(authUserData as AuthUserData);
+    },
+    async handleAuthToken(authUserData: AuthUserData) {
+      this.$patch(() => ({ ...authUserData }));
       await forageSetItem(
         StorageNamesEnum.AUTH_USER_DATA,
-        { ...this.$state },
+        { ...authUserData },
         (err) => {
           // TODO: handle error
         }

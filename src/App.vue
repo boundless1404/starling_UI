@@ -3,22 +3,19 @@
 </template>
 
 <script setup lang="ts">
-import { useQuasar } from 'quasar';
-import { watch } from 'vue';
+import { useMeta, useQuasar } from 'quasar';
+import useAuthStore from './stores/auth-store';
 const $q = useQuasar();
 
+// initialize stores
+const stores: { initializeStore: () => Promise<void> }[] = [useAuthStore()];
+
+Promise.all(stores.map(async (store) => await store.initializeStore()));
+
+// configure screen break points
 $q.screen.setSizes({ sm: 300, md: 500, lg: 1000, xl: 2000 });
 
-watch(
-  () => [
-    $q.screen.lg,
-    $q.screen.md,
-    $q.screen.sm,
-    $q.screen.xs,
-    $q.screen.width,
-  ],
-  (newVal) => {
-    console.log(newVal);
-  }
-);
+useMeta({
+  title: 'Starlings Hospitality',
+});
 </script>
