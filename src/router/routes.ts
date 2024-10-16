@@ -29,8 +29,9 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/SuitesPage.vue'),
       },
       {
-        path: ':serviceId/suites/:suitePropertyId',
-        component: () => import('pages/SuiteBookingPage.vue'),
+        name: 'suites-details',
+        path: ':serviceId/suites/:serviceProviderId',
+        component: () => import('pages/SuitebookingPage.vue'),
       },
     ],
     props: true,

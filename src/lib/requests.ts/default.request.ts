@@ -18,6 +18,7 @@ export async function requestApi(
     ...(payload.headers
       ? { headers: payload.headers as unknown as AxiosHeaders }
       : {}),
+      ...(payload.params? {params: payload.params} : {})
   });
 
   const status = serverResponse.status;

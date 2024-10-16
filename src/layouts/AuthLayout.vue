@@ -45,7 +45,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-container class="alegreya q-pa-xl">
+    <q-page-container class="alegreya q-pa-sm">
       <router-view />
     </q-page-container>
 

@@ -9,4 +9,5 @@ export default class SuitesModel {
   description: string;
   files: PlatformFile[];
   priceVariations: PriceVariation[];
+  features: string[];
 }

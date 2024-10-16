@@ -48,3 +48,21 @@ export function toSentenceCase(str: string) {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 }
+
+export function getQueryString(options: Record<string, any>) {
+  let queryString = '';
+  if (!options || options === null || Object.keys(options).length === 0) {
+    return '';
+  }
+
+  queryString = Object.entries(options).reduce((prev, [key, val]) => {
+    if (prev !== '') {
+      prev += '&';
+    }
+    prev += `${key}=${val}`;
+    return prev;
+  }, '');
+
+  console.log('This is the query string: ', queryString);
+  return queryString;
+}

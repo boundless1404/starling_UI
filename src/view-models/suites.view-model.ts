@@ -1,6 +1,6 @@
 import { ViewModelBase } from './base.view-model';
 import { AuthUserData } from 'src/stores';
-import { toSentenceCase } from 'src/lib/utils';
+import { getQueryString, toSentenceCase } from 'src/lib/utils';
 import { ServiceUrlEnum } from 'src/lib/enums/urlPaths.enum';
 import SuitesPageModel from 'src/models/suitesPage.model';
 import { Provider } from 'src/lib/types';
@@ -44,25 +44,9 @@ export default class SuitesViewModel extends ViewModelBase<SuitesPageModel> {
   }) {
     //
     this.model.suites = await this.requestApi(
-      `${ServiceUrlEnum.Get_SUITES}?${this.getQueryString(options)}`
+      `${ServiceUrlEnum.Get_SUITES}?${getQueryString(options)}`
     );
   }
 
-  getQueryString(options: Record<string, any>) {
-    let queryString = '';
-    if (!options || options === null || Object.keys(options).length === 0) {
-      return '';
-    }
 
-    queryString = Object.entries(options).reduce((prev, [key, val]) => {
-      if (prev !== '') {
-        prev += '&';
-      }
-      prev += `${key}=${val}`;
-      return prev;
-    }, '');
-
-    console.log('This is the query string: ', queryString);
-    return queryString;
-  }
 }
