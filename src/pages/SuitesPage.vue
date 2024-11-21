@@ -154,7 +154,7 @@
                 </q-card-section>
               </q-card>
               <div
-                class="q-mt-md"
+                class="q-mt-md suite-service-description"
                 :style="{ color: `${$getColor('blue-grey-10')}` }"
               >
                 <p>

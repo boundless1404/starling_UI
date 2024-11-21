@@ -1,7 +1,9 @@
 import { PriceDurations } from 'src/lib/enums/enums';
 import { BaseModel } from './base.model';
 
-export default class PriceVariation extends BaseModel {
+export default class PriceOption extends BaseModel {
+  id: string;
   price: number;
-  duration: PriceDurations;
+  durationType: PriceDurations;
+  description: string;
 }

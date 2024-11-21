@@ -2,7 +2,7 @@
   <q-page>
     <div>
       <div>
-        <h4>{{ suitesPageModel.message }}</h4>
+        <h4>{{ suitesDetailsPageModel.serviceProviderName }} {{ suitesDetailsPageModel.serviceType }} - ables</h4>
       </div>
       <p class="q-ml-xl q-pl-sm">
         {{ suitesPageModel.submessage }}
@@ -56,13 +56,18 @@
                 <div class="col-12 col-md-6">
                   <q-img class="full-width" style="border-radius: 2rem;"
                     :src="currentSuite?.files[getRandomIndexForNumRange(suitesDetailsPageModel.suites.length - 1)].url" />
-                  <div class="flex row justify-between no-wrap items-baseline q-gutter-x-md q-mt-md" style="width: 100%;">
+                  <div class="flex row justify-between no-wrap items-baseline q-gutter-x-md q-mt-md"
+                    style="width: 100%;">
                     <div class="flex row justify-between q-gutter-x-md q-mt-md">
-                      <q-chip color="primary" text-color="white">
-                      {{ '\u20A6' }}{{ currentSuite?.priceVariations?.[0]?.amount }}
-                    </q-chip>
-                    <q-select v-model="selectedDuration" :options="durationOptions" dense options-dense borderless
-                      style="width: 120px" />
+
+                      <q-chip class="cursor-pointer" color="primary" text-color="white">
+                        {{ '\u20A6' }}{{ currentSelectedPriceOption?.price || 0 }}
+                        <q-tooltip class="bg-secondary" v-show="currentSelectedPriceOption?.description">
+                          {{ currentSelectedPriceOption?.description || '' }}
+                        </q-tooltip>
+                      </q-chip>
+                      <q-select v-model="selectedPriceId" :options="priceSelectOptionsComputed" dense options-dense
+                        borderless style="width: 120px" map-options emit-value />
                     </div>
                     <div>
                       <q-btn color="primary" label="Book Now" no-caps rounded @click="openBookingForm" />
@@ -119,31 +124,47 @@
         </div>
       </div>
     </div>
+    <suite-booking-component :current-suite="currentSuite" :selected-price-id="selectedPriceId"
+      :service-provider-name="suitesDetailsPageModel.serviceProviderName" :current-category="formattedCategoryComputed"
+      :show-modal="showBookingModal" :currentSelectedPriceOption="currentSelectedPriceOption"
+      @update:show-modal="showBookingModal = false"
+      @update:selected-price-id="updateSelectedPrice"
+      :priceSelectOptions="priceSelectOptionsComputed" />
   </q-page>
 </template>
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
+import { toSentenceCase } from 'src/lib/utils';
 import SuitesModel from 'src/models/suite.model';
 import { SuitesDetailsPageModel } from 'src/models/suitesDetails.model';
 import SuitesPageModel from 'src/models/suitesPage.model';
-import SuiteDetailsViewModel from 'src/view-models/suites-details.view-model';
+import SuiteDetailsViewModel from 'src/view-models/suiteDetails.view-model';
 import SuitesViewModel from 'src/view-models/suites.view-model';
 import { computed, onMounted, reactive, watch } from 'vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import SuiteBookingComponent from 'src/components/SuiteBookingComponent.vue';
+import PriceOption from 'src/models/priceVariation.model';
+
+
+// models
+const suitesDetailsViewPageModel = new SuiteDetailsViewModel(reactive(new SuitesDetailsPageModel()));
+const suitesDetailsPageModel = suitesDetailsViewPageModel.model;
+const suitesViewModel = new SuitesViewModel(reactive(new SuitesPageModel()));
+const suitesPageModel = suitesViewModel.model;
 
 // consts
 const $q = useQuasar();
 const router = useRouter();
 const { serviceId } = router.currentRoute.value.params as { serviceId: string };
 const { serviceProviderId } = router.currentRoute.value.params as { serviceProviderId: string };
-const suitesDetailsViewPageModel = new SuiteDetailsViewModel(reactive(new SuitesDetailsPageModel()));
-const suitesDetailsPageModel = suitesDetailsViewPageModel.model;
-const suitesViewModel = new SuitesViewModel(reactive(new SuitesPageModel()));
-const suitesPageModel = suitesViewModel.model;
 const currentCategoryIndex = ref(0);
 const currentSuiteIndex = ref(0);
 const currentSuite = ref<SuitesModel>();
+const selectedPriceId = ref('');
+const currentSelectedPriceOption = ref<PriceOption>();
+const showBookingModal = ref(false);
+
 
 //refs
 const controlType = ref<'outline' | 'regular' | 'flat' | 'unelevated' | 'push'>(
@@ -173,6 +194,17 @@ const roomFeatures = ref([{
 ]);
 
 // computed
+const priceSelectOptionsComputed = computed(() => {
+  console.log('this is the price options', currentSuite?.value?.priceOptions);
+  const options = currentSuite?.value?.priceOptions?.map((p) => {
+    return {
+      label: toSentenceCase(p.durationType.split('_').join(' ')),
+      value: p.id,
+    };
+  });
+  return options;
+});
+
 const suiteDescriptionComputed = computed(() => {
   console.log(currentSuite?.value?.description);
   return currentSuite?.value?.description;
@@ -232,6 +264,15 @@ const carouselWidthHeight = computed(() => {
 });
 
 //methods
+function updateSelectedPrice(newVal: string) {
+  selectedPriceId.value = newVal;
+  console.log('updating selected price: ', newVal)
+}
+
+function openBookingForm() {
+  showBookingModal.value = !showBookingModal.value;
+}
+
 function getRandomIndexForNumRange(maxNumValue: number) {
   return Number((Math.random() * maxNumValue).toFixed());
 }
@@ -288,6 +329,20 @@ function decrementCategoryIndex() {
 
 
 //watchers
+watch(priceSelectOptionsComputed, (newVal) => {
+  if (newVal) {
+    selectedPriceId.value = newVal[0].value;
+  }
+});
+
+watch(selectedPriceId, (newVal) => {
+  if (newVal) {
+    const targetPriceOption = currentSuite.value?.priceOptions.find((price) => price.id === newVal);
+    currentSelectedPriceOption.value = targetPriceOption;
+  }
+  console.log('newVal: ', newVal);
+});
+
 watch(selectedServiceProvider, async (newVal) => {
   if (newVal) {
     console.log('before request: ', suitesPageModel.suites);
@@ -305,6 +360,7 @@ onMounted(async () => {
   categoriesLength.value = suitesPageModel?.categories.length - 1;
   currentCategoryIndex.value = getRandomIndexForNumRange(suitesDetailsPageModel.suites.length - 1);
   currentSuite.value = suitesDetailsPageModel.suites[currentCategoryIndex.value];
+  selectedPriceId.value = currentSuite.value.priceOptions[0].id;
 });
 </script>
 <style lang="scss">

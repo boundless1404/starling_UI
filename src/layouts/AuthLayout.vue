@@ -115,4 +115,9 @@ function showUserProfile() {
 .border-rounded-xl {
   border-radius: 2.5rem;
 }
+
+.suite-service-description {
+  font-size: small;
+  font-weight: 100;
+}
 </style>

@@ -49,6 +49,8 @@ export type AuthUserData = {
     lastName: string;
     email: string;
     middleName?: string;
+    phone?: string;
+    phoneCodeId?: string;
   };
   profile?: {
     id: string;

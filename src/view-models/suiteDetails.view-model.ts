@@ -11,6 +11,7 @@ export default class SuiteDetailsViewModel extends ViewModelBase<SuitesDetailsPa
     console.log('These are the suites:', this.model.suites);
 
     this.model.category = this.model.suites?.[0].category || '';
+    // we can do this since we are sure that the suites are from the same provider
     this.model.serviceProviderName = this.model.suites?.[0].provider.name || '';
     // TODO: update the serviceType
     this.model.serviceType = 'Suites';
