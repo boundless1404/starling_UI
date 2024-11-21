@@ -80,7 +80,7 @@
             class="q-mt-md"
             :style="{ color: `${$getColor('blue-grey-10')}` }"
           >
-            <p>
+            <p class="suite-service-description">
               {{ service.description }}
             </p>
           </div>
@@ -92,7 +92,7 @@
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
 import ServicesPageModel from 'src/models/servicesPage.model';
-import ServicesViewModel from 'src/view-models/Services.view-model';
+import ServicesViewModel from 'src/view-models/services.view-model';
 import { computed, onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 

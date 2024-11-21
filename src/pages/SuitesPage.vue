@@ -138,6 +138,7 @@
                       v-for="(file, carousel_index) of suite.files"
                       :key="carousel_index"
                       :name="file.filename"
+                      @click="navigateToDetialsPage(suite.provider.id)"
                     >
                       <template v-slot:default>
                         <q-img
@@ -153,7 +154,7 @@
                 </q-card-section>
               </q-card>
               <div
-                class="q-mt-md"
+                class="q-mt-md suite-service-description"
                 :style="{ color: `${$getColor('blue-grey-10')}` }"
               >
                 <p>
@@ -260,6 +261,15 @@ const carouselWidthHeight = computed(() => {
 });
 
 //methods
+async function navigateToDetialsPage(serviceProviderId: string) {
+  router.push({
+    name: 'suites-details',
+    params: {
+      serviceProviderId,
+      serviceId,
+    },
+  });
+}
 async function getSuitesByCategory(category: string) {
   selectedCategory.value = category;
   await suitesViewModel.getSuites({

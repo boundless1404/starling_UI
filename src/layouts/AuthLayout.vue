@@ -45,7 +45,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-container class="alegreya q-pa-xl">
+    <q-page-container class="alegreya q-pa-sm">
       <router-view />
     </q-page-container>
 
@@ -114,5 +114,10 @@ function showUserProfile() {
 
 .border-rounded-xl {
   border-radius: 2.5rem;
+}
+
+.suite-service-description {
+  font-size: small;
+  font-weight: 100;
 }
 </style>

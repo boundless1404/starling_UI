@@ -82,6 +82,7 @@ module.exports = configure(function (/* ctx */) {
 
       // extendViteConf (viteConf) {},
       // viteVuePluginOptions: {},
+      devtool: 'source-map',
 
       vitePlugins: [
         [

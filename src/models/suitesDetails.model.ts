@@ -3,8 +3,9 @@ import SuitesModel from './suite.model';
 import UserReview from './userReview.model';
 
 export class SuitesDetailsPageModel extends BaseModel {
+  serviceProviderName: string;
   serviceType: string;
-  suite: SuitesModel;
+  suites: SuitesModel[];
   category: string;
   usersReviews: UserReview[];
 }
