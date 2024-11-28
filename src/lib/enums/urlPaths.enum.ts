@@ -12,6 +12,7 @@ export enum ServiceUrlEnum {
   Get_SUITES = '/services/suites',
   GET_SUITE_DETAILS = '/services/suites/:suiteId',
   GET_CATEGORIES = '/services/suites/categories',
+  GET_OFFERS = '/services/offers',
 }
 
 export enum ProfileTypes {

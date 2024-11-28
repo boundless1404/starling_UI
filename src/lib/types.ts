@@ -48,3 +48,58 @@ export type Location = {
   country: string;
   landmark: string;
 };
+
+export interface ServiceOfferPriceOption {
+  id: string;
+  price: string | number;
+  currency: {
+    name: string;
+    symbol: string;
+  };
+}
+
+export interface ServiceOfferFeature {
+  id: string;
+  name: string;
+  description?: string;
+  icon: string;
+}
+
+export interface ServiceOfferTourGuide {
+  id: string;
+  name: string;
+  description: string;
+  files: PlatformFile[];
+}
+
+export interface ServiceOffer {
+  id: string;
+  name: string;
+  description: string;
+  type?: string;
+  price?: string;
+  priceOptions?: ServiceOfferPriceOption[];
+  features?: ServiceOfferFeature[];
+  tourGuides?: ServiceOfferTourGuide[];
+  files?: PlatformFile[];
+}
+
+
+export type ServiceWithOffers = {
+  id: string;
+  name: string;
+  description?: string
+  offers?: Array<{
+    id: string;
+    name: string;
+    price: string;
+    description: string;
+    features: Array<{
+      id: string;
+      name: string;
+      icon: string;
+      description?: string;
+    }>;
+  }>;
+}
+

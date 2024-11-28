@@ -14,6 +14,6 @@ export default class SuiteDetailsViewModel extends ViewModelBase<SuitesDetailsPa
     // we can do this since we are sure that the suites are from the same provider
     this.model.serviceProviderName = this.model.suites?.[0].provider.name || '';
     // TODO: update the serviceType
-    this.model.serviceType = 'Suites';
+    this.model.serviceType = this.model.suites[0].type;
   }
 }

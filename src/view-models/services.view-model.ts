@@ -24,4 +24,28 @@ export default class ServicesViewModel extends ViewModelBase<ServicesPageModel> 
     );
     this.model.submessage = 'Here are some services for you to pick from.';
   }
+
+  async getServiceOffers(serviceId: string) {
+    //
+    const service =  this.getServiceById(serviceId);
+    if (!service) {
+      alert('A fatal error occurred. Kindly refresh the page or log out and log back in.');
+      return;
+    }
+
+    let serviceOffers = service.offers;
+    if (!serviceOffers) {
+    serviceOffers = await this.requestApi(
+      `${ServiceUrlEnum.GET_OFFERS}?serviceId=${serviceId}`
+    );
+
+    service.offers = serviceOffers;
+  }
+
+  this.model.selectedService = service;
+  }
+
+  getServiceById(serviceId: string) {
+    return this.model.servicesWithProviders.find((service) => service.id === serviceId);
+  }
 }

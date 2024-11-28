@@ -1,6 +1,7 @@
 import { Loading } from 'quasar';
 import { BaseModel } from '../models/base.model';
 import { Ref } from 'vue';
+import { ValidationArguments } from 'class-validator';
 
 export function validateField(model: BaseModel, name: string) {
   const error = model.errors?.find((error) => error.property === name);
@@ -65,4 +66,8 @@ export function getQueryString(options: Record<string, any>) {
 
   console.log('This is the query string: ', queryString);
   return queryString;
+}
+
+export function GetIsRequiredMessage(validationArgs: ValidationArguments) {
+  return `${validationArgs.property} is required.`
 }
