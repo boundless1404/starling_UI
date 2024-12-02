@@ -63,6 +63,8 @@ const $q = useQuasar();
 const controlType = ref<'outline' | 'regular' | 'flat' | 'unelevated' | 'push'>(
   'outline'
 );
+
+const refershCount = ref(0);
 const suitePanel = ref('SuitePanel');
 const autoPlay = ref(true);
 const serviceDialogueIsOpen = ref(false);
@@ -255,7 +257,7 @@ const servicesPageModel = serviceViewModel.model;
 // methods
 async function gotoServicePage(serviceId: string, serviceName: string) {
   const service = serviceViewModel.getServiceById(serviceId);
-  if (service?.type === HospitalityServiceType.AUTO_SERVICE || serviceName.toLowerCase().indexOf('suite') > -1) {
+  if (service?.type === HospitalityServiceType.AUTO_SERVICE || serviceName.toLowerCase().indexOf('apartment') > -1) {
     $router.push(`${$router.currentRoute.value.path}/${serviceId}/suites`);
   }
   else {
@@ -267,5 +269,11 @@ async function gotoServicePage(serviceId: string, serviceName: string) {
 
 onMounted(async () => {
   await serviceViewModel.getServices();
+  // referesh
+  if (refershCount.value <1) {
+    // $router.go(0);
+    refershCount.value++;
+    return;
+  }
 });
 </script>

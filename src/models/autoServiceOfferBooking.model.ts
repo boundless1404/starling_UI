@@ -11,6 +11,8 @@ export default class AutoServiceOfferBooking extends BaseModel {
     @IsDateString({}, {message: 'Enter Valid Date'})
     startDate: string;
 
+    price: number;
+
     @IsNotEmpty({message: GetIsRequiredMessage})
     @IsDateString({}, {message: 'Enter Valid Date'})
     endDate: string;
@@ -20,5 +22,5 @@ export default class AutoServiceOfferBooking extends BaseModel {
 
     @ValidateNested()
     @Type(() => BookingClientModel)
-    bookingClient: BookingClientModel;
+    client: BookingClientModel = new BookingClientModel();
 }

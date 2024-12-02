@@ -47,7 +47,7 @@ module.exports = configure(function (/* ctx */) {
     extras: [
       // 'ionicons-v4',
       // 'mdi-v5',
-      // 'fontawesome-v6',
+      'fontawesome-v6',
       // 'eva-icons',
       // 'themify',
       // 'line-awesome',
@@ -113,7 +113,7 @@ module.exports = configure(function (/* ctx */) {
       config: {
         brand: {
           primary: '#055784',
-          secondarytwo: '#dfe2ff',
+          sectwo: '#dfe2ff',
           secondary: '#5885af',
           accent: '#000c66',
 

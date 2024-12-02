@@ -124,12 +124,22 @@
         </div>
       </div>
     </div>
-    <suite-booking-component :current-suite="currentSuite" :selected-price-id="selectedPriceId"
+    <!-- <suite-booking-component :current-suite="currentSuite" :selected-price-id="selectedPriceId"
       :service-provider-name="suitesDetailsPageModel.serviceProviderName" :current-category="formattedCategoryComputed"
       :show-modal="showBookingModal" :currentSelectedPriceOption="currentSelectedPriceOption"
       @update:show-modal="showBookingModal = false"
       @update:selected-price-id="updateSelectedPrice"
-      :priceSelectOptions="priceSelectOptionsComputed" />
+      :priceSelectOptions="priceSelectOptionsComputed" /> -->
+
+    <bookings-component :show-modal="showBookingModal" @update:show-modal="showBookingModal = false" v-bind:suite-booking-component-props="{
+      currentSuite: currentSuite,
+      selectedPriceId: selectedPriceId,
+      serviceProviderName: suitesDetailsPageModel.serviceProviderName,
+      currentCategory: formattedCategoryComputed,
+      currentSelectedPriceOption: currentSelectedPriceOption,
+      priceSelectOptions: priceSelectOptionsComputed,
+    }" :current-booking-component-name="currentBookingComponentName" @update:selected-price-id="(value: string) => selectedPriceId = value" />
+    
   </q-page>
 </template>
 <script setup lang="ts">
@@ -143,8 +153,8 @@ import SuitesViewModel from 'src/view-models/suites.view-model';
 import { computed, onMounted, reactive, watch } from 'vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import SuiteBookingComponent from 'src/components/SuiteBookingComponent.vue';
 import PriceOption from 'src/models/priceVariation.model';
+import BookingsComponent, { BookingComponentName } from 'src/components/BookingsComponent.vue';
 
 
 // models
@@ -164,14 +174,10 @@ const currentSuite = ref<SuitesModel>();
 const selectedPriceId = ref('');
 const currentSelectedPriceOption = ref<PriceOption>();
 const showBookingModal = ref(false);
+const currentBookingComponentName = ref<BookingComponentName>('suiteBookingComponent');
 
 
 //refs
-const controlType = ref<'outline' | 'regular' | 'flat' | 'unelevated' | 'push'>(
-  'outline'
-);
-const suitePanel = ref('SuitePanel');
-const autoPlay = ref(true);
 const selectedServiceProvider = ref('');
 const categoriesLength = ref(0);
 const selectedCategory = ref('');
@@ -257,10 +263,6 @@ const serviceProvidersOptions = computed(() => {
       value: p.id,
     })) || []
   );
-});
-
-const carouselWidthHeight = computed(() => {
-  return $q.screen.lt.lg ? '40vw' : '28vw';
 });
 
 //methods

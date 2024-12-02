@@ -36,6 +36,12 @@ const routes: RouteRecordRaw[] = [
     ],
     props: true,
   },
+  {
+    path: '/payment',
+    name: 'payment',
+    component: () => import('layouts/AuthLayout.vue'),
+    children: [{ path: '', component: () => import('pages/PaymentPage.vue') }],
+  },
   // {
   //   path: '/suites/:serviceId',
   //   name: 'suites',

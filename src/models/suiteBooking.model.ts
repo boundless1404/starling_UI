@@ -10,6 +10,8 @@ export default class SuiteBookingModel extends BaseModel {
     serviceOfferPriceOptionId: string;
 
     suitePropertyId: string;
+
+    price: number;
   
     @IsNotEmpty({ message: 'CheckInDate is required.' })
     @IsDateString({}, {message: 'Please, enter a valid date.'})
@@ -35,5 +37,5 @@ export default class SuiteBookingModel extends BaseModel {
 
     @ValidateNested()
     @Type(() => BookingClientModel)
-    client: BookingClientModel
+    client: BookingClientModel = new BookingClientModel();
 }

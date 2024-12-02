@@ -1,9 +1,27 @@
 import { Loading } from 'quasar';
 import { BaseModel } from '../models/base.model';
 import { Ref } from 'vue';
-import { ValidationArguments } from 'class-validator';
+import { ValidationArguments, ValidationError } from 'class-validator';
 
 export function validateField(model: BaseModel, name: string) {
+  // check if name is separated by dot
+  const nameParts = name.split('.');
+  if (nameParts.length > 1) {
+    const propertyName = nameParts[0];
+    let vError: ValidationError | undefined;
+     for (const error of model.errors || []) {
+      const hasError = error.property === propertyName
+      if (hasError) {
+        vError = error.children?.find((child) => child.property === nameParts[1]);
+        if (vError) {
+          break;
+        }
+      }
+    
+  };
+    const errorMessages = Object.values(vError?.constraints || {})?.pop() || '';
+    return errorMessages === '' ? true : errorMessages;
+  }
   const error = model.errors?.find((error) => error.property === name);
   const errorMessages = Object.values(error?.constraints || {})?.pop() || '';
   return errorMessages === '' ? true : errorMessages;
@@ -64,7 +82,6 @@ export function getQueryString(options: Record<string, any>) {
     return prev;
   }, '');
 
-  console.log('This is the query string: ', queryString);
   return queryString;
 }
 

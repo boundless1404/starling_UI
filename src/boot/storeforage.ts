@@ -39,11 +39,18 @@ export default boot(async ({ app, redirect, router }) => {
   app.provide('localforage', localforage);
 
   // initialize localforage
-  const authUserData = await forageGetItem(StorageNamesEnum.AUTH_USER_DATA);
-  if (!authUserData) {
-    console.log('no authUserData found, initializing authUserData');
-    await localforage.setItem(StorageNamesEnum.AUTH_USER_DATA, authUserData);
+  for await (const storeName of Object.values(StorageNamesEnum)) {
+    const store = await forageGetItem(storeName);
+    if (!store) {
+      console.log(`Initializing ${storeName}: `, store);
+      await localforage.setItem(storeName, JSON.stringify({}));
+    }
   }
+  // const authUserData = await forageGetItem(StorageNamesEnum.AUTH_USER_DATA);
+  // if (!authUserData) {
+  //   console.log('no authUserData found, initializing authUserData');
+  //   await localforage.setItem(StorageNamesEnum.AUTH_USER_DATA, authUserData);
+  // }
 
   // const lgaWardStreet = await forageGetItem(StorageNamesEnum.LGA_WARD_STREET);
 

@@ -33,7 +33,7 @@
           <q-chip class="text-subtitle1 q-mr-sm secondarytwo">
             {{ '\u20A6' }}{{ offer?.price }}
           </q-chip>
-          <q-btn flat color="black"  class="secondarytwo" rounded outlined @click="console.log('adding to cart ...')" label="Select" />
+          <q-btn flat color="black"  class="secondarytwo" rounded outlined @click="showBookingModal = true" label="Select" />
 
 
         </div>
@@ -63,20 +63,50 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <bookings-component :show-modal="showBookingModal" :current-booking-component-name="currentBookingComponentName"
+    v-bind:auto-booking-component-props="{
+      serviceOfferId,
+      serviceOfferPriceOptionId,
+      currentSelectedPriceOption,
+      serviceOfferProviderName,
+      priceSelectOptions,
+      serviceOfferPrice
+    }"
+
+    @update:show-modal="(value) => showBookingModal = value"
+    />
   </q-card>
 </template>
 
 <script setup lang="ts">
 import ServiceModel from 'src/models/service.model';
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import BookingsComponent, { BookingComponentName } from 'src/components/BookingsComponent.vue';
+import PriceOption from 'src/models/priceVariation.model';
 
 const props = defineProps({
   service: ServiceModel,
   offer: Object,
 });
 
+
+const currentSelectedPriceOption = ref<PriceOption>(props.offer?.priceOptions?.[0] || {});
+const showBookingModal = ref(false);
+const currentBookingComponentName = ref<BookingComponentName>('autoBookingComponent');
+const serviceOfferId = ref(props.offer?.id);
+const serviceOfferPriceOptionId = ref(currentSelectedPriceOption.value?.id);
+const serviceOfferProviderName = ref(props.service?.provider?.name || '');
+const serviceOfferPrice = ref(props.offer?.price || 0);
+
 const showFeatureDialog = ref(false);
 const VISIBLE_FEATURES_COUNT = 12; // 4 features x 3 rows
+
+const priceSelectOptions = computed(() => {
+  return props.offer?.priceOptions?.map((option: PriceOption) => ({
+    label: option.price,
+    value: option.id,
+  }));
+});
 
 const visibleFeatures = computed(() => {
   return props.offer?.features?.slice(0, VISIBLE_FEATURES_COUNT);
@@ -93,6 +123,10 @@ const hiddenFeaturesCount = computed(() => {
 const showAllFeatures = () => {
   showFeatureDialog.value = true;
 };
+
+onMounted(() => {
+  console.log(props.offer);
+  });
 </script>
 
 <style lang="scss" scoped>

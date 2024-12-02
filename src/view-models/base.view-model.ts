@@ -5,16 +5,18 @@ import {
 import { BaseModel } from 'src/models/base.model';
 import { AuthUserData } from 'src/stores';
 import useAuthStore from 'src/stores/auth-store';
+import useBookingsStore from 'src/stores/booking-store';
 
 export class ViewModelBase<T extends BaseModel> {
   model: T;
-  stores: {auth?: ReturnType<typeof useAuthStore>} = {}
+  stores: {auth?: ReturnType<typeof useAuthStore>, bookings?: ReturnType<typeof useBookingsStore>} = {};
 
   currentUser: AuthUserData
 
   constructor(model: T) {
     this.model = model;
     this.stores.auth = useAuthStore();
+    this.stores.bookings = useBookingsStore();
     this.currentUser = {
       userData: this.stores.auth.userData,
       profile: this.stores.auth.profile
@@ -26,7 +28,7 @@ export class ViewModelBase<T extends BaseModel> {
   }
 
   async validateModel() {
-    await this.model.validate();
+    await this.model.validate?.();
   }
 
   async invokevalidation(onError?: (message?: string) => void) {
