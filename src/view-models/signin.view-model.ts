@@ -30,7 +30,6 @@ export class SigninViewModel extends ViewModelBase<SigninModel> {
       });
       onSuccess?.();
     } catch (error) {
-      debugger;
       onError?.(
         ((error as AxiosError).response?.data as { message: string }).message
       );

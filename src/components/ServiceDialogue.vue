@@ -1,5 +1,5 @@
 <template>
-  <q-dialog :model-value="isOpen" @update:model-value="$emit('update:isOpen', $event)" persistent
+  <q-dialog :model-value="isOpen" @update:model-value="updateModelValue" persistent
     class="service-dialogue">
     <q-card class="dialogue-card">
       <q-card-section class="row items-center q-pb-none">
@@ -24,11 +24,11 @@
                   @click="selectOffer(offer as unknown as ServiceOffer); currentRow = groupIndex"
                   :class="{ 'selected': selectedOffer?.id === offer.id }">
                   <q-card-section>
-                    <div class="price-tag">₦{{ offer.price || offer.priceOptions?.[0].price }}</div>
+                    <div class="price-tag">₦{{ offer.price || offer.priceOptions?.[0]?.price }}</div>
                   </q-card-section>
                   <div class="offer-image-container">
                     <q-img
-                      :src="offer.files?.[0].url || 'https://www.motortrend.com/uploads/sites/10/2015/11/2012-toyota-matrix-s-at-hatchback-angular-front.png'"
+                      :src="offer.files?.[0]?.url || 'https://pixabay.com/vectors/car-porsche-sports-car-luxury-1300629'"
                       spinner-color="primary"
                       class="offer-image"
                     />
@@ -45,6 +45,7 @@
                   <service-offer-detail 
                     :service="selectedService" 
                     :offer="selectedOffer"
+                    @update:show-modal="closeselectedOffer"
                   />
                 </div>
                 
@@ -61,6 +62,7 @@
                       <service-offer-detail 
                         :service="selectedService" 
                         :offer="selectedOffer"
+                        @update:show-modal="closeselectedOffer"
                       />
                     </q-card-section>
                   </q-card>
@@ -76,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, computed } from 'vue';
+import { ref, defineProps, computed, onMounted, watch } from 'vue';
 import ServiceOfferDetail from './ServiceOfferDetail.vue';
 import ServiceModel from 'src/models/service.model';
 import { ServiceOffer } from 'src/lib/types';
@@ -108,7 +110,7 @@ const props = defineProps<{
 }>();
 
 // define emits
-defineEmits(['update:isOpen']);
+const emit = defineEmits(['update:isOpen']);
 
 const selectedOffer = ref<ServiceOffer>();
 const serviceOffers = ref(props.selectedService.offers || []);
@@ -129,7 +131,26 @@ const selectOffer = (offer: ServiceOffer) => {
   if (selectedOffer.value.id) {
     showDetailModal.value = true;
   }
-};
+}; 
+
+function updateModelValue(value: boolean) {
+  emit('update:isOpen', value); 
+  closeselectedOffer()
+}
+
+function closeselectedOffer() {
+  selectedOffer.value = undefined;
+}
+
+watch(() => props.selectedService, (newService) => {
+  serviceOffers.value = newService.offers || [];
+});
+
+onMounted(() => {
+  console.log('Modal is open: ', props.isOpen)
+  console.log('The selected service is: ', props.selectedService);
+  console.log('ServiceDialogue mounted', props.selectedService.offers);
+});
 </script>
 
 <style lang="scss" scoped>

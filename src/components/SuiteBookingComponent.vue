@@ -96,7 +96,7 @@
                             <q-chip color="primary" text-color="white">
                                 {{ '\u20A6' }}{{ currentSelectedPriceOption?.price || 0 }}
                                 <q-tooltip>
-                                    {{ currentSelectedPriceOption?.description || '' }}
+                                    {{ (currentSelectedPriceOption as PriceOption)?.description || '' }}
                                 </q-tooltip>
                             </q-chip>
                             <q-select class="col" v-model="selectedRoomPriceId" :options="priceSelectOptions" dense
@@ -126,7 +126,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, watch, onMounted } from 'vue';
+import { ref, reactive, computed, watch, onMounted, watchEffect } from 'vue';
 import { QForm, useQuasar } from 'quasar';
 import SuitesModel from '../models/suite.model';
 import PriceOption from 'src/models/priceVariation.model';
@@ -134,13 +134,14 @@ import SuiteBookingViewModel from 'src/view-models/suite.view-model';
 import SuiteBookingModel from 'src/models/suiteBooking.model';
 import { asyncComputed } from '@vueuse/core';
 import { isModelValid } from 'src/lib/utils';
+import { ServiceOfferPriceOption } from 'src/lib/types';
 
 const $q = useQuasar();
 
 export interface SuiteBookingComponentProps {
     currentSuite?: SuitesModel;
     selectedPriceId: string;
-    currentSelectedPriceOption: PriceOption | undefined;
+    currentSelectedPriceOption: PriceOption | ServiceOfferPriceOption | undefined;
     priceSelectOptions: any[] | undefined;
     serviceProviderName: string;
     currentCategory: string;
@@ -180,7 +181,7 @@ const phoneCodeIdOptions = computed(() => {
 });
 
 const roomPriceComputed = computed(() => {
-    return (props.currentSelectedPriceOption?.price || 0) * suiteBookingModel.roomsCount;
+    return ((props.currentSelectedPriceOption as PriceOption)?.price || 0) as number * suiteBookingModel.roomsCount;
 })
 
 // Methods
@@ -190,31 +191,8 @@ const addToBooking = async () => {
         await bookingFormRef.value?.validate();
         return;
     }
-
-    //#region 
-    // try {
-    //     loading.value = true;
-    //     // Here you would typically make an API call to your booking endpoint
-    //     // await bookingSuiteService.createBooking(bookingData);
-
-    //     $q.notify({
-    //         color: 'positive',
-    //         message: 'Booking submitted successfully'
-    //     });
-
-    //     // emit('book', bookingData);
-    //     formSubmitted.value = true;
-    //     showModal.value = false;
-    // } catch (error) {
-    //     $q.notify({
-    //         color: 'negative',
-    //         message: 'Failed to submit booking'
-    //     });
-    // } finally {
-    //     loading.value = false;
-    // }
-    //#endregion
     suiteBookingModel.price = roomPriceComputed.value;
+    suiteBookingModel.suitePropertyId = props.currentSuite?.id as string;
     await suiteBookingViewModel.addToBooking('suiteBooking', suiteBookingModel);
     bookingAdded.value = true;
 };
@@ -234,11 +212,21 @@ watch(selectedRoomPriceId, (newVal) => {
     emit('update:selectedPriceId', newVal)
 });
 
-watch(() => props.currentSuite, (newVal) => {
-    if (newVal) {
-        suiteBookingModel.suitePropertyId = newVal.id;
-    }
-});
+// watch(() => props.currentSuite, (newVal) => {
+//     if (newVal) {
+//         console.log('the current suite id from: ', newVal.id)
+//         suiteBookingModel.suitePropertyId = newVal.id;
+//         console.log('the current suite id to: ', suiteBookingModel.suitePropertyId)
+//     }
+// });
+
+watchEffect(() => {
+    console.log('the current suite id before: ', props.currentSuite?.id);
+        suiteBookingModel.suitePropertyId = props.currentSuite?.id as string;
+        console.log('the current suite id after: ', suiteBookingModel.suitePropertyId);
+     
+}
+);
 
 // hooks
 onMounted(async () => {
@@ -247,6 +235,7 @@ onMounted(async () => {
     }
 })
 onMounted(() => {
+    console.log('the currenct suite from mounted is: ', props.currentSuite)
     suiteBookingModel.client.firstName = suiteBookingViewModel.currentUser?.userData?.firstName || 'Please, enter your name.'
     suiteBookingModel.client.lastName = suiteBookingViewModel.currentUser?.userData?.lastName || 'Please, enter your name.';
     suiteBookingModel.client.email = suiteBookingViewModel.currentUser?.userData?.email || 'Please, enter your email.';

@@ -5,7 +5,6 @@ import { requestVerify } from 'src/lib/requests.ts/auth.request';
 import { AuthUrlsEnum } from 'src/lib/enums/urlPaths.enum';
 import { AuthUserData } from 'src/stores';
 import useAuthStore from 'src/stores/auth-store';
-import { AxiosHeaders } from 'axios';
 
 export class TokenConfirmationViewModel extends ViewModelBase<SignupConfirmationModel> {
   authStore = useAuthStore();
@@ -21,7 +20,6 @@ export class TokenConfirmationViewModel extends ViewModelBase<SignupConfirmation
         token: string;
       };
 
-      debugger;
       const userDetails = (await this.requestApi(AuthUrlsEnum.USER, 'get', {
         headers: { Authorization: `Bearer ${authToken.token}` },
       })) as AuthUserData;

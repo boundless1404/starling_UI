@@ -67,7 +67,8 @@ export enum ProfileTypes {
 
 export enum StorageNamesEnum {
   AUTH_USER_DATA = 'auth_user_data',
-  HOSPITALITY_BOOKINGS = 'hospitality_bookings'
+  HOSPITALITY_BOOKINGS = 'hospitality_bookings',
+  SERVICE_WITH_OFFERS = 'service_with_offers'
 }
 
 export const storeforage = localforage;

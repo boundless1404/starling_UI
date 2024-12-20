@@ -9,68 +9,68 @@
             <div class="row q-col-gutter-md">
                 <!-- First Name -->
                 <div class="col-12 col-sm-6">
-                    <q-input v-model="autoBookingModel.client.firstName" label="First Name" outlined rounded
-                        class="booking-input" :rules="[() => $validateField(autoBookingModel, 'client.firstName')]" />
+                    <q-input v-model="visaBookingModel.client.firstName" label="First Name" outlined rounded
+                        class="booking-input" :rules="[() => $validateField(visaBookingModel, 'client.firstName')]" />
                 </div>
 
                 <!-- Last Name -->
                 <div class="col-12 col-sm-6">
-                    <q-input v-model="autoBookingModel.client.lastName" label="Last Name" outlined rounded
-                        class="booking-input" :rules="[() => $validateField(autoBookingModel, 'client.lastName')]" />
+                    <q-input v-model="visaBookingModel.client.lastName" label="Last Name" outlined rounded
+                        class="booking-input" :rules="[() => $validateField(visaBookingModel, 'client.lastName')]" />
                 </div>
 
                 <!-- Email -->
                 <div class="col-12 col-sm-6">
-                    <q-input v-model="autoBookingModel.client.email" label="Email" outlined rounded
+                    <q-input v-model="visaBookingModel.client.email" label="Email" outlined rounded
                         class="booking-input" type="email"
-                        :rules="[() => $validateField(autoBookingModel, 'client.email')]" />
+                        :rules="[() => $validateField(visaBookingModel, 'client.email')]" />
                 </div>
 
                 <!-- Phone -->
                 <div class="col-12 col-sm-6">
                     <div class="row">
                         <div class="col-4">
-                            <q-select outlined rounded v-model="autoBookingModel.client.phoneCodeId"
+                            <q-select outlined rounded v-model="visaBookingModel.client.phoneCodeId"
                                 :options="phoneCodeIdOptions" bg-color="secondary"
-                                :rules="[() => $validateField(autoBookingModel, 'client.phoneCodeId')]" emit-value
+                                :rules="[() => $validateField(visaBookingModel, 'client.phoneCodeId')]" emit-value
                                 map-options />
                         </div>
                         <div class="col-8">
-                            <q-input v-model="autoBookingModel.client.phone" outlined rounded class="booking-input"
-                                type="tel" :rules="[() => $validateField(autoBookingModel, 'client.phone')]" />
+                            <q-input v-model="visaBookingModel.client.phone" outlined rounded class="booking-input"
+                                type="tel" :rules="[() => $validateField(visaBookingModel, 'client.phone')]" />
                         </div>
                     </div>
                 </div>
 
                 <!-- Start Date -->
-                <div class="col-12 col-sm-6">
-                    <q-input v-model="autoBookingModel.startDate" label="Start Date" outlined rounded
-                        class="booking-input" :rules="[() => $validateField(autoBookingModel, 'startDate')]"
+                <!-- <div class="col-12 col-sm-6">
+                    <q-input v-model="visaBookingModel" label="Start Date" outlined rounded
+                        class="booking-input" :rules="[() => $validateField(visaBookingModel, 'startDate')]"
                         readonly>
                         <template v-slot:append>
                             <q-icon name="event" class="cursor-pointer">
                                 <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                    <q-date v-model="autoBookingModel.startDate" mask="YYYY-MM-DD" today-btn />
+                                    <q-date v-model="visaBookingModel.startDate" mask="YYYY-MM-DD" today-btn />
                                 </q-popup-proxy>
                             </q-icon>
                         </template>
                     </q-input>
-                </div>
+                </div> -->
 
                 <!-- End Date -->
-                <div class="col-12 col-sm-6">
-                    <q-input v-model="autoBookingModel.endDate" label="End Date" outlined rounded
-                        class="booking-input" :rules="[() => $validateField(autoBookingModel, 'checkOutDate')]"
+                <!-- <div class="col-12 col-sm-6">
+                    <q-input v-model="visaBookingModel.endDate" label="End Date" outlined rounded
+                        class="booking-input" :rules="[() => $validateField(visaBookingModel, 'checkOutDate')]"
                         readonly>
                         <template v-slot:append>
                             <q-icon name="event" class="cursor-pointer">
                                 <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                    <q-date v-model="autoBookingModel.endDate" mask="YYYY-MM-DD" today-btn />
+                                    <q-date v-model="visaBookingModel.endDate" mask="YYYY-MM-DD" today-btn />
                                 </q-popup-proxy>
                             </q-icon>
                         </template>
                     </q-input>
-                </div>
+                </div> -->
             </div>
 
             <!-- Price Selection -->
@@ -80,7 +80,7 @@
                         <div class="text-subtitle1 q-mb-md">Price Options</div>
                         <div class="row items-center q-gutter-sm col-12 col-md-auto; flex-wrap: wrap">
                             <q-chip color="primary" text-color="white">
-                                {{ '\u20A6' }}{{ currentSelectedPriceOption?.price || autoBookingModel.price || 0 }}
+                                {{ '\u20A6' }}{{ currentSelectedPriceOption?.price || visaBookingModel.price || 0 }}
                                 <q-tooltip>
                                     {{ currentSelectedPriceOption?.description || '' }}
                                 </q-tooltip>
@@ -114,13 +114,26 @@
 <script setup lang="ts">
 import { ref, reactive, computed, watch, onMounted } from 'vue';
 import { QForm, useQuasar } from 'quasar';
+import PriceOption from 'src/models/priceVariation.model';
 import { asyncComputed } from '@vueuse/core';
 import { isModelValid } from 'src/lib/utils';
-import AutoServiceOfferBookingViewModel from 'src/view-models/autoServiceOfferBooking.view-model';
-import AutoServiceOfferBooking from 'src/models/autoServiceOfferBooking.model';
-import { OfferBookingProps } from './VisaBookingComponent.vue';
+import { ServiceOfferPriceOption } from 'src/lib/types';
+import VisaServiceOfferBookingViewModel from 'src/view-models/visaServiceOfferBooking.view-model';
+import VisaServiceOfferBooking from 'src/models/visaServiceOfferBooking.model';
 
 const $q = useQuasar();
+
+export interface OfferBookingProps {
+    serviceOfferId: string;
+    serviceOfferPriceOptionId: string | undefined;
+    currentSelectedPriceOption: ServiceOfferPriceOption | PriceOption | undefined;
+    priceSelectOptions: any[] | undefined;
+    serviceOfferProviderName: string;
+    serviceOfferCategory?: string;
+    /**To Edit Current Auto Service Offer Booking */
+    bookingClientEmail?: string;
+    serviceOfferPrice?: number | string | undefined;
+}
 
 const props = withDefaults(defineProps<OfferBookingProps>(), {
 });
@@ -134,8 +147,8 @@ const formSubmitted = ref(false);
 const bookingFormRef = ref<QForm>();
 
 //#region view models
-const autoBookingViewModel = new AutoServiceOfferBookingViewModel(reactive(new AutoServiceOfferBooking()));
-const autoBookingModel = autoBookingViewModel.model;
+const visaBookingViewModel = new VisaServiceOfferBookingViewModel(reactive(new VisaServiceOfferBooking()));
+const visaBookingModel = visaBookingViewModel.model;
 //#endregion
 
 const loading = ref(false);
@@ -144,7 +157,7 @@ const bookingAdded = ref(false);
 
 // Computed
 asyncComputed(async () => {
-    await autoBookingModel.validate?.()
+    await visaBookingModel.validate?.()
 })
 
 const phoneCodeIdOptions = computed(() => {
@@ -162,13 +175,13 @@ const roomPriceComputed = computed(() => {
 // Methods
 const addToBooking = async () => {
     bookingAdded.value = false;
-    if (!isModelValid(autoBookingModel)) {
+    if (!isModelValid(visaBookingModel)) {
         await bookingFormRef.value?.validate();
         return;
     }
 
-    autoBookingModel.price = Number(autoBookingModel.price);
-    await autoBookingViewModel.addToBooking('autoBooking', autoBookingModel);
+    visaBookingModel.price = Number(visaBookingModel.price);
+    await visaBookingViewModel.addToBooking('visaBooking', visaBookingModel);
     // bookingAdded.value = true;
 };
 
@@ -182,34 +195,34 @@ watch(bookingAdded, (newVal) => {
 watch(roomPriceComputed, (newVal) => {
     console.log('this is the service offer price --> ', props.serviceOfferPrice )
     console.log('this is the service offer price  new val--> ', newVal )
-    autoBookingModel.price = (newVal || props.serviceOfferPrice || 0) as NonNullable<number>;
+    visaBookingModel.price = (newVal || props.serviceOfferPrice || 0) as NonNullable<number>;
 });
 watch(() => props.serviceOfferPriceOptionId, (newVal) => {
     selectedAutoPriceId.value = String(newVal);
 })
 
 watch(() => props.serviceOfferPrice, (newVal) => {
-    autoBookingModel.price = (newVal || 0) as NonNullable<number>;
-    autoBookingModel.serviceOfferPriceOptionId = new Date().toISOString().split('T')[0];
+    visaBookingModel.price = (newVal || 0) as NonNullable<number>;
+    visaBookingModel.serviceOfferPriceOptionId = new Date().toISOString().split('T')[0];
 })
 
 // hooks
 onMounted(() => {
-    console.log('auto booking mounted: -->',props.priceSelectOptions)
-    autoBookingModel.price = (props.serviceOfferPrice || 0) as NonNullable<number>;
-    autoBookingModel.serviceOfferId = props.serviceOfferId;
-    autoBookingModel.serviceOfferPriceOptionId = props.serviceOfferPriceOptionId as string;
+    console.log('Visa Booking Mounted: -->',props.priceSelectOptions)
+    visaBookingModel.price = (props.serviceOfferPrice || 0) as NonNullable<number>;
+    visaBookingModel.serviceOfferId = props.serviceOfferId;
+    visaBookingModel.serviceOfferPriceOptionId = props.serviceOfferPriceOptionId as string;
     // TODO: removed this:
-    if (!autoBookingModel.serviceOfferPriceOptionId) {
-        autoBookingModel.serviceOfferPriceOptionId = new Date().toISOString().split('T')[0];
+    if (!visaBookingModel.serviceOfferPriceOptionId) {
+        visaBookingModel.serviceOfferPriceOptionId = new Date().toISOString().split('T')[0];
     }
     if (!props.bookingClientEmail) {
-        autoBookingModel.client.firstName = autoBookingViewModel.currentUser?.userData?.firstName || 'Please, enter your name.'
-    autoBookingModel.client.lastName = autoBookingViewModel.currentUser?.userData?.lastName || 'Please, enter your name.';
-    autoBookingModel.client.email = autoBookingViewModel.currentUser?.userData?.email || 'Please, enter your email.';
-    autoBookingModel.client.phone = autoBookingViewModel.currentUser?.userData?.phone || 'Please, enter your phone number.';
-        autoBookingModel.startDate = new Date().toISOString().split('T')[0];  // Set today's date as the default check-in date
-        autoBookingModel.endDate = new Date(new Date().getTime() + 86400000).toISOString().split('T')[0]; // Set check-out date as one day after the check-in date
+        visaBookingModel.client.firstName = visaBookingViewModel.currentUser?.userData?.firstName || 'Please, enter your name.'
+    visaBookingModel.client.lastName = visaBookingViewModel.currentUser?.userData?.lastName || 'Please, enter your name.';
+    visaBookingModel.client.email = visaBookingViewModel.currentUser?.userData?.email || 'Please, enter your email.';
+    visaBookingModel.client.phone = visaBookingViewModel.currentUser?.userData?.phone || 'Please, enter your phone number.';
+        // visaBookingModel.startDate = new Date().toISOString().split('T')[0];  // Set today's date as the default check-in date
+        // visaBookingModel.endDate = new Date(new Date().getTime() + 86400000).toISOString().split('T')[0]; // Set check-out date as one day after the check-in date
     }
 });
 

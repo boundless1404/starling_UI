@@ -56,6 +56,8 @@ export type Location = {
 export interface ServiceOfferPriceOption {
   id: string;
   price: string | number;
+  durationType: PriceDurations;
+  description: string;
   currency: {
     name: string;
     symbol: string;
@@ -92,19 +94,8 @@ export interface ServiceOffer {
 export type ServiceWithOffers = {
   id: string;
   name: string;
-  description?: string
-  offers?: Array<{
-    id: string;
-    name: string;
-    price: string;
-    description: string;
-    features: Array<{
-      id: string;
-      name: string;
-      icon: string;
-      description?: string;
-    }>;
-  }>;
+  description?: string;
+  offers?: ServiceOffer[]
 }
 
 export type HospitalityBookings = {
@@ -113,4 +104,8 @@ export type HospitalityBookings = {
   tourBooking: TourServiceOfferBooking[];
   visaBooking: VisaServiceOfferBooking[];
   currentSubscriberUserId?: string;
+}
+
+export type FetchedServiceOffers = {
+  [key: string]: ServiceOffer
 }

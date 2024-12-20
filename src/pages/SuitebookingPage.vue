@@ -155,6 +155,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import PriceOption from 'src/models/priceVariation.model';
 import BookingsComponent, { BookingComponentName } from 'src/components/BookingsComponent.vue';
+import { ServiceOfferPriceOption } from 'src/lib/types';
 
 
 // models
@@ -172,9 +173,9 @@ const currentCategoryIndex = ref(0);
 const currentSuiteIndex = ref(0);
 const currentSuite = ref<SuitesModel>();
 const selectedPriceId = ref('');
-const currentSelectedPriceOption = ref<PriceOption>();
+const currentSelectedPriceOption = ref<NonNullable<PriceOption | ServiceOfferPriceOption >>();
 const showBookingModal = ref(false);
-const currentBookingComponentName = ref<BookingComponentName>('suiteBookingComponent');
+const currentBookingComponentName = ref<BookingComponentName>('suiteBooking');
 
 
 //refs

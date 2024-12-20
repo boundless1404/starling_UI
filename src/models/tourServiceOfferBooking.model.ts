@@ -9,7 +9,7 @@ export default class TourServiceOfferBooking extends BaseModel {
 
     @IsNotEmpty({message: GetIsRequiredMessage})
     @IsDateString({}, {message: 'Enter Valid Date'})
-    date: Date;
+    date: string;
     price: number;
 
     time?: string;
@@ -19,5 +19,5 @@ export default class TourServiceOfferBooking extends BaseModel {
 
     @ValidateNested()
     @Type(() => BookingClientModel)
-    client: BookingClientModel;
+    client: BookingClientModel = new BookingClientModel();
 }

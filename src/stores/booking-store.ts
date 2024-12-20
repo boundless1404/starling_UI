@@ -3,17 +3,16 @@ import { forageGetItem, forageSetItem } from 'src/boot/storeforage';
 import { HospitalityBookings } from 'src/lib/types';
 import { StorageNamesEnum } from '.';
 
-let bookings: HospitalityBookings; 
+let bookings: HospitalityBookings;
 const useBookingStore = defineStore('hospitality_bookings', {
   state: (): HospitalityBookings => ({
     suiteBooking: [],
     autoBooking: [],
     tourBooking: [],
     visaBooking: [],
-    currentSubscriberUserId: ''
+    currentSubscriberUserId: '',
   }),
-  getters: {
-  },
+  getters: {},
   actions: {
     async initializeStore() {
       if (!bookings) {
@@ -22,26 +21,14 @@ const useBookingStore = defineStore('hospitality_bookings', {
         );
       }
       this.$patch(bookings);
-      
     },
-    // async handleAuthToken(authUserData: HospitalityBookings) {
-    //   this.$patch(() => ({ ...authUserData }));
-    //   await forageSetItem(
-    //     StorageNamesEnum.AUTH_USER_DATA,
-    //     { ...authUserData },
-    //     (err) => {
-    //       // TODO: handle error
-    //     }
-    //   );
-    // },
-     /**
+    /**
      * Generic action to update any field in the store (excluding `currentSubscribeUserId`).
      */
-     async updateBooking<T extends keyof Omit<HospitalityBookings, 'currentSubscriberUserId'>>(
-      key: T, 
-      value: HospitalityBookings[T][number]
-    ) {
-      const bookingField = this.$state[key] as typeof value[];
+    async updateBooking<
+      T extends keyof Omit<HospitalityBookings, 'currentSubscriberUserId'>
+    >(key: T, value: HospitalityBookings[T][number]) {
+      const bookingField = this.$state[key] as (typeof value)[];
       try {
         if (Array.isArray(bookingField)) {
           const index = bookingField.findIndex((item) => {
@@ -51,22 +38,24 @@ const useBookingStore = defineStore('hospitality_bookings', {
             bookingField[index] = value;
           } else {
             value.id = new Date().getTime().toString();
-            bookingField.push(value)
+            bookingField.push(value);
           }
           this.$patch({ [key]: [...bookingField] });
         } else {
           this.$patch({ [key]: value });
         }
-      }
-      catch(e) {
-        console.log(e)
+      } catch (e) {
+        console.log(e);
       }
       await forageSetItem(
         StorageNamesEnum.HOSPITALITY_BOOKINGS,
         { ...this.$state },
         (err) => {
           // TODO: handle error
-          console.log('An error occurred while trying to update booking store.', err)
+          console.log(
+            'An error occurred while trying to update booking store.',
+            err
+          );
         }
       );
     },
@@ -76,12 +65,39 @@ const useBookingStore = defineStore('hospitality_bookings', {
     updateCurrentSubscribeUserId(userId: string) {
       this.$patch({ currentSubscriberUserId: userId });
     },
-    
 
-    getBooking<T extends keyof Omit<HospitalityBookings, 'currentSubscriberUserId'>>(key: T) {
+    getBooking<
+      T extends keyof Omit<HospitalityBookings, 'currentSubscriberUserId'>
+    >(key: T) {
       const value = this.$state[key] as HospitalityBookings[T][number][];
       return value;
-    }
+    },
+
+    // remove bookingg from store
+    async removeBooking<
+      T extends keyof Omit<HospitalityBookings, 'currentSubscriberUserId'>
+    >(key: T, bookingFieldId: string) {
+      const bookingField = this.$state[key] as HospitalityBookings[T][number][];
+      const index = bookingField.findIndex((item) => {
+        return item.id === bookingFieldId;
+      });
+      if (index !== -1) {
+        bookingField.splice(index, 1);
+
+        this.$patch({ [key]: [...bookingField] });
+        await forageSetItem(
+          StorageNamesEnum.HOSPITALITY_BOOKINGS,
+          { ...this.$state },
+          (err) => {
+            // TODO: handle error
+            console.log(
+              'An error occurred while trying to update booking store.',
+              err
+            );
+          }
+        );
+      }
+    },
   },
 });
 

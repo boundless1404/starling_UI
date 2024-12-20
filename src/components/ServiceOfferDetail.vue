@@ -13,7 +13,7 @@
       <q-chip class="text-subtitle1 q-mb-sm secondarytwo" label="Features" />
       <div class="row q-col-gutter-sm more-margin-left">
         <div v-for="(feature, index) in visibleFeatures" :key="index" class="col-12 col-sm-6 col-md-3">
-          <div v-if="index < visibleFeatures.length - 1" class="feature-item row items-center">
+          <div v-if="index < (visibleFeatures?.length || 0) - 1" class="feature-item row items-center">
             <q-icon :name="feature.icon" size="sm" color="primary" class="q-mr-xs" />
             <span>{{ feature.name }}</span>
           </div>
@@ -31,7 +31,7 @@
       <div class="price-section">
         <div class="row items-center justify-between">
           <q-chip class="text-subtitle1 q-mr-sm secondarytwo">
-            {{ '\u20A6' }}{{ offer?.price }}
+            {{ '\u20A6' }}{{ offer?.price || offer?.priceOptions?.[0]?.price }}
           </q-chip>
           <q-btn flat color="black"  class="secondarytwo" rounded outlined @click="showBookingModal = true" label="Select" />
 
@@ -64,7 +64,7 @@
       </q-card>
     </q-dialog>
     <bookings-component :show-modal="showBookingModal" :current-booking-component-name="currentBookingComponentName"
-    v-bind:auto-booking-component-props="{
+    v-bind:offerBookingComponentProps="{
       serviceOfferId,
       serviceOfferPriceOptionId,
       currentSelectedPriceOption,
@@ -73,36 +73,42 @@
       serviceOfferPrice
     }"
 
-    @update:show-modal="(value) => showBookingModal = value"
+    @update:show-modal="updateShowModal"
     />
   </q-card>
 </template>
 
 <script setup lang="ts">
 import ServiceModel from 'src/models/service.model';
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch, watchEffect } from 'vue';
 import BookingsComponent, { BookingComponentName } from 'src/components/BookingsComponent.vue';
+import { ServiceOffer, ServiceOfferPriceOption } from 'src/lib/types';
 import PriceOption from 'src/models/priceVariation.model';
 
-const props = defineProps({
+const props = defineProps<{
   service: ServiceModel,
-  offer: Object,
-});
+  offer: ServiceOffer,
+}>();
+
+const emits = defineEmits<{
+  (e: 'update:show-modal', value: boolean): void;
+}>();
 
 
-const currentSelectedPriceOption = ref<PriceOption>(props.offer?.priceOptions?.[0] || {});
+const currentSelectedPriceOption = ref<ServiceOfferPriceOption | PriceOption | undefined>(props.offer?.priceOptions?.[0]);
 const showBookingModal = ref(false);
-const currentBookingComponentName = ref<BookingComponentName>('autoBookingComponent');
 const serviceOfferId = ref(props.offer?.id);
 const serviceOfferPriceOptionId = ref(currentSelectedPriceOption.value?.id);
 const serviceOfferProviderName = ref(props.service?.provider?.name || '');
-const serviceOfferPrice = ref(props.offer?.price || 0);
+const serviceOfferPrice = ref(props.offer?.priceOptions?.[0].price || 0);
 
 const showFeatureDialog = ref(false);
 const VISIBLE_FEATURES_COUNT = 12; // 4 features x 3 rows
 
+const currentBookingComponentName = ref<BookingComponentName>('autoBooking');
+
 const priceSelectOptions = computed(() => {
-  return props.offer?.priceOptions?.map((option: PriceOption) => ({
+  return props.offer?.priceOptions?.map((option: ServiceOfferPriceOption) => ({
     label: option.price,
     value: option.id,
   }));
@@ -113,19 +119,39 @@ const visibleFeatures = computed(() => {
 });
 
 const hasMoreFeatures = computed(() => {
-  return props.offer?.features.length > VISIBLE_FEATURES_COUNT;
+  return (props.offer?.features?.length || 0) > VISIBLE_FEATURES_COUNT;
 });
 
 const hiddenFeaturesCount = computed(() => {
-  return props.offer?.features.length - VISIBLE_FEATURES_COUNT;
+  return (props.offer?.features?.length || 0) - VISIBLE_FEATURES_COUNT;
 });
 
 const showAllFeatures = () => {
   showFeatureDialog.value = true;
 };
 
+function updateShowModal(value: boolean) {
+  showBookingModal.value = value;
+  emits('update:show-modal', value);
+}
+
+
 onMounted(() => {
-  console.log(props.offer);
+  console.log('this is the cSer name: --> ',currentBookingComponentName.value)
+  console.log('this is the selected offer: ', props.offer);
+  switch(true) {
+    case props.service.name.toLocaleLowerCase().indexOf('auto') !== -1:
+    currentBookingComponentName.value = 'autoBooking';
+      break;
+    case props.service.name.toLocaleLowerCase().indexOf('tour') !== -1:
+      currentBookingComponentName.value = 'tourBooking';
+      break;
+    case props.service.name.toLocaleLowerCase().indexOf('visa') !== -1:
+      currentBookingComponentName.value = 'visaBooking';
+    break;
+  }
+
+  console.log('this is the component name: --> ',currentBookingComponentName.value, props.service.name);
   });
 </script>
 

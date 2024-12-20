@@ -19,3 +19,8 @@ export enum ProfileTypes {
   SERVICE_PROVIDER_USER = 'service_provider_user',
   SERVICE_SUBSCRIBER_USER = 'service_subscriber_user',
 }
+
+export enum BookingsUrlEnum {
+  PROCESS_BOOKING = '/service-bookings/process',
+  GET_PAYMENT_REFERENCE = '/service-bookings/payment-reference',
+}

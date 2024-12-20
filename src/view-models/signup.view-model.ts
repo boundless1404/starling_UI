@@ -16,7 +16,6 @@ export class SignupViewModel extends ViewModelBase<SignupModel> {
       await requestSignup(this.model);
       onSuccess?.();
     } catch (error) {
-      debugger;
       onError?.(
         ((error as AxiosError).response?.data as { message: string }).message
       );

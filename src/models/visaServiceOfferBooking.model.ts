@@ -15,5 +15,5 @@ export default class VisaServiceOfferBooking extends BaseModel {
 
     @ValidateNested()
     @Type(() => BookingClientModel)
-    client: BookingClientModel;
+    client: BookingClientModel =  new BookingClientModel();
 }

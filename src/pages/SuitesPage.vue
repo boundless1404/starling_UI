@@ -103,7 +103,9 @@
   </q-page>
 </template>
 <script setup lang="ts">
+import { features } from 'process';
 import { useQuasar } from 'quasar';
+import { ServiceOffer } from 'src/lib/types';
 import SuitesPageModel from 'src/models/suitesPage.model';
 import SuitesViewModel from 'src/view-models/suites.view-model';
 import { computed, onMounted, reactive, watch } from 'vue';
@@ -224,6 +226,18 @@ watch(selectedServiceProvider, async (newVal) => {
 onMounted(async () => {
   //
   await suitesViewModel.populateModelFields(serviceId);
+  const suitesServiceOffers: ServiceOffer[] = suitesPageModel.suites?.map((s) => {
+    return {
+    id: s.id,
+    name: s.category,
+    description: s.description,
+    type: s.type,
+    priceOptions: s.priceOptions,
+    features: s.features,
+    files: s.files,
+  }
+  });
+  await suitesViewModel.stores.serviceWithOffer?.insertServiceOfferIntoService(serviceId, suitesServiceOffers)
   // subtract 1 to make is a valid last index
   categoriesLength.value = suitesPageModel.categories.length - 1;
 });

@@ -26,3 +26,5 @@ export const years = [
   '2029',
   '2030',
 ];
+
+export const paymentPublicKey = 'pk_test_35ca544744afd92bb012c90f5a48de2ed8c81c52';

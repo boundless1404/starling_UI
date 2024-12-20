@@ -1,4 +1,4 @@
-import { Location, PlatformFile, Provider } from 'src/lib/types';
+import { Location, PlatformFile, Provider, ServiceOfferFeature } from 'src/lib/types';
 import PriceOption from './priceVariation.model';
 import { HospitalityServiceType } from 'src/lib/enums/enums';
 
@@ -11,5 +11,5 @@ export default class SuitesModel {
   description: string;
   files: PlatformFile[];
   priceOptions: PriceOption[];
-  features: string[];
+  features: ServiceOfferFeature[];
 }
