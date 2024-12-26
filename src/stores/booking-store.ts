@@ -98,6 +98,16 @@ const useBookingStore = defineStore('hospitality_bookings', {
         );
       }
     },
+
+    async clearBookingStore() {
+      this.$reset();
+      await forageSetItem(
+        StorageNamesEnum.HOSPITALITY_BOOKINGS,
+        { ...this.$state },
+        (err) => {
+          console.log('An error occurred while trying to clear booking store.', err);
+        })
+      }
   },
 });
 

@@ -1,6 +1,5 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsNumberString, IsString } from 'class-validator';
 import { BaseModel } from './base.model';
-import { HospitalityBookings } from 'src/lib/types';
 
 export default class PaymentModel extends BaseModel {
     id: string;
@@ -13,27 +12,27 @@ export default class PaymentModel extends BaseModel {
     @IsEmail()
     email: string;
 
-    @IsNotEmpty()
-    cardNumber: string;
+    // @IsNotEmpty()
+    // cardNumber: string;
 
-    @IsNotEmpty()
-    @IsString()
-    cardHolderName: string; 
+    // @IsNotEmpty()
+    // @IsString()
+    // cardHolderName: string; 
 
-    @IsNotEmpty()
-    @IsNumberString()
-    @IsEnum(['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'])
-    expiryMonth: string;
+    // @IsNotEmpty()
+    // @IsNumberString()
+    // @IsEnum(['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'])
+    // expiryMonth: string;
     
-    @IsNotEmpty()
-    @IsNumberString()
-    expiryYear: string;
+    // @IsNotEmpty()
+    // @IsNumberString()
+    // expiryYear: string;
 
-    @IsNotEmpty()
-    @IsNumberString()
-    cvv: string;
+    // @IsNotEmpty()
+    // @IsNumberString()
+    // cvv: string;
     
-    expiryDate: string;
+    // expiryDate: string;
     reference: string;
     description: string;
     paymentMethod: string;

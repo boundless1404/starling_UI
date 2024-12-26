@@ -19,7 +19,7 @@
                 <div class="" v-for="suite in suiteBooking" :key="suite.id">
                   <div class="" style="display: flex; justify-content: space-between; align-items: center;">
                     <div class="col-2">
-                      <q-img :src="getImageUrlForServiceOfferWithId(suite.suitePropertyId)" width="120px"
+                      <q-img :src="getServiceOffer(suite.suitePropertyId)?.files?.[0].url" width="120px"
                         height="80px" />
                     </div>
                     <div class="col-2">
@@ -68,7 +68,7 @@
                 <div class="" v-for="auto in autoBooking" :key="auto.id">
                   <div class="" style="display: flex; justify-content: space-between; align-items: center;">
                     <div class="col-2 offset-1">
-                      <q-img :src="getImageUrlForServiceOfferWithId(auto.serviceOfferId)" width="120px" height="80px" />
+                      <q-img :src="getServiceOffer(auto.serviceOfferId)?.files?.[0].url" width="120px" height="80px" />
                     </div>
                     <div class="col-2">
                       <q-chip class="text-subtitle2">{{ getServiceOffer(auto.serviceOfferId)?.name }}</q-chip>
@@ -117,7 +117,7 @@
                 <div class="full-width" v-for="visa in visaBooking" :key="visa.id">
                   <div class="full-width" style="display: flex; justify-content: space-between; align-items: center;">
                     <div class="col-2">
-                      <q-img :src="getImageUrlForServiceOfferWithId(visa.serviceOfferId)" width="120px" height="80px" />
+                      <q-img :src="getServiceOffer(visa.serviceOfferId)?.files?.[0].url" width="120px" height="80px" />
                     </div>
                     <div class="col-2">
                       <q-chip class="text-subtitle2">{{ getServiceOffer(visa.serviceOfferId)?.name }}</q-chip>
@@ -159,7 +159,7 @@
                 <div class="full-width" v-for="tour in tourBooking" :key="tour.id">
                   <div class="full-width" style="display: flex; justify-content: space-between; align-items: center;">
                     <div class="col-2">
-                      <q-img :src="getImageUrlForServiceOfferWithId(tour.serviceOfferId)" width="120px" height="80px" />
+                      <q-img :src="getServiceOffer(tour.serviceOfferId)?.files?.[0]?.url" width="120px" height="80px" />
                     </div>
                     <div class="col-3">
                       <q-chip class="text-subtitle2">{{ getServiceOffer(tour.serviceOfferId)?.name }}</q-chip>
@@ -223,26 +223,26 @@
           </div>
 
           <!-- Card Number -->
-          <q-input filled v-model="paymentModel.cardNumber" label="Card Number" mask="#### #### #### ####"
+          <!-- <q-input filled v-model="paymentModel.cardNumber" label="Card Number" mask="#### #### #### ####"
             hint="Enter your 16-digit card number" lazy-rules
-            :rules="[val => val?.length === 19 || 'Invalid card number']" />
+            :rules="[val => val?.length === 19 || 'Invalid card number']" /> -->
 
           <!-- Expiry Date and CVV -->
-          <div class="row q-col-gutter-md">
+          <!-- <div class="row q-col-gutter-md">
             <q-input class="col" filled v-model="paymentModel.expiryDate" label="Expiry Date" mask="##/##" hint="MM/YY"
               lazy-rules :rules="[val => /^[0-1][0-9]\/[0-9]{2}$/.test(val) || 'Invalid date']" />
             <q-input class="col" filled v-model="paymentModel.cvv" label="CVV" type="password" mask="###"
               hint="3-digit code" lazy-rules :rules="[val => val?.length === 3 || 'Invalid CVV']" />
-          </div>
+          </div> -->
 
           <!-- Cardholder Name -->
-          <q-input filled v-model="paymentModel.cardHolderName" label="Cardholder Name"
-            hint="Enter the name as it appears on the card" lazy-rules :rules="[val => !!val || 'Name is required']" />
+          <!-- <q-input filled v-model="paymentModel.cardHolderName" label="Cardholder Name"
+            hint="Enter the name as it appears on the card" lazy-rules :rules="[val => !!val || 'Name is required']" /> -->
 
           <!-- Submit Button -->
 
           <div class="full-width text-center">
-            <q-btn class="q-pa-md" color="primary" @click="handlePaystackPayment">
+            <q-btn class="q-pa-md" color="primary" rounded @click="handlePaystackPayment">
               <q-spinner v-if="isProcessing" class="q-mr-sm" color="white" size="2em" />
               <q-icon v-else name="payment" size="2em" />
               Make Payment
@@ -256,8 +256,8 @@
   </q-page>
 </template>
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watchEffect } from 'vue';
-import { QForm, useQuasar } from 'quasar';
+import { ref, reactive, computed, onMounted, watchEffect, watch } from 'vue';
+import { QForm, QSpinnerGears, useQuasar } from 'quasar';
 import BookingsModel from 'src/models/bookingsModel.model';
 import BookingsViewModel from 'src/view-models/bookings.view-model';
 import { HospitalityBookings, ServiceOffer, ServiceOfferPriceOption } from 'src/lib/types';
@@ -268,9 +268,11 @@ import PaymentViewModel from 'src/view-models/payment.view-model';
 import PaymentModel from 'src/models/paymentModel.model';
 import { asyncComputed } from '@vueuse/core';
 import { isModelValid } from 'src/lib/utils';
+import { useRouter } from 'vue-router';
 
 export type BookingComponentName = 'suiteBooking' | 'autoBooking' | 'visaBooking' | 'tourBooking';
 const $q = useQuasar();
+const $router = useRouter();
 
 interface BookingComponentProps {
   suiteBookingComponentProps?: SuiteBookingComponentProps
@@ -344,7 +346,10 @@ const currentBookingCost = computed(() => {
 
 asyncComputed(async () => {
   if (paymentSuccessful.value) {
-    // 
+    // submit booking to database
+   // clear bookings store
+    await bookingsViewModel.clearBookingStore();
+    paymentSuccessful.value = false;
   }
 })
 
@@ -356,6 +361,7 @@ asyncComputed(async () => {
 const handlePaystackPayment = async () => {
 debugger;
   if (!isModelValid(paymentModel)) {
+    console.log('model errors', paymentModel.errors);
     $q.notify({
       type: 'negative',
       message: 'Please fill in all the required payment details',
@@ -366,17 +372,30 @@ debugger;
     return;
   }
 
-  const paymentReference = await paymentViewModel.submitBookings();
+
+     $q.loading.show({
+      message: 'Processing Payment',
+      spinnerSize: 100,
+      spinnerColor: 'primary',
+      backgroundColor: 'white',
+      spinner: QSpinnerGears
+    });
+
+  await paymentViewModel.submitBookings();
+
+  $q.loading.hide();
 
   const handler = window.PaystackPop.setup({
     key: paymentPublicKey, // Replace with your Paystack public key
     email: paymentModel.email,
-    amount: paymentModel.amount, // Amount in kobo
+    amount: 50000,
+    // amount: paymentModel.amount, // Amount in kobo
     currency: paymentModel.currency,
     ref: paymentModel.reference, // Generate unique reference
     callback: (res) => {
       if (res.status === 'success') {
         paymentSuccessful.value = true;
+        $router.replace('/services');
       }
     },
     onClose: () => {
@@ -387,12 +406,16 @@ debugger;
 
   handler.openIframe();
 };
+
+
 async function removeBooking<
   T extends keyof Omit<HospitalityBookings, 'currentSubscriberUserId'>
 >(type: T, offerBookingId: string) {
   // TODO: implement this
   await bookingsViewModel.removeBooking(type, offerBookingId);
 }
+
+
 function getImageUrlForServiceOfferWithId(serviceOfferId: string) {
   return serviceOffers.value.find((so) => so.id === serviceOfferId)?.files?.[0]?.url || 'https://www.motortrend.com/uploads/sites/10/2015/11/2012-toyota-matrix-s-at-hatchback-angular-front.png'
 }
@@ -408,6 +431,13 @@ function getServiceOffer(serviceOfferId: string) {
 watchEffect(() => {
   paymentModel.amount = currentBookingCost.value;
 });
+
+// update expiry month and year
+// watch(()=> paymentModel.expiryDate, (newVal) => {
+//   if (newVal) {
+//     const [month, year] = paymentModel.expiryDate.split('/');
+//   }
+// });
 
 // hooks
 onMounted(async () => {

@@ -109,3 +109,152 @@ export type HospitalityBookings = {
 export type FetchedServiceOffers = {
   [key: string]: ServiceOffer
 }
+
+type File = {
+  id: string;
+  forEntity: string | null;
+  forEntityId: string | null;
+  filename: string;
+  mimetype: string;
+  size: string;
+  url: string;
+  key: string;
+  filePurpose: string | null;
+  metadata: string | null;
+  fileServerStatus: string | null;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  serviceId: string | null;
+  suitePropertyId: string | null;
+  serviceOfferId: string | null;
+  tourGuideId: string | null;
+};
+
+type SuiteProperty = {
+  id: string;
+  publicId: string;
+  type: string;
+  name: string | null;
+  category: string;
+  description: string;
+  availableQuantity: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  serviceProviderId: string;
+  serviceId: string;
+  suitePropertyFeatures: any[];
+  files: File[];
+};
+
+// type ServiceOfferFeature = {
+//   id: number;
+//   name: string;
+//   description: string;
+//   icon: string | null;
+//   createdAt: string;
+//   updatedAt: string;
+//   serviceOfferId: number;
+// };
+
+// type ServiceOffer = {
+//   id: number;
+//   publicId: string;
+//   name: string;
+//   description: string;
+//   type: string;
+//   createdAt: string;
+//   updatedAt: string;
+//   serviceId: string;
+//   serviceOfferFeatures: ServiceOfferFeature[];
+//   files: File[];
+// };
+
+// type ServiceOfferPriceOption = {
+//   id: number;
+//   price: string;
+//   description: string;
+//   durationType: string;
+//   discount: number;
+//   minimumDurationCountForDiscount: number;
+//   createdAt: string;
+//   updatedAt: string;
+//   currencyId: string;
+//   serviceOfferId: number;
+// };
+
+type SuiteBookingDetail = {
+  id: string;
+  checkInDate: string;
+  checkOutDate: string;
+  numberOfAdults: number;
+  numberOfChildren: number;
+  roomsCount: number;
+  createdAt: string;
+  updatedAt: string;
+  serviceBookingId: string;
+  suitePropertyId: string;
+  serviceClientId: string;
+  serviceId: string | null;
+  serviceOfferPriceOptionId: number;
+  suiteProperty: SuiteProperty;
+  serviceOfferPriceOptions: ServiceOfferPriceOption;
+};
+
+type AutoBookingDetail = {
+  id: string;
+  startDate: string;
+  endDate: string;
+  createdAt: string;
+  updatedAt: string;
+  serviceClientId: string;
+  serviceOfferId: number;
+  serviceOfferPriceOptionId: number;
+  serviceBookingId: string;
+  serviceOffer: ServiceOffer;
+  serviceOfferPriceOption: ServiceOfferPriceOption;
+};
+
+type TourBookingDetail = {
+  id: number;
+  date: string;
+  time: string | null;
+  createdAt: string;
+  updatedAt: string;
+  serviceClientId: string;
+  serviceOfferId: number;
+  serviceOfferPriceOptionId: number | null;
+  serviceBookingId: string;
+  serviceOffer: ServiceOffer;
+  serviceOfferPriceOption: ServiceOfferPriceOption | null;
+};
+
+type VisaBookingDetail = {
+  id: number;
+  createdAt: string;
+  updateDateColumn: string;
+  serviceBookingId: string;
+  dynamicFormId: string | null;
+  serviceClientId: string;
+  serviceOfferId: number;
+  serviceOfferPriceOptionId: number;
+  serviceOffer: ServiceOffer;
+  serviceOfferPriceOption: ServiceOfferPriceOption;
+};
+
+type GetBookingsType = {
+  id: string;
+  paymentReference: string;
+  status: string;
+  paymentData: string | null;
+  createdAt: string;
+  updatedAt: string;
+  subscriberUserId: string;
+  suiteBookingDetails: SuiteBookingDetail[];
+  autoBookingDetails: AutoBookingDetail[];
+  tourBookingDetails: TourBookingDetail[];
+  visaBookingDetails: VisaBookingDetail[];
+};
+
+export type { File, SuiteProperty, SuiteBookingDetail, AutoBookingDetail, TourBookingDetail, VisaBookingDetail, GetBookingsType };

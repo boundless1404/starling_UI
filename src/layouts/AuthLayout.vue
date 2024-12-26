@@ -3,12 +3,13 @@
     <q-header class="bg-white text-white" bordered style="border-bottom-style: solid; border-bottom-width: 0.2rem">
       <q-toolbar>
         <q-toolbar-title class="q-mt-sm cursor-pointer" v-ripple>
-          <q-img height="8rem" width="10rem" fit="cover" src="/assets/starglings_logo_bird_text 2_xpoint5.png" />
+          <q-img height="8rem" width="10rem" fit="cover" src="/assets/starlings_logo.png" />
         </q-toolbar-title>
         <div class="q-mr-lg">
           <q-btn class="flex row justify-between" :style="{
             border: `${$getColor('primary')} solid 0.1px`,
           }" color="white" flat outline size="1.4rem" rounded :ripple="false">
+            
             <q-icon class="q-mr-md" color="dark" name="menu" v-ripple @click.self="showMenu" />
             <q-icon color="dark" name="account_circle" v-ripple.center @click.self="showUserProfile" />
           </q-btn>

@@ -1,20 +1,15 @@
 import PaymentModel from 'src/models/paymentModel.model';
 import { ViewModelBase } from './base.view-model';
-import {
-  BookingsUrlEnum,
-  PaymentUrlEnum,
-  ServiceUrlEnum,
-} from 'src/lib/enums/urlPaths.enum';
+import { BookingsUrlEnum,} from 'src/lib/enums/urlPaths.enum';
 
 export default class PaymentViewModel extends ViewModelBase<PaymentModel> {
-  async submitBookings(paymentReference: string) {
+  async submitBookings() {
     const bookings = this.stores.bookings?.$state
     const serverResponse = await this.requestApi(
       BookingsUrlEnum.PROCESS_BOOKING,
       'post',
       {
         body: {
-          paymentReference,
           subscriberUserId: this.model.clientSubscriberUserId,
           ...(bookings?.suiteBooking? {
             suiteBooking: bookings?.suiteBooking,
@@ -30,14 +25,18 @@ export default class PaymentViewModel extends ViewModelBase<PaymentModel> {
           } : {}),
         },
       }
-    );
+    ) as { paymentReference : string };
+
+    this.model.reference = serverResponse.paymentReference;
+    return serverResponse;
   }
 
   async getPaymentReference() {
     // get payment reference
     const paymentReference = await this.requestApi(
-      PaymentUrlEnum.PAYMENT_REFRENCE
+      BookingsUrlEnum.GET_PAYMENT_REFERENCE
     );
+    this.model.reference = paymentReference;
     return paymentReference;
   }
 

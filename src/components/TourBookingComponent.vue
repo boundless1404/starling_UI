@@ -169,7 +169,7 @@ const addToBooking = async () => {
 
     tourBookingModel.price = Number(tourBookingModel.price);
     await tourServiceBookingViewModel.addToBooking('tourBooking', tourBookingModel);
-    // bookingAdded.value = true;
+    bookingFormRef.value?.reset();
 };
 
 // Watchers
@@ -188,10 +188,9 @@ watch(() => props.serviceOfferPriceOptionId, (newVal) => {
     selectedAutoPriceId.value = String(newVal);
 })
 
-watch(() => props.serviceOfferPrice, (newVal) => {
-    tourBookingModel.price = (newVal || 0) as NonNullable<number>;
-    tourBookingModel.serviceOfferPriceOptionId = new Date().toISOString().split('T')[0];
-})
+// watch(() => props.serviceOfferPrice, (newVal) => {
+//     tourBookingModel.price = (newVal || 0) as NonNullable<number>;
+// })
 
 // hooks
 onMounted(() => {

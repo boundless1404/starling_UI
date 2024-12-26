@@ -1,34 +1,5 @@
 <template>
-    <q-dialog v-model="showModalBookingModal" :persistent="formSubmitted">
-        <q-card class="booking-modal" style="min-width: 60vw; max-width: 80vw;">
-            <q-card-section class="flex justify-between q-pb-none full-width sticky-top">
-                <q-chip class="text-subtitle1 text-white" color="secondary">{{ bookingModalTitle }}</q-chip>
-                <!-- current booking cost -->
-                <q-chip class="text-subtitle1 bg-sectwo cursor-pointer" rounded><q-chip
-                        class="bg-primary text-white">Current Cost:</q-chip>
-                    <span>{{
-                        '\u20A6' }}{{ currentBookingCost.toLocaleString('en-US') }}</span><q-tooltip
-                        class="bg-accent">Checkout</q-tooltip><q-icon class="q-ml-md " name="arrow_forward" /></q-chip>
-
-            </q-card-section>
-            <template v-if="currentBookingComponentName === 'suiteBooking' && suiteBookingComponentProps">
-                <suite-booking-component v-bind="suiteBookingComponentProps"
-                    @update:selected-price-id="(value: string) => $emit('update:selectedPriceId', value)" />
-            </template>
-            <template v-else-if="currentBookingComponentName === 'autoBooking' && offerBookingComponentProps">
-                <auto-booking-component v-bind="offerBookingComponentProps"
-                    @update:show-modal="(value) => $emit('update:showModal', value)" />
-            </template>
-            <template v-else-if="currentBookingComponentName === 'visaBooking' && offerBookingComponentProps">
-                <visa-booking-component v-bind="offerBookingComponentProps"
-                    @update:show-modal="(value) => $emit('update:showModal', value)" />
-            </template>
-            <template v-else-if="currentBookingComponentName === 'tourBooking' && offerBookingComponentProps">
-                <tour-booking-component v-bind="offerBookingComponentProps"
-                    @update:show-modal="(value) => $emit('update:showModal', value)" />
-            </template>
-            <!-- Services Sections -->
-            <div class="q-mt-lg">
+                <div class="q-mt-lg">
                 <!-- Suites Apartments -->
                 <q-expansion-item default-opened icon="apartment" label="Suites" header-class="text-subtitle1 text-center"
                     header-style="background-color: hsl(197, 70%, 41%, 20%); color: hsl(197, 70%, 30%);">
@@ -230,26 +201,13 @@
                     </div>
                 </q-expansion-item>
             </div>
-            <q-card-section class="flex justify-between q-pa-lg full-width">
-                <q-btn class="bg-sectwo" dense rounded icon="arrow_back" href="/services" label="Continue Booking" />
-                <!-- current booking cost -->
-                <q-btn class="text-subtitle1" color="secondary" dense no-caps icon-right="arrow_forward" rounded
-                    to="/payment">Proceed to Payment</q-btn>
-
-            </q-card-section>
-        </q-card>
-    </q-dialog>
 </template>
-
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue';
 import { useQuasar } from 'quasar';
 import BookingsModel from 'src/models/bookingsModel.model';
 import BookingsViewModel from 'src/view-models/bookings.view-model';
-import SuiteBookingComponent, { SuiteBookingComponentProps } from './SuiteBookingComponent.vue';
-import VisaBookingComponent from './VisaBookingComponent.vue';
-import AutoBookingComponent from './AutoBookingComponent.vue';
-import TourBookingComponent from './TourBookingComponent.vue';
+import { SuiteBookingComponentProps } from './SuiteBookingComponent.vue';
 import { HospitalityBookings, ServiceOffer, ServiceOfferPriceOption } from 'src/lib/types';
 import PriceOption from 'src/models/priceVariation.model';
 
@@ -317,12 +275,9 @@ const bookingModalTitle = computed(() => {
         default:
             return 'Booking';
     }
-})
-const showModalBookingModal = computed({
-    get: () => props.showModal,
-    set: (value) => (emit as (name: string, value: unknown) => void)('update:showModal', value)
 });
 
+// TODO:
 const currentBookingCost = computed(() => {
     let cost = 0;
     const suiteBookingOption = suiteBooking.value?.reduce((prev, curr) => {
@@ -395,29 +350,3 @@ onMounted(async () => {
 // Helper function to validate a specific field in the model
 
 </script>
-
-<style scoped>
-.booking-modal {
-    max-width: 800px;
-    min-width: 60vw;
-}
-
-.booking-input {
-    max-width: 100%;
-}
-
-.q-select,
-.q-input {
-    width: 100%;
-}
-
-.q-chip {
-    margin-right: 8px;
-}
-
-.q-btn {
-    width: 100%;
-    max-width: 300px;
-    margin-top: 16px;
-}
-</style>

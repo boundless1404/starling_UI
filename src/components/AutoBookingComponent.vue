@@ -169,7 +169,7 @@ const addToBooking = async () => {
 
     autoBookingModel.price = Number(autoBookingModel.price);
     await autoBookingViewModel.addToBooking('autoBooking', autoBookingModel);
-    // bookingAdded.value = true;
+    bookingFormRef.value?.reset();
 };
 
 // Watchers
@@ -188,10 +188,9 @@ watch(() => props.serviceOfferPriceOptionId, (newVal) => {
     selectedAutoPriceId.value = String(newVal);
 })
 
-watch(() => props.serviceOfferPrice, (newVal) => {
-    autoBookingModel.price = (newVal || 0) as NonNullable<number>;
-    autoBookingModel.serviceOfferPriceOptionId = new Date().toISOString().split('T')[0];
-})
+// watch(() => props.serviceOfferPrice, (newVal) => {
+//     autoBookingModel.price = (newVal || 0) as NonNullable<number>;
+// })
 
 // hooks
 onMounted(() => {

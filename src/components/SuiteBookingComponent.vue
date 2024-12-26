@@ -195,6 +195,7 @@ const addToBooking = async () => {
     suiteBookingModel.suitePropertyId = props.currentSuite?.id as string;
     await suiteBookingViewModel.addToBooking('suiteBooking', suiteBookingModel);
     bookingAdded.value = true;
+    bookingFormRef.value?.reset();
 };
 
 // Watchers

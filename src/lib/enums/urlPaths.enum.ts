@@ -23,4 +23,5 @@ export enum ProfileTypes {
 export enum BookingsUrlEnum {
   PROCESS_BOOKING = '/service-bookings/process',
   GET_PAYMENT_REFERENCE = '/service-bookings/payment-reference',
+  GET_BOOKINGS = '/service-bookings',
 }

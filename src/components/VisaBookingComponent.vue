@@ -182,7 +182,8 @@ const addToBooking = async () => {
 
     visaBookingModel.price = Number(visaBookingModel.price);
     await visaBookingViewModel.addToBooking('visaBooking', visaBookingModel);
-    // bookingAdded.value = true;
+    // visaBookingModel.clearValues?.();
+    bookingFormRef.value?.reset()
 };
 
 // Watchers
@@ -201,9 +202,12 @@ watch(() => props.serviceOfferPriceOptionId, (newVal) => {
     selectedAutoPriceId.value = String(newVal);
 })
 
-watch(() => props.serviceOfferPrice, (newVal) => {
+// watch(() => props.serviceOfferPrice, (newVal) => {
+//     visaBookingModel.price = (newVal || 0) as NonNullable<number>;
+// })
+
+watch(() => roomPriceComputed.value, (newVal) => {
     visaBookingModel.price = (newVal || 0) as NonNullable<number>;
-    visaBookingModel.serviceOfferPriceOptionId = new Date().toISOString().split('T')[0];
 })
 
 // hooks
