@@ -347,7 +347,7 @@ const currentBookingCost = computed(() => {
 asyncComputed(async () => {
   if (paymentSuccessful.value) {
     // submit booking to database
-   // clear bookings store
+    // clear bookings store
     await bookingsViewModel.clearBookingStore();
     paymentSuccessful.value = false;
   }
@@ -359,7 +359,7 @@ asyncComputed(async () => {
 // Methods
 
 const handlePaystackPayment = async () => {
-debugger;
+  debugger;
   if (!isModelValid(paymentModel)) {
     console.log('model errors', paymentModel.errors);
     $q.notify({
@@ -373,15 +373,24 @@ debugger;
   }
 
 
-     $q.loading.show({
-      message: 'Processing Payment',
-      spinnerSize: 100,
-      spinnerColor: 'primary',
-      backgroundColor: 'white',
-      spinner: QSpinnerGears
-    });
+  $q.loading.show({
+    message: 'Processing Payment',
+    spinnerSize: 100,
+    spinnerColor: 'primary',
+    backgroundColor: 'white',
+    spinner: QSpinnerGears
+  });
 
-  await paymentViewModel.submitBookings();
+  try { await paymentViewModel.submitBookings(); } catch (err) {
+    console.log('error', err);
+    $q.notify({
+      type: 'negative',
+      message: 'An error occurred while processing your payment',
+      position: 'top'
+    });
+    $q.loading.hide();
+    return;
+  }
 
   $q.loading.hide();
 

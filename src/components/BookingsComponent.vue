@@ -242,7 +242,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, inject } from 'vue';
 import { useQuasar } from 'quasar';
 import BookingsModel from 'src/models/bookingsModel.model';
 import BookingsViewModel from 'src/view-models/bookings.view-model';
@@ -252,9 +252,11 @@ import AutoBookingComponent from './AutoBookingComponent.vue';
 import TourBookingComponent from './TourBookingComponent.vue';
 import { HospitalityBookings, ServiceOffer, ServiceOfferPriceOption } from 'src/lib/types';
 import PriceOption from 'src/models/priceVariation.model';
+import { EventEmitter } from 'stream';
 
 export type BookingComponentName = 'suiteBooking' | 'autoBooking' | 'visaBooking' | 'tourBooking';
 const $q = useQuasar();
+const eventBus = inject('eventBus') as EventEmitter;
 
 interface BookingComponentProps {
     suiteBookingComponentProps?: SuiteBookingComponentProps
@@ -300,8 +302,8 @@ const serviceOffers = ref<ServiceOffer[]>([]);
 //refs
 const suiteBooking = ref(bookingsViewModel.stores.bookings?.suiteBooking)
 const autoBooking = ref(bookingsViewModel.stores.bookings?.autoBooking);
-const visaBooking = ref(bookingsViewModel.stores.bookings?.visaBooking)
-const tourBooking = ref(bookingsViewModel.stores.bookings?.tourBooking)
+const visaBooking = ref(bookingsViewModel.stores.bookings?.visaBooking);
+const tourBooking = ref(bookingsViewModel.stores.bookings?.tourBooking);
 
 // Computed
 const bookingModalTitle = computed(() => {
@@ -346,6 +348,8 @@ const currentBookingCost = computed(() => {
     }, 0) || 0;
 
     cost = suiteBookingOption + autoServiceCost + visaCost + tourCost;
+
+    eventBus.emit('cart:updated', cost);
     return cost;
 });
 

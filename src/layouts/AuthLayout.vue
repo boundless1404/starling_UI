@@ -8,10 +8,22 @@
         <div class="q-mr-lg">
           <q-btn class="flex row justify-between" :style="{
             border: `${$getColor('primary')} solid 0.1px`,
-          }" color="white" flat outline size="1.4rem" rounded :ripple="false">
-            
-            <q-icon class="q-mr-md" color="dark" name="menu" v-ripple @click.self="showMenu" />
-            <q-icon color="dark" name="account_circle" v-ripple.center @click.self="showUserProfile" />
+          }" color="white" flat outline size="1.4rem" rounded :ripple="false" @click="gotoPaymentPage">
+            <q-chip :class="currentBookingCost > 0 ? 'bg-green text-white' : ''">Cart ({{ '\u20A6'}}{{ currentBookingCost.toLocaleString('en-US') }})</q-chip>
+            <!-- <q-icon class="q-mr-md" color="dark" name="menu" v-ripple @click.self="showMenu" /> -->
+            <q-icon color="dark" name="account_circle" v-ripple.center @mouseover="showUserProfile" />
+            <q-menu v-model="menuVisible" anchor="bottom right" self="top right">
+            <q-list>
+              <q-item>
+              <q-item-section>
+                <q-item-label>Signed in as</q-item-label>
+                <q-item-label>{{ authUser?.firstName }}</q-item-label>
+                <q-item-label caption>{{ authUser?.email }}</q-item-label>
+                <q-item-label ><q-btn label="Sign Out" @click="signout" flat dense no-caps /></q-item-label>
+              </q-item-section>
+              </q-item>
+            </q-list>
+            </q-menu>
           </q-btn>
         </div>
       </q-toolbar>
@@ -36,16 +48,76 @@
   </q-layout>
 </template>
 <script setup lang="ts">
-//
+import BookingsModel from 'src/models/bookingsModel.model';
+import BookingsViewModel from 'src/view-models/bookings.view-model';
+import { computed, onMounted, reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+
+const bookingsViewModel = new BookingsViewModel(reactive(new BookingsModel()));
+const $router = useRouter();
+
+const authUser = ref<{firstName: string; email: string}>();
+const menuVisible = ref(false);
+
+//#endregion
+//refs
+const suiteBooking = ref(bookingsViewModel.stores.bookings?.suiteBooking)
+const autoBooking = ref(bookingsViewModel.stores.bookings?.autoBooking);
+const visaBooking = ref(bookingsViewModel.stores.bookings?.visaBooking)
+const tourBooking = ref(bookingsViewModel.stores.bookings?.tourBooking)
+
+// Computed
+
+const currentBookingCost = computed(() => {
+    let cost = 0;
+    const suiteBookingOption = suiteBooking.value?.reduce((prev, curr) => {
+        prev += curr.price;
+        return prev;
+    }, 0) || 0;
+
+    const autoServiceCost = autoBooking.value?.reduce((prev, curr) => {
+        prev += curr.price;
+        return prev;
+    }, 0) || 0;
+
+    const visaCost = visaBooking.value?.reduce((prev, curr) => {
+        prev += curr.price;
+        return prev;
+    }, 0) || 0;
+
+    const tourCost = tourBooking.value?.reduce((prev, curr) => {
+        prev += curr.price;
+        return prev;
+    }, 0) || 0;
+
+    cost = suiteBookingOption + autoServiceCost + visaCost + tourCost;
+    return cost;
+});
 
 // methods
-function showMenu() {
-  // alert('menu clicked');
+function signout() {
+  bookingsViewModel.stores.auth?.$reset();
+  $router.push('/signin');
 }
 
 function showUserProfile() {
-  // alert('User Account clicked');
+  menuVisible.value = !menuVisible.value;
 }
+
+function gotoPaymentPage() {
+  $router.push('/payment');
+}
+
+
+onMounted(async () => {
+  await bookingsViewModel.initializeBookings();
+});
+
+onMounted(async () => {
+  await bookingsViewModel.stores.auth?.initializeStore();
+  authUser.value = bookingsViewModel.stores.auth?.userData;
+});
 </script>
 <style lang="scss">
 .sticky-bottom {
