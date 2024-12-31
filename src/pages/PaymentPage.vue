@@ -12,7 +12,7 @@
 
         <div class="q-mt-lg">
           <!-- Suites Apartments -->
-          <q-expansion-item tour icon="apartment" label="Suites" header-class="text-subtitle1 text-center"
+          <q-expansion-item default-opened icon="apartment" label="Suites" header-class="text-subtitle1 text-center"
             header-style="background-color: hsl(197, 70%, 41%, 20%); color: hsl(197, 70%, 30%);">
             <div class="q-pa-md" style="width: 100%;">
               <template v-if="suiteBooking?.length">
@@ -38,10 +38,10 @@
                       <q-chip class="bg-sectwo text-subtitle1 q-px-xl">{{ '\u20A6'
                         }}{{ suite.price.toLocaleString('en-US') }}</q-chip>
                     </div>
-                    <!-- <div class="self-start">
+                    <div >
                       <q-btn class="q-pa-none" round icon="cancel" color="negative"
                         @click="removeBooking('suiteBooking', suite.id)" />
-                    </div> -->
+                    </div>
                   </div>
                 </div>
               </template>
@@ -61,7 +61,8 @@
             </div>
           </q-expansion-item>
           <!-- Car Hire -->
-          <q-expansion-item tour icon="directions_car" label="Car Hire" header-class="text-subtitle1 text-center"
+          <q-expansion-item default-opened icon="directions_car" label="Car Hire"
+            header-class="text-subtitle1 text-center"
             header-style="background-color: hsl(197, 70%, 41%, 20%); color: hsl(197, 70%, 30%);">
             <div class="q-pa-md" style="width: 100%;">
               <template v-if="autoBooking?.length">
@@ -86,10 +87,10 @@
                       <q-chip class="bg-sectwo text-subtitle1 q-px-xl">{{ '\u20A6'
                         }}{{ auto.price.toLocaleString('en-US') }}</q-chip>
                     </div>
-                    <!-- <div class="self-start">
+                    <div >
                       <q-btn class="q-pa-none" round icon="cancel" color="negative"
                         @click="removeBooking('autoBooking', auto.id)" />
-                    </div> -->
+                    </div>
                   </div>
                 </div>
               </template>
@@ -110,7 +111,7 @@
           </q-expansion-item>
 
           <!-- Visa -->
-          <q-expansion-item tour icon="article" label="Visa" header-class="text-subtitle1 text-center"
+          <q-expansion-item default-opened icon="article" label="Visa" header-class="text-subtitle1 text-center"
             header-style="background-color: hsl(197, 70%, 41%, 20%); color: hsl(197, 70%, 30%);">
             <div class="row q-col-gutter-sm q-pa-md">
               <template v-if="visaBooking?.length">
@@ -129,10 +130,10 @@
                       <q-chip class="bg-sectwo text-subtitle1 q-px-xl">{{ '\u20A6'
                         }}{{ visa.price.toLocaleString('en-US') }}</q-chip>
                     </div>
-                    <!-- <div class="self-start">
+                    <div>
                       <q-btn class="q-pa-none" round icon="cancel" color="negative"
                         @click="removeBooking('visaBooking', visa.id)" />
-                    </div> -->
+                    </div>
                   </div>
                 </div>
               </template>
@@ -152,7 +153,7 @@
           </q-expansion-item>
 
           <!-- Tour -->
-          <q-expansion-item tour icon="tour" label="Tour" header-class="text-subtitle1 text-center"
+          <q-expansion-item default-opened icon="tour" label="Tour" header-class="text-subtitle1 text-center"
             header-style="background-color: hsl(197, 70%, 41%, 20%); color: hsl(197, 70%, 30%);">
             <div class="q-pa-md">
               <template v-if="tourBooking?.length">
@@ -175,10 +176,10 @@
                       <q-chip class="bg-sectwo text-subtitle1 q-px-xl">{{ '\u20A6'
                         }}{{ tour.price.toLocaleString('en-US') }}</q-chip>
                     </div>
-                    <!-- <div class="self-start">
+                    <div>
                       <q-btn class="q-pa-none" round icon="cancel" color="negative"
                         @click="removeBooking('tourBooking', tour.id)" />
-                    </div> -->
+                    </div>
                   </div>
                 </div>
               </template>
@@ -202,11 +203,14 @@
       <q-card-section class="flex justify-between q-pa-lg full-width">
         <q-btn class="bg-sectwo q-pa-md" dense rounded icon="arrow_back" href="/services" label="Continue Booking" />
 
+        <div>
+          
         <q-chip class="bg-sectwo cursor-pointer q-py-md text-h5" rounded><q-chip
             class="bg-primary text-white q-pa-md">Total
             :</q-chip>
-          <span>{{
-            '\u20A6' }}{{ currentBookingCost.toLocaleString('en-US') }}</span></q-chip>
+          <span>{{ '₦' + currentBookingCost.toLocaleString('en-US') }}</span></q-chip>
+          <q-chip v-show="currencySymbol === '$'" class="bg-sectwo q-pa-lg">Price in USD<q-chip class="bg-accent text-white text-h6">{{ currencySymbol + currentBookingCostUSD.toLocaleString('en-US') }}</q-chip></q-chip>
+        </div>
       </q-card-section>
 
       <!-- Payment Form -->
@@ -221,7 +225,7 @@
             <q-radio v-model="paymentModel.currency" val="NGN" label="NAIRA (₦)" />
             <q-radio v-model="paymentModel.currency" val="USD" label="USD ($)" />
           </div>
-
+          
           <!-- Card Number -->
           <!-- <q-input filled v-model="paymentModel.cardNumber" label="Card Number" mask="#### #### #### ####"
             hint="Enter your 16-digit card number" lazy-rules
@@ -263,7 +267,6 @@ import BookingsViewModel from 'src/view-models/bookings.view-model';
 import { HospitalityBookings, ServiceOffer, ServiceOfferPriceOption } from 'src/lib/types';
 import PriceOption from 'src/models/priceVariation.model';
 import { SuiteBookingComponentProps } from 'src/components/SuiteBookingComponent.vue';
-import { paymentPublicKey } from 'src/lib/projectConstants';
 import PaymentViewModel from 'src/view-models/payment.view-model';
 import PaymentModel from 'src/models/paymentModel.model';
 import { asyncComputed } from '@vueuse/core';
@@ -310,8 +313,10 @@ const paymentSuccessful = ref(false);
 const isProcessing = ref(false);
 const suiteBooking = ref(bookingsViewModel.stores.bookings?.suiteBooking)
 const autoBooking = ref(bookingsViewModel.stores.bookings?.autoBooking);
-const visaBooking = ref(bookingsViewModel.stores.bookings?.visaBooking)
-const tourBooking = ref(bookingsViewModel.stores.bookings?.tourBooking)
+const visaBooking = ref(bookingsViewModel.stores.bookings?.visaBooking);
+const tourBooking = ref(bookingsViewModel.stores.bookings?.tourBooking);
+const paystackPublicKey = ref('');
+const dollarRate = ref(1);
 
 // computed
 asyncComputed(async () => {
@@ -344,14 +349,22 @@ const currentBookingCost = computed(() => {
   return cost;
 });
 
-asyncComputed(async () => {
-  if (paymentSuccessful.value) {
-    // submit booking to database
-    // clear bookings store
-    await bookingsViewModel.clearBookingStore();
-    paymentSuccessful.value = false;
-  }
-})
+const currencySymbol = computed(() => {
+  return paymentModel.currency === 'NGN' ? '₦' : '$';
+});
+
+const currentBookingCostUSD = computed(() => {
+  return currentBookingCost.value / dollarRate.value;
+});
+
+// asyncComputed(async () => {
+//   if (paymentSuccessful.value) {
+//     // submit booking to database
+//     // clear bookings store
+//     await bookingsViewModel.clearBookingStore();
+//     paymentSuccessful.value = false;
+//   }
+// })
 
 
 
@@ -359,7 +372,6 @@ asyncComputed(async () => {
 // Methods
 
 const handlePaystackPayment = async () => {
-  debugger;
   if (!isModelValid(paymentModel)) {
     console.log('model errors', paymentModel.errors);
     $q.notify({
@@ -369,6 +381,15 @@ const handlePaystackPayment = async () => {
     });
 
     await paymentFormRef.value?.validate();
+    return;
+  }
+
+  if (paymentModel.amount <= 0) {
+    $q.notify({
+      type: 'negative',
+      message: 'You have not selected any service to book',
+      position: 'top'
+    });
     return;
   }
 
@@ -395,16 +416,15 @@ const handlePaystackPayment = async () => {
   $q.loading.hide();
 
   const handler = window.PaystackPop.setup({
-    key: paymentPublicKey, // Replace with your Paystack public key
+    key: paystackPublicKey.value, // Replace with your Paystack public key
     email: paymentModel.email,
     amount: 50000,
-    // amount: paymentModel.amount, // Amount in kobo
+    // amount: paymentModel.amount,
     currency: paymentModel.currency,
     ref: paymentModel.reference, // Generate unique reference
     callback: (res) => {
       if (res.status === 'success') {
         paymentSuccessful.value = true;
-        $router.replace('/services');
       }
     },
     onClose: () => {
@@ -425,9 +445,9 @@ async function removeBooking<
 }
 
 
-function getImageUrlForServiceOfferWithId(serviceOfferId: string) {
-  return serviceOffers.value.find((so) => so.id === serviceOfferId)?.files?.[0]?.url || 'https://www.motortrend.com/uploads/sites/10/2015/11/2012-toyota-matrix-s-at-hatchback-angular-front.png'
-}
+// function getImageUrlForServiceOfferWithId(serviceOfferId: string) {
+//   return serviceOffers.value.find((so) => so.id === serviceOfferId)?.files?.[0]?.url || 'https://www.motortrend.com/uploads/sites/10/2015/11/2012-toyota-matrix-s-at-hatchback-angular-front.png'
+// }
 
 function getServiceOffer(serviceOfferId: string) {
   // console.log('serviceOffers', serviceOffers.value);
@@ -441,12 +461,14 @@ watchEffect(() => {
   paymentModel.amount = currentBookingCost.value;
 });
 
-// update expiry month and year
-// watch(()=> paymentModel.expiryDate, (newVal) => {
-//   if (newVal) {
-//     const [month, year] = paymentModel.expiryDate.split('/');
-//   }
-// });
+watch(() => paymentModel.currency, () => {
+  paymentModel.amount = currentBookingCost.value;
+});
+
+watch(() => paymentSuccessful.value, () => {
+  bookingsViewModel.clearBookingStore();
+  $router.replace('/bookings');
+});
 
 // hooks
 onMounted(async () => {
@@ -464,22 +486,18 @@ onMounted(async () => {
 })
 
 onMounted(async () => {
+  paystackPublicKey.value = await paymentViewModel.getPaystackPublicKey();
+  dollarRate.value = (await paymentViewModel.getDollarRate())?.dollarRate || dollarRate.value;
+  console.log('paystackPublicKey', paystackPublicKey.value);
+});
+
+onMounted(async () => {
   bookingsViewModel.stores.bookings?.$subscribe((mutation, state) => {
     suiteBooking.value = state.suiteBooking;
     autoBooking.value = state.autoBooking;
     visaBooking.value = state.visaBooking;
     tourBooking.value = state.tourBooking;
   });
-  //
-  // TODO:initaialize payment model
-
-  // add async validation
-  // validate model on submit
-  // await payment processing
-  // send booking to database;
-  // handle payment failure
-  // handle case of missing names in bookings
-  // console.log('suite booking from booking component: -->', suiteBooking);
 
 });
 

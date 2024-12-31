@@ -252,11 +252,11 @@ import AutoBookingComponent from './AutoBookingComponent.vue';
 import TourBookingComponent from './TourBookingComponent.vue';
 import { HospitalityBookings, ServiceOffer, ServiceOfferPriceOption } from 'src/lib/types';
 import PriceOption from 'src/models/priceVariation.model';
-import { EventEmitter } from 'stream';
+import { EventBus } from 'quasar';
 
 export type BookingComponentName = 'suiteBooking' | 'autoBooking' | 'visaBooking' | 'tourBooking';
 const $q = useQuasar();
-const eventBus = inject('eventBus') as EventEmitter;
+const eventBus = inject('eventBus') as EventBus;
 
 interface BookingComponentProps {
     suiteBookingComponentProps?: SuiteBookingComponentProps

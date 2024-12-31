@@ -3,7 +3,7 @@ import { forageGetItem, forageSetItem } from 'src/boot/storeforage';
 import { HospitalityBookings } from 'src/lib/types';
 import { StorageNamesEnum } from '.';
 
-let bookings: HospitalityBookings;
+let bookings: HospitalityBookings | null;
 const useBookingStore = defineStore('hospitality_bookings', {
   state: (): HospitalityBookings => ({
     suiteBooking: [],
@@ -15,12 +15,15 @@ const useBookingStore = defineStore('hospitality_bookings', {
   getters: {},
   actions: {
     async initializeStore() {
+      console.log('initializing booking store', bookings);
       if (!bookings) {
         bookings = await forageGetItem<HospitalityBookings>(
           StorageNamesEnum.HOSPITALITY_BOOKINGS
         );
+        console.log('initializing booking store 2', bookings);
       }
-      this.$patch(bookings);
+      this.$patch(bookings as HospitalityBookings);
+      return bookings;
     },
     /**
      * Generic action to update any field in the store (excluding `currentSubscribeUserId`).
@@ -101,6 +104,7 @@ const useBookingStore = defineStore('hospitality_bookings', {
 
     async clearBookingStore() {
       this.$reset();
+      bookings = null;
       await forageSetItem(
         StorageNamesEnum.HOSPITALITY_BOOKINGS,
         { ...this.$state },

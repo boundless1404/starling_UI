@@ -88,7 +88,7 @@
       <q-img src="/assets/hotel_reception.png" fit="fill" />
       <q-img
         class="logo-img"
-        src="/assets/starglings_logo_bird_text 2_xpoint75.png"
+        src="/assets/starlings_logo.png"
       />
     </div>
   </q-page>

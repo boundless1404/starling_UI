@@ -40,6 +40,25 @@ export default class PaymentViewModel extends ViewModelBase<PaymentModel> {
     return paymentReference;
   }
 
+  async getPaystackPublicKey() {
+    // get paystack public key
+    const paystackPublicKey = await this.requestApi(
+      BookingsUrlEnum.GET_PAYSTACK_PUBLIC_KEY
+    );
+    return paystackPublicKey;
+  }
+
+  async getDollarRate() {
+    // get dollar rate
+    const dollarRate = await this.requestApi(
+      BookingsUrlEnum.GET_DOLLAR_RATE
+    ) as {
+      dollarRate: number;
+    };
+
+    return dollarRate;
+  }
+
   getCurrentUser() {
     // get current user
     const currentUser = this.stores.auth?.userData;
