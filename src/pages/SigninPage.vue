@@ -88,7 +88,7 @@
       <q-img src="/assets/hotel_reception.png" fit="fill" />
       <q-img
         class="logo-img"
-        src="/assets/starglings_logo_bird_text 2_xpoint75.png"
+        src="/assets/starlings_logo.png"
       />
     </div>
   </q-page>
@@ -151,11 +151,11 @@ const isGtMd = computed(() => {
   return screen.gt.md;
 });
 asyncComputed(async () => {
-  await signinModel.validate();
+  await signinModel.validate?.();
 });
 
 asyncComputed(async () => {
-  await tokenCoirmationModel.validate();
+  await tokenCoirmationModel.validate?.();
 });
 
 // methods
@@ -183,7 +183,7 @@ async function signin() {
         requestProcessingRef: requestingServer,
       });
 
-      await router.push({ name: 'services' });
+      await router.replace('/services');
     },
     async onError(error) {
       useNotify({

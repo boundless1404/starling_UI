@@ -3,6 +3,7 @@
 </template>
 
 <script setup lang="ts">
+import 'reflect-metadata'
 import { useMeta, useQuasar } from 'quasar';
 import useAuthStore from './stores/auth-store';
 const $q = useQuasar();
@@ -19,3 +20,12 @@ useMeta({
   title: 'Starlings Hospitality',
 });
 </script>
+<style lang="scss">
+ .bg-sectwo {
+  background-color: var(--q-sectwo)
+ }
+
+ .text-sectwo {
+  color: var(--q-sectwo)
+ }
+</style>

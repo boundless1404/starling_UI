@@ -23,9 +23,9 @@ const authUserData = (await forageGetItem(
 )) as AuthUserData;
 
 const api = axios.create({
-  baseURL: process.env.DEV
+  baseURL: (process.env.DEV
     ? 'http://localhost:5100/'
-    : process.env.API_BASE_URL,
+    : process.env.API_BASE_URL) + 'v1',
   headers: {
     'Content-Type': 'application/json',
     ...(authUserData?.token

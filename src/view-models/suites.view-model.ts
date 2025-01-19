@@ -11,7 +11,7 @@ export default class SuitesViewModel extends ViewModelBase<SuitesPageModel> {
   async populateModelFields(serviceId: string) {
     await this.getSuites({ serviceId });
 
-    const userData = this.authStore.getField(
+    const userData = this.authStore?.getField(
       'userData'
     ) as AuthUserData['userData'];
 

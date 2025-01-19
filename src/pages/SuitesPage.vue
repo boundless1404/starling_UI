@@ -10,156 +10,73 @@
       <div class="q-px-lg">
         <!-- rooms-icon area -->
         <div class="flex flex-center">
-          <div
-            class="border-rounded-sm q-mx-lg"
-            :style="{
-              width: '98%',
-              height: '12vh',
-              border: `solid ${$getColor('secondary')} 0.1rem`,
-            }"
-          >
+          <div class="border-rounded-sm q-mx-lg" :style="{
+            width: '98%',
+            height: '12vh',
+            border: `solid ${$getColor('secondary')} 0.1rem`,
+          }">
             <div class="flex row flex-center q-py-xs">
-              <q-btn
-                class="q-pa-md"
-                :style="{
-                  border: `${$getColor('secondary')} solid 0.1px`,
-                }"
-                icon="arrow_left"
-                size="1.6vw"
-                round
-                flat
-                outline
-                color="secondary"
-                @click="decrementCategoryIndex"
-              />
-              <div
-                class="flex row flex-center rooms-type-slide"
-                style="height: 100%; width: 70%"
-              >
-                <q-btn
-                  v-for="(category, index) of categoriesForSlideComputed"
-                  :key="index"
-                  icon="apartment"
-                  :label="
-                    ($q.screen.lt.lg ? category.slice(0, 14) : category)
-                      .split('_')
-                      .join(' ')
-                  "
-                  flat
-                  size="1.4vw"
-                  outline
-                  :color="
-                    selectedCategory === category ? 'accent' : 'secondary'
-                  "
-                  stack
-                  no-caps
-                  @click="getSuitesByCategory(category)"
-                />
+              <q-btn class="q-pa-md" :style="{
+                border: `${$getColor('secondary')} solid 0.1px`,
+              }" icon="arrow_left" size="1.6vw" round flat outline color="secondary"
+                @click="decrementCategoryIndex" />
+              <div class="flex row flex-center rooms-type-slide" style="height: 100%; width: 70%">
+                <q-btn v-for="(category, index) of categoriesForSlideComputed" :key="index" icon="apartment" :label="($q.screen.lt.lg ? category.slice(0, 14) : category)
+                    .split('_')
+                    .join(' ')
+                  " flat size="1.4vw" outline :color="selectedCategory === category ? 'accent' : 'secondary'
+                    " stack no-caps @click="getSuitesByCategory(category)" />
               </div>
-              <q-btn
-                :style="{
-                  border: `${$getColor('secondary')} solid 0.1px`,
-                }"
-                icon="arrow_right"
-                size="1.6vw"
-                round
-                flat
-                outline
-                color="secondary"
-                class="q-pa-md"
-                @click="incrementCategoryIndex"
-              />
+              <q-btn :style="{
+                border: `${$getColor('secondary')} solid 0.1px`,
+              }" icon="arrow_right" size="1.6vw" round flat outline color="secondary" class="q-pa-md"
+                @click="incrementCategoryIndex" />
             </div>
           </div>
         </div>
         <!-- suite-provider drop-down -->
         <div class="q-mt-lg q-ml-lg">
           <span class="q-ml-sm">Suite Providers:</span>
-          <q-select
-            style="width: 20%"
-            color="secondary"
-            label="All"
-            v-model="selectedServiceProvider"
-            :options="serviceProvidersOptions"
-            emit-value
-            map-options
-            outlined
-            rounded
-            dense
-          />
+          <q-select style="width: 20%" color="secondary" label="All" v-model="selectedServiceProvider"
+            :options="serviceProvidersOptions" emit-value map-options outlined rounded dense />
         </div>
         <!-- suites-show area -->
         <div class="flex column q-gutter-lg q-mt-xl">
           <div class="flex row justify-evenly q-gutter-sm-lg">
-            <div
-              v-for="(suite, index) of suitesPageModel.suites"
-              :key="index"
-              class="flex column"
-              style="width: min-content"
-            >
-              <q-card
-                class="q-pb-none rounded-borders cursor-pointer"
-                :style="{
-                  width: carouselWidthHeight,
-                  height: carouselWidthHeight,
-                  borderRadius: '4vw',
-                }"
-                bordered
-                v-ripple
-              >
-                <q-card-section
-                  class="q-pa-none q-ma-none"
-                  style="position: relative"
-                >
-                  <q-chip
-                    class="absolute-top-left q-px-xl q-ml-lg q-mt-lg text-h6 text-white bg-accent shadow-1"
-                    style="z-index: 999"
-                    :label="suite.provider.name"
-                  />
-                  <q-carousel
-                    :style="{
-                      width: carouselWidthHeight,
-                      height: carouselWidthHeight,
-                      borderRadius: '4vw',
-                    }"
-                    animated
-                    v-model="suitePanel"
-                    navigation
-                    infinite
-                    :control-type="controlType"
-                    :autoplay="autoPlay"
-                    :arrows="false"
-                    transition-prev="slide-right"
-                    transition-next="slide-left"
-                    @mouseenter="autoPlay = false"
-                    @mouseleave="autoPlay = true"
-                  >
-                    <q-carousel-slide
-                      v-for="(file, carousel_index) of suite.files"
-                      :key="carousel_index"
-                      :name="file.filename"
-                      @click="navigateToDetialsPage(suite.provider.id)"
-                    >
+            <div v-for="(suite, index) of suitesPageModel.suites" :key="index" class="flex column"
+              style="width: min-content">
+              <q-card class="q-pb-none rounded-borders cursor-pointer" :style="{
+                width: carouselWidthHeight,
+                height: carouselWidthHeight,
+                borderRadius: '4vw',
+              }" bordered v-ripple>
+                <q-card-section class="q-pa-none q-ma-none" style="position: relative">
+                  <q-chip class="absolute-top-left q-px-xl q-ml-lg q-mt-lg text-h6 text-white bg-accent shadow-1"
+                    style="z-index: 999" :label="suite.provider.name" />
+                  <q-carousel :style="{
+                    width: carouselWidthHeight,
+                    height: carouselWidthHeight,
+                    borderRadius: '4vw',
+                  }" animated v-model="suitePanel" navigation infinite :control-type="controlType" :autoplay="autoPlay" :arrows="false"
+                    transition-prev="slide-right" transition-next="slide-left" @mouseenter="autoPlay = false"
+                    @mouseleave="autoPlay = true">
+                    <q-carousel-slide v-for="(file, carousel_index) of suite.files" :key="carousel_index"
+                      :name="file.filename" @click="navigateToDetialsPage(suite.provider.id)">
                       <template v-slot:default>
-                        <q-img
-                          :src="file.url"
-                          :ratio="1"
-                          spinner-color="primary"
-                          spinner-size="82px"
-                          loading="lazy"
-                        />
+                        <q-img :src="file.url" :ratio="1" spinner-color="primary" spinner-size="82px" loading="lazy"
+                          height="300" width="300"
+                          :placeholder-src="'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='" />
                       </template>
                     </q-carousel-slide>
                   </q-carousel>
+
                 </q-card-section>
               </q-card>
-              <div
-                class="q-mt-md suite-service-description"
-                :style="{ color: `${$getColor('blue-grey-10')}` }"
-              >
+              <div class="q-mt-md suite-service-description" :style="{ color: `${$getColor('blue-grey-10')}` }">
                 <p>
                   {{
-                    `${suite.location.landmark}, ${suite.location.city}, ${suite.location.state.name}, ${suite.location.country}`
+                    `${suite.location.landmark}, ${suite.location.city}, ${suite.location.state.name},
+                  ${suite.location.country}`
                   }}.
                 </p>
                 <p>
@@ -178,11 +95,7 @@
         </div>
         <!-- <div class="feature-full-width flex row flex-center"> -->
         <div class="purple-border" style="height: 70vh; padding: 4vw">
-          <q-img
-            src="/assets/feature.png"
-            fit="cover"
-            style="height: 100%; max-width: 100%"
-          />
+          <q-img src="/assets/feature.png" fit="cover" style="height: 100%; max-width: 100%" />
         </div>
         <!-- </div> -->
       </div>
@@ -190,7 +103,9 @@
   </q-page>
 </template>
 <script setup lang="ts">
+import { features } from 'process';
 import { useQuasar } from 'quasar';
+import { ServiceOffer } from 'src/lib/types';
 import SuitesPageModel from 'src/models/suitesPage.model';
 import SuitesViewModel from 'src/view-models/suites.view-model';
 import { computed, onMounted, reactive, watch } from 'vue';
@@ -311,6 +226,18 @@ watch(selectedServiceProvider, async (newVal) => {
 onMounted(async () => {
   //
   await suitesViewModel.populateModelFields(serviceId);
+  const suitesServiceOffers: ServiceOffer[] = suitesPageModel.suites?.map((s) => {
+    return {
+    id: s.id,
+    name: s.category,
+    description: s.description,
+    type: s.type,
+    priceOptions: s.priceOptions,
+    features: s.features,
+    files: s.files,
+  }
+  });
+  await suitesViewModel.stores.serviceWithOffer?.insertServiceOfferIntoService(serviceId, suitesServiceOffers)
   // subtract 1 to make is a valid last index
   categoriesLength.value = suitesPageModel.categories.length - 1;
 });
@@ -327,6 +254,7 @@ onMounted(async () => {
   margin: 0 0 0 -3.4vw !important;
   padding: 0 0.1rem;
 }
+
 .rooms-type-slide {
   & button {
     font-size: medium;

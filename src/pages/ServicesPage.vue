@@ -7,79 +7,31 @@
       <p class="q-ml-xl q-pl-sm">
         {{ servicesPageModel.submessage }}
       </p>
-      <div
-        :class="[
-          'flex',
-          $q.screen.lt.lg ? 'column items-center' : 'row',
-          'justify-evenly q-gutter-sm',
-        ]"
-      >
-        <div
-          v-for="(service, index) of servicesPageModel.servicesWithProviders"
-          :key="index"
-          class="flex column"
-          style="width: min-content"
-        >
-          <q-card
-            class="q-pb-none rounded-borders cursor-pointer"
-            style="
-              width: carouselWidthHeight;
-              height: carouselWidthHeight;
-              border-radius: 2rem;
-            "
-            bordered
-            v-ripple
-          >
-            <q-card-section
-              class="q-pa-none q-ma-none"
-              style="position: relative"
-            >
-              <q-chip
-                class="absolute-top-left q-px-xl q-ml-lg q-mt-lg text-h6 text-white bg-accent shadow-1"
-                style="z-index: 999; max-width: 80%"
-                :label="service.name"
-              />
-              <q-carousel
-                :style="{
-                  width: carouselWidthHeight,
-                  height: carouselWidthHeight,
-                  borderRadius: '4vw',
-                }"
-                animated
-                v-model="suitePanel"
-                navigation
-                infinite
-                :control-type="controlType"
-                :autoplay="autoPlay"
-                :arrows="false"
-                transition-prev="slide-right"
-                transition-next="slide-left"
-                @mouseenter="autoPlay = false"
-                @mouseleave="autoPlay = true"
-              >
-                <q-carousel-slide
-                  v-for="(file, carousel_index) of service.files"
-                  :key="carousel_index"
-                  :name="file.filename"
-                  @click="gotoServicePage(service.id)"
-                >
-                  <template v-slot:default>
-                    <q-img
-                      :src="file.url"
-                      :ratio="1"
-                      spinner-color="primary"
-                      spinner-size="82px"
-                      loading="lazy"
-                    />
-                  </template>
-                </q-carousel-slide>
-              </q-carousel>
+      <div :class="[
+        'row',
+        'justify-evenly q-gutter-sm',
+      ]
+        ">
+
+        <div v-for="(service, index) of servicesPageModel.servicesWithProviders" :key="index"
+          class="col-lg-3 col-md-4 col-sm-12" :style="{
+            width: carouselWidthHeight,
+
+          }
+            ">
+          <q-card class="q-pb-none rounded-border cursor-pointer" style="border-radius: 2rem;" bordered v-ripple>
+            <q-card-section class="q-pa-none q-ma-none" style="position: relative"
+              @click="gotoServicePage(service.id, service.name)">
+              <q-chip class="absolute-top-left q-px-xl q-ml-lg q-mt-lg text-h6 text-white bg-accent shadow-1"
+                style="z-index: 999; max-width: 80%" :label="service.name" />
+              <q-img :src="service.files?.[0].url" :style="{
+                width: carouselWidthHeight,
+                height: carouselWidthHeight,
+                borderRadius: '2rem',
+              }" />
             </q-card-section>
           </q-card>
-          <div
-            class="q-mt-md"
-            :style="{ color: `${$getColor('blue-grey-10')}` }"
-          >
+          <div class="q-mt-md" :style="{ color: `${$getColor('blue-grey-10')}` }">
             <p class="suite-service-description">
               {{ service.description }}
             </p>
@@ -87,6 +39,8 @@
         </div>
       </div>
     </div>
+    <service-dialogue :is-open="serviceDialogueIsOpen" :selected-service="selectedService"
+      @update:is-open="serviceDialogueIsOpen = $event" />
   </q-page>
 </template>
 <script setup lang="ts">
@@ -95,6 +49,9 @@ import ServicesPageModel from 'src/models/servicesPage.model';
 import ServicesViewModel from 'src/view-models/services.view-model';
 import { computed, onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import ServiceDialogue from 'src/components/ServiceDialogue.vue';
+import ServiceModel from 'src/models/service.model';
+import { ServiceOffer, ServiceWithOffers } from 'src/lib/types';
 
 // consts
 const $router = useRouter();
@@ -103,11 +60,15 @@ const $q = useQuasar();
 const controlType = ref<'outline' | 'regular' | 'flat' | 'unelevated' | 'push'>(
   'outline'
 );
+
+const refershCount = ref(0);
 const suitePanel = ref('SuitePanel');
 const autoPlay = ref(true);
+const serviceDialogueIsOpen = ref(false);
 
+const selectedService = ref<ServiceModel>({} as ServiceModel);
 const carouselWidthHeight = computed(() => {
-  return $q.screen.lt.lg ? '40vw' : '28vw';
+  return $q.screen.lt.lg ? '32vw' : '20vw';
 });
 
 const serviceViewModel = new ServicesViewModel(
@@ -116,11 +77,34 @@ const serviceViewModel = new ServicesViewModel(
 const servicesPageModel = serviceViewModel.model;
 
 // methods
-function gotoServicePage(serviceId: string) {
-  $router.push(`${$router.currentRoute.value.path}/${serviceId}/suites`);
+async function gotoServicePage(serviceId: string, serviceName: string) {
+  // const service = serviceViewModel.getServiceById(serviceId);
+  if (serviceName.toLowerCase().indexOf('apartment') > -1) {
+    $router.push(`${$router.currentRoute.value.path}/${serviceId}/suites`);
+  }
+  else {
+    await serviceViewModel.getServiceOffers(serviceId);
+    selectedService.value = servicesPageModel.selectedService as ServiceWithOffers
+    serviceDialogueIsOpen.value = true;
+    // add service offer to store
+    await serviceViewModel.stores.serviceWithOffer
+    ?.insertServiceOfferIntoService(serviceId, servicesPageModel.selectedService.offers as ServiceOffer[])
+
+    console.log('this is the service offers', serviceViewModel.stores.serviceWithOffer?.getItem(serviceId));
+    console.log('this is the service state', serviceViewModel.stores.serviceWithOffer?.$state)
+  }
 }
 
 onMounted(async () => {
   await serviceViewModel.getServices();
+  await serviceViewModel.stores.serviceWithOffer?.initializeStore();
+  console.log('from mounted ', servicesPageModel.servicesWithProviders)
+  serviceViewModel.stores.serviceWithOffer?.insertServices(servicesPageModel.servicesWithProviders)
+  // referesh
+  if (refershCount.value < 1) {
+    // $router.go(0);
+    refershCount.value++;
+    return;
+  }
 });
 </script>

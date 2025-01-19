@@ -264,7 +264,7 @@
       <q-img src="/assets/hotel_reception.png" fit="fill" />
       <q-img
         class="logo-img"
-        src="/assets/starglings_logo_bird_text 2_xpoint75.png"
+        src="/assets/starlings_logo.png"
       />
     </div>
   </q-page>
@@ -333,11 +333,11 @@ const isGtMd = computed(() => {
   return screen.gt.md;
 });
 asyncComputed(async () => {
-  await signupModel.validate();
+  await signupModel.validate?.();
 });
 
 asyncComputed(async () => {
-  await tokenCoirmationModel.validate();
+  await tokenCoirmationModel.validate?.();
 });
 
 const phoneCodeIdOptions = computed(() => {
@@ -354,7 +354,7 @@ async function submitToken() {
   tokenConfirmationViewModel.submitToken(signupModel.email, {
     async onSuccess() {
       // clearUIEffects({ loader: $q.loading, timer: postSignupTimer });
-      await router.push('/services');
+      await router.replace('/services');
     },
     async onError(error) {
       // clearUIEffects({ loader: $q.loading, timer: postSignupTimer });

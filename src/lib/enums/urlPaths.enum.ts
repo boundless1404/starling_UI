@@ -12,9 +12,18 @@ export enum ServiceUrlEnum {
   Get_SUITES = '/services/suites',
   GET_SUITE_DETAILS = '/services/suites/:suiteId',
   GET_CATEGORIES = '/services/suites/categories',
+  GET_OFFERS = '/services/offers',
 }
 
 export enum ProfileTypes {
   SERVICE_PROVIDER_USER = 'service_provider_user',
   SERVICE_SUBSCRIBER_USER = 'service_subscriber_user',
+}
+
+export enum BookingsUrlEnum {
+  PROCESS_BOOKING = '/service-bookings/process',
+  GET_PAYMENT_REFERENCE = '/service-bookings/payment-reference',
+  GET_BOOKINGS = '/service-bookings',
+  GET_PAYSTACK_PUBLIC_KEY = '/service-bookings/paystack-public-key',
+  GET_DOLLAR_RATE = '/service-bookings/dollar-rate',
 }

@@ -1,29 +1,17 @@
-import { IsDateString, IsEmail, IsNotEmpty, IsNumber, IsNumberString, IsOptional, Min } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsNumber, IsOptional, Min, ValidateNested } from 'class-validator';
 import { BaseModel } from './base.model'
+import BookingClientModel from './bookingClient.model';
+import { Type } from 'class-transformer';
 
 export default class SuiteBookingModel extends BaseModel {
 
     id: string;
         
-    priceOptionId: string;
+    serviceOfferPriceOptionId: string;
 
     suitePropertyId: string;
 
-    @IsNotEmpty({ message: 'First Name is required.' })
-    firstName: string;
-  
-    @IsNotEmpty({ message: 'Last Name is required.' })
-    lastName: string;
-  
-    @IsNotEmpty({ message: 'Email is required.' })
-    @IsEmail({}, { message: 'Please, enter a valid email.' })
-    email: string;
-  
-    @IsNotEmpty({ message: 'Phone is required.' })
-    phone: string;
-  
-    @IsNotEmpty({ message: 'Please, select a country phone code.' })
-    phoneCodeId: string;
+    price: number;
   
     @IsNotEmpty({ message: 'CheckInDate is required.' })
     @IsDateString({}, {message: 'Please, enter a valid date.'})
@@ -46,4 +34,8 @@ export default class SuiteBookingModel extends BaseModel {
     @IsNumber()
     @Min(1, {message: 'Mininum number of rooms is 1'})
     roomsCount = 1;
+
+    @ValidateNested()
+    @Type(() => BookingClientModel)
+    client: BookingClientModel = new BookingClientModel();
 }

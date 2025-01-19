@@ -2,7 +2,7 @@ import { ValidationError, validate } from 'class-validator';
 
 export class BaseModel {
   errors?: ValidationError[] = [];
-  async validate() {
+  async validate?() {
     const errors = await validate(this);
     for (const err of errors) {
       err.constraints;
@@ -10,7 +10,7 @@ export class BaseModel {
     this.errors = errors;
   }
 
-  clearValues() {
+  clearValues?() {
     for (const key in this) {
       if (
         this.hasOwnProperty(key) &&

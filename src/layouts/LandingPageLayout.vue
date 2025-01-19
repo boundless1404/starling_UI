@@ -14,7 +14,7 @@
             :height="$q.screen.lt.lg ? '6rem' : '8rem'"
             :width="$q.screen.lt.lg ? '8rem' : '10rem'"
             fit="cover"
-            src="/assets/starglings_logo_bird_text 2_xpoint5.png"
+            src="/assets/starlings_logo.png"
           />
         </q-toolbar-title>
         <!-- nav >= md -->
@@ -30,6 +30,7 @@
             rounded
             outline
             no-caps
+            v-show="false"
           />
           <q-btn
             color="primary"
@@ -38,6 +39,7 @@
             rounded
             outline
             no-caps
+            v-show="false"
           />
           <q-btn
             color="primary"
@@ -46,17 +48,27 @@
             rounded
             outline
             no-caps
+            v-show="false"
           />
         </div>
         <div class="text-primary q-mr-xl">
           <q-btn
-            class="q-px-lg cursor-pointer"
+            class="q-px-lg q-mx-sm cursor-pointer"
             label="Get Started"
-            :size="$q.screen.lt.lg ? '0.6rem' : '1.2rem'"
+            :size="$q.screen.lt.lg ? '0.6rem' : '0.8rem'"
             rounded
             outline
             no-caps
             @click="handleGetStarted"
+          />
+          <q-btn
+            class="q-px-lg cursor-pointer"
+            label="Sign In"
+            :size="$q.screen.lt.lg ? '0.6rem' : '0.8rem'"
+            rounded
+            outline
+            no-caps
+            @click="$router.push('/signin')"
           />
         </div>
         <q-btn color="primary" v-if="$q.screen.lt.md" flat round dense>
