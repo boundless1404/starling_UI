@@ -5,7 +5,7 @@
         <q-toolbar-title class="q-mt-sm cursor-pointer" v-ripple>
           <q-img height="8rem" @click="$router.push('/')" width="10rem" fit="cover" src="/assets/starlings_logo.png" />
         </q-toolbar-title>
-        <div class="flex row justify-around" style="width: 80%">
+        <div class="flex row justify-around" style="width: 70%">
           <q-btn color="primary" to="/bookings" label="Bookings" :size="$q.screen.lt.lg ? '0.5rem' : ''" rounded outline no-caps/>
         </div>
         <div class="q-mr-lg">
