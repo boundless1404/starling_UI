@@ -3,7 +3,7 @@ import useAuthStore from 'src/stores/auth-store';
 import { ViewModelBase } from './base.view-model';
 import { requestSignup } from 'src/lib/requests.ts/auth.request';
 import { ViewModelDefaultFunctionArgs } from 'src/lib/types';
-import { AuthUrlsEnum } from 'src/lib/enums/urlPaths.enum';
+import { AuthUrlsEnum, ServiceUrlEnum } from 'src/lib/enums/urlPaths.enum';
 import { AxiosError } from 'axios';
 
 export class SignupViewModel extends ViewModelBase<SignupModel> {
@@ -28,6 +28,15 @@ export class SignupViewModel extends ViewModelBase<SignupModel> {
         body: { email: this.model.email },
       });
       onSuccess?.();
+    } catch (e) {
+      onError?.((e as Error).message);
+    }
+  }
+
+  async getPhoneCodes({ onError, onSuccess }: ViewModelDefaultFunctionArgs = {}) {
+    try {
+      const phoneCodes = await this.requestApi( ServiceUrlEnum.GET_PHONE_CODE);
+      onSuccess?.(phoneCodes);
     } catch (e) {
       onError?.((e as Error).message);
     }

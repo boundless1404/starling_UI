@@ -5,6 +5,7 @@ import {
   createWebHashHistory,
   createWebHistory,
 } from 'vue-router';
+import '@fontsource/poppins';
 
 import routes from './routes';
 

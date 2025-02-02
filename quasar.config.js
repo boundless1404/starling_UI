@@ -116,10 +116,11 @@ require('dotenv').config({ override: true });
     framework: {
       config: {
         brand: {
-          primary: '#055784',
+          primary: '#1877A4',
           sectwo: '#dfe2ff',
           secondary: '#5885af',
           accent: '#000c66',
+          'primary-red': '#FF0000',
 
           dark: '#14202e',
           'dark-page': '#050a30',
@@ -128,6 +129,11 @@ require('dotenv').config({ override: true });
           negative: '#e32227',
           info: '#31CCEC',
           warning: '#e87a00',
+
+          /* width, borders, spaces */
+          'input-border-width': '1px',
+          'input-border-radius': '4px',
+          'btn-border-radius': '8px',
         },
         ripple: {
           color: 'accent',
