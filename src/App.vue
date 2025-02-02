@@ -28,4 +28,20 @@ useMeta({
  .text-sectwo {
   color: var(--q-sectwo)
  }
+
+ .bg-primary-red {
+  background-color: var(--q-primary-red) !important;
+ }
+
+ .text-primary-red {
+  color: var(--q-primary-red) !important;
+ }
+
+ .overflow-scroll {
+  overflow: scroll;
+}
+
+.strg-hidden {
+  display: none;
+}
 </style>

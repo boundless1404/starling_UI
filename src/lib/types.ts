@@ -5,8 +5,8 @@ import VisaServiceOfferBooking from 'src/models/visaServiceOfferBooking.model';
 import { HospitalityServiceType, PriceDurations } from './enums/enums';
 
 export type ViewModelDefaultFunctionArgs = {
-  onSuccess?: (arg?: Record<string, unknown>) => Promise<void>;
-  onError?: (message?: string) => Promise<void>;
+  onSuccess?: (arg?: Record<string, unknown>) => Promise<void> | void;
+  onError?: (message?: string) => Promise<void> | void;
 };
 
 export type NotifierTypes = 'positive' | 'negative' | 'warning' | 'info';
@@ -108,6 +108,13 @@ export type HospitalityBookings = {
 
 export type FetchedServiceOffers = {
   [key: string]: ServiceOffer
+}
+
+export interface PhoneCode {
+  id: string,
+  name: string,
+  countryId: string;
+  flageUrl: string;
 }
 
 type File = {

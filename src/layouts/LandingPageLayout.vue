@@ -68,7 +68,7 @@
             rounded
             outline
             no-caps
-            @click="$router.push('/signin')"
+            @click="handleSignin"
           />
         </div>
         <q-btn color="primary" v-if="$q.screen.lt.md" flat round dense>
@@ -92,6 +92,7 @@
     <q-page-container class="alegreya" style="max-height: 100vh">
       <loading-spinner v-if="isLoading" :loading="isLoading" />
       <router-view v-else />
+      <auth-dialog v-if="dialogOpen" :open="dialogOpen" :purpose="dialogPurpose" @close="closeDialog" />
       <!-- footer -->
       <div
         class="bg-white"
@@ -126,6 +127,7 @@
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import LoadingSpinner from 'src/components/LoadingSpinner.vue';
+import AuthDialog from 'src/components/AuthDialog.vue';
 
 // consts
 const router = useRouter();
@@ -133,15 +135,25 @@ const router = useRouter();
 // refs
 const isLoading = ref(false);
 const menuIsActive = ref(false);
+const dialogOpen = ref(false);
+const dialogPurpose = ref<'signup' | 'signin'>('signup');
 
 // methods
-const handleGetStarted = () => {
-  // isLoading.value = true;
-  router.push('/signup');
-  // .then(() => {
-  //   isLoading.value = false;
-  // });
+function closeDialog() {
+  dialogOpen.value = false;
+}
+function handleGetStarted(){
+  // router.push('/signup');
+  dialogOpen.value = true;
+  dialogPurpose.value = 'signup';
+
 };
+
+function handleSignin() {
+  //
+  dialogOpen.value = true;
+  dialogPurpose.value = 'signin';
+}
 
 function toggleMenu() {
   menuIsActive.value = !menuIsActive.value;

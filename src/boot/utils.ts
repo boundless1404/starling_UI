@@ -1,6 +1,6 @@
 import { boot } from 'quasar/wrappers';
 import { BaseModel } from 'src/models/base.model';
-import { getHighestZIndex, validateField } from 'src/lib/utils';
+import { getFieldError, getHighestZIndex, validateField } from 'src/lib/utils';
 import getColor from 'src/plugins/getColor';
 
 declare module '@vue/runtime-core' {
@@ -8,6 +8,7 @@ declare module '@vue/runtime-core' {
     $getColor: (colorAlias: string) => string | null;
     $validateField: (model: BaseModel, name: string) => string | boolean;
     $getHighestZIndex: () => number;
+    $getFieldError: (model: BaseModel, name: string) => string;
   }
 }
 export default boot(({ app }) => {
@@ -21,6 +22,7 @@ export default boot(({ app }) => {
 
   app.config.globalProperties.$validateField = validateField;
   app.config.globalProperties.$getHighestZIndex = getHighestZIndex;
+  app.config.globalProperties.$getFieldError = getFieldError;
   // register plugins
   app.use(getColor);
 });

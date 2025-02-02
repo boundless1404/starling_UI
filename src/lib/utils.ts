@@ -3,6 +3,13 @@ import { BaseModel } from '../models/base.model';
 import { Ref } from 'vue';
 import { ValidationArguments, ValidationError } from 'class-validator';
 
+export function getFieldError(model: BaseModel, field: string) {
+  const fieldError = model.errors?.find((error) => error.property === field);
+  const error = fieldError?.constraints?.[Object.keys(fieldError.constraints)[0]] || '';
+  console.log('error occured in field: ', field, `error: ${error}` )
+  return error;
+}
+
 export function validateField(model: BaseModel, name: string) {
   // check if name is separated by dot
   const nameParts = name.split('.');

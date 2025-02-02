@@ -166,7 +166,7 @@
                   </div>
                 </div>
 
-                <div
+                <divf
                   :class="[
                     'flex',
                     isGtMd
@@ -196,7 +196,7 @@
                       >.
                     </p>
                   </div>
-                </div>
+                </divf>
               </div>
             </q-form>
           </div>

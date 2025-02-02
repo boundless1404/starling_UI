@@ -6,13 +6,16 @@ export enum AuthUrlsEnum {
   RESEND_TOKEN = `${authPath}/resend-token`,
   USER = `${authPath}/user`,
 }
+const servicesPath = '/services';
+const suitesPath = `${servicesPath}/suites`;
 
 export enum ServiceUrlEnum {
-  GET_SERVICES = '/services',
-  Get_SUITES = '/services/suites',
-  GET_SUITE_DETAILS = '/services/suites/:suiteId',
-  GET_CATEGORIES = '/services/suites/categories',
-  GET_OFFERS = '/services/offers',
+  GET_SERVICES = servicesPath,
+  GET_SUITES = suitesPath,
+  GET_SUITE_DETAILS = `${suitesPath}/:suiteId`,
+  GET_CATEGORIES = `${suitesPath}/categories`,
+  GET_OFFERS = `${servicesPath}/offers`,
+  GET_PHONE_CODE = `${servicesPath}/phone-codes`,
 }
 
 export enum ProfileTypes {
@@ -20,10 +23,12 @@ export enum ProfileTypes {
   SERVICE_SUBSCRIBER_USER = 'service_subscriber_user',
 }
 
+const serviceBookingsPath = '/service-bookings';
+
 export enum BookingsUrlEnum {
-  PROCESS_BOOKING = '/service-bookings/process',
-  GET_PAYMENT_REFERENCE = '/service-bookings/payment-reference',
-  GET_BOOKINGS = '/service-bookings',
-  GET_PAYSTACK_PUBLIC_KEY = '/service-bookings/paystack-public-key',
-  GET_DOLLAR_RATE = '/service-bookings/dollar-rate',
+  PROCESS_BOOKING = `${serviceBookingsPath}/process`,
+  GET_PAYMENT_REFERENCE = `${serviceBookingsPath}/payment-reference`,
+  GET_BOOKINGS = serviceBookingsPath,
+  GET_PAYSTACK_PUBLIC_KEY = `${serviceBookingsPath}/paystack-public-key`,
+  GET_DOLLAR_RATE = `${serviceBookingsPath}/dollar-rate`,
 }
