@@ -1,9 +1,14 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <q-header
-      class="bg-white"
-      bordered
-      style="border-bottom-style: solid; border-bottom-width: 0.2rem"
+      class="bg-gradient"
+      style="
+        height: auto;
+        background: linear-gradient(to right, white, transparent, white);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(7px);
+        padding: 0.25rem 1rem;
+      "
     >
       <q-toolbar class="flex row justify-between">
         <q-toolbar-title
@@ -11,62 +16,56 @@
           style="max-width: max-content"
         >
           <q-img
-            :height="$q.screen.lt.lg ? '6rem' : '8rem'"
             :width="$q.screen.lt.lg ? '8rem' : '10rem'"
             fit="cover"
             src="/assets/starlings_logo.png"
           />
         </q-toolbar-title>
         <!-- nav >= md -->
-        <div
-          v-show="$q.screen.gt.sm"
-          class="flex row justify-around float-left"
+        <!-- <div
+          v-show="$q.screen.gt.md"
+          class="flex row justify-right"
           style="width: 40%"
-        >
-          <q-btn
-            color="primary"
-            label="Home"
-            :size="$q.screen.lt.lg ? '0.5rem' : ''"
-            rounded
-            outline
-            no-caps
-            v-show="false"
-          />
-          <q-btn
-            color="primary"
-            label="Features"
-            :size="$q.screen.lt.lg ? '0.5rem' : ''"
-            rounded
-            outline
-            no-caps
-            v-show="false"
-          />
-          <q-btn
-            color="primary"
-            label="About"
-            :size="$q.screen.lt.lg ? '0.5rem' : ''"
-            rounded
-            outline
-            no-caps
-            v-show="false"
-          />
-        </div>
+        ></div> -->
         <div class="text-primary q-mr-xl">
           <q-btn
+            color="black"
+            label="Home"
+            :size="$q.screen.lt.lg ? '0.5rem' : ''"
+            flat
+            no-caps
+            v-show="true"
+          />
+          <q-btn
+            color="black"
+            label="Features"
+            :size="$q.screen.lt.lg ? '0.5rem' : ''"
+            flat
+            no-caps
+            v-show="true"
+          />
+          <q-btn
+            color="black"
+            label="About"
+            :size="$q.screen.lt.lg ? '0.5rem' : ''"
+            flat
+            no-caps
+            v-show="true"
+          />
+          <q-btn
+            color="black"
             class="q-px-lg q-mx-sm cursor-pointer"
             label="Get Started"
             :size="$q.screen.lt.lg ? '0.6rem' : '0.8rem'"
-            rounded
-            outline
+            flat
             no-caps
             @click="handleGetStarted"
           />
           <q-btn
+            color="black"
             class="q-px-lg cursor-pointer"
             label="Sign In"
             :size="$q.screen.lt.lg ? '0.6rem' : '0.8rem'"
-            rounded
-            outline
             no-caps
             @click="$router.push('/signin')"
           />
@@ -89,7 +88,7 @@
         </q-btn>
       </q-toolbar>
     </q-header>
-    <q-page-container class="alegreya" style="max-height: 100vh">
+    <q-page-container class="alegreya" style="max-height: 100vh; padding: 0">
       <loading-spinner v-if="isLoading" :loading="isLoading" />
       <router-view v-else />
       <!-- footer -->
