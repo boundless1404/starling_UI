@@ -2,6 +2,7 @@
   <q-page class=" ">
     <page-carousel />
 
+    <ServiceTabs />
     <!-- discover our services -->
     <div>
       <SectionTitle
@@ -71,6 +72,7 @@ import SectionTitle from '../components/SectionTitle.vue';
 import ServiceDiscover from '../components/ServiceDiscover.vue';
 import WhyChooseUs from 'src/components/WhyChooseUs.vue';
 import PartnersComponent from 'src/components/PartnersComponent.vue';
+import ServiceTabs from 'src/components/ServiceTabs.vue';
 
 import { ref, computed } from 'vue';
 
