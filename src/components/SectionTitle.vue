@@ -1,14 +1,13 @@
 <template>
-  <div class="wrapper relative text-center">
-    <div class="relative text-center">
-      <h1 class="absolute">
+  <div :class="['wrapper relative text-center text-poppins-serif', $q.screen.gt.md ? '' : $q.screen.lt.md ? 'height-sm' : 'height-md']">
+    <div class="relative text-center q-pt-md">
+      <div :class="['absolute background-text', $q.screen.gt.md ? 'text-h1 text-weight-bolder' : $q.screen.lt.md ? 'text-h4 text-weight-bold' : 'text-h2 text-weight-bold']">
         {{ title }}
-      </h1>
-      <h3 class="absolute" style="padding-top: 3rem">{{ title }}</h3>
+      </div>
+      <div :class="['absolute ', $q.screen.gt.md ? 'text-h3 text-weight-bolder q-pt-lg' : $q.screen.lt.md ? 'text-h5 text-weight-bold q-pt-sm' : 'text-h4 text-weight-bold q-pt-md']" >{{ title }}</div>
     </div>
     <div
-      class="absolute"
-      style="margin-top: 11rem; font-size: 1.5rem; padding: 0 5rem"
+      :class="['absolute choose-us-description', $q.screen.lt.lg ? $q.screen.lt.md ? 'des-sm' : 'des-md' : '']"
     >
       <p>{{ description }}</p>
     </div>
@@ -16,8 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent, ref } from 'vue';
-import { computed } from 'vue';
+import { defineComponent } from 'vue';
 import { useQuasar } from 'quasar';
 
 export type PageCarouselProps = {
@@ -44,23 +42,21 @@ defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import 'https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap';
-h1 {
-  font-family: 'poppins', serif;
-  font-weight: bold;
+.background-text {
   color: lightgray;
   opacity: 0.2;
 }
-h3 {
-  font-family: 'poppins', serif;
-  font-weight: bold;
-}
-p {
-  font-family: 'poppins', serif;
-}
+
 .wrapper {
   width: 100%;
-  height: 18rem;
+  height: 20vh;
+  &.height-sm {
+    height: 11vh
+  }
+
+  &.height-md {
+    height: 14vh
+  }
 }
 .relative {
   position: relative;
@@ -71,4 +67,17 @@ p {
   left: 0;
   right: 0;
 }
+
+.choose-us-description {
+  margin-top: 7rem; font-size: 1.5rem; padding: 0 3rem;
+  &.des-md {
+    margin-top: 4rem; font-size: 1.2rem; padding: 0 1rem
+  }
+
+  &.des-sm {
+    margin-top: 3rem; font-size: 0.8rem; padding: 0 .3rem
+  }
+
+}
+
 </style>

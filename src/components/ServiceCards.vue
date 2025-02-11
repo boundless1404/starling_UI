@@ -1,31 +1,20 @@
 <template>
-  <div class="wrapper">
-    <h4>{{ groupTitle }}</h4>
-    <h6>{{ groupDescription }}</h6>
-    <div class="body">
+  <div>
+    <div :class="[$q.screen.lt.md ? 'text-h5' : $q.screen.lt.lg ? 'text-h4' : 'text-h3']">{{ groupTitle }}</div>
+    <div :class="[$q.screen.lt.md ? 'text-subtitle1' : 'text-h6']">{{ groupDescription }}</div>
+    <div class="body q-mx-auto">
       <div class="inner-body">
-        <q-card
-          v-for="(services, index) in serviceData"
-          :key="index"
-          class="cards"
-        >
-          <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
-            <!-- <div class="absolute-bottom text-h6">Title</div> -->
-          </q-img>
-
-          <q-card-section class="description">
-            {{ services.description }}
-          </q-card-section>
-        </q-card>
+        <ServiceOfferTileComponent v-for="(apartment, index) of serviceData" :key="index" :apartment="apartment" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineComponent, ref } from 'vue';
+import { ref } from 'vue';
 // import { computed } from 'vue';
 import { useQuasar } from 'quasar';
+import ServiceOfferTileComponent from './ServiceOfferTileComponent.vue';
 
 export type PageCarouselProps = {
   title: string;
@@ -46,63 +35,109 @@ withDefaults(
 // consts
 const $q = useQuasar();
 const serviceData = ref([
-  {
-    title: 'Suite and Apartments',
-    description:
-      'Experience unparalleled opulence in our high-end suite accommodations... ',
-    image: 'assets/hotel-management.jpg',
-  },
-  {
-    title: 'Autos',
-    description: 'Comprehensive car rental solutions for travelers...',
-    image: 'assets/event-management.jpg',
-  },
-  {
-    title: 'Tour',
-    description: 'Exciting guided tours to various destinations...',
-    image: 'assets/travel-management.jpg',
-  },
-  {
-    title: 'Visa',
-    description: 'Streamlined visa application assistance...',
-    image: 'assets/restaurant-management.jpg',
-  },
+{
+  name: 'Aurora Apartment',
+  location: 'Near Tafawa Balewa Square, Lagos, Nigeria',
+  price: 85000,
+  type: 'Luxury Room',
+  bedrooms: 2,
+  bathrooms: 2,
+  size: 400,
+  rating: 4.8,
+  image: 'assets/0b9a53c5-dde1-49c8-af78-1b9b3876147e.jpg' // Replace with actual image URL
+},
+{
+  name: 'Aurora Apartment',
+  location: 'Near Tafawa Balewa Square, Lagos, Nigeria',
+  price: 85000,
+  type: 'Luxury Room',
+  bedrooms: 2,
+  bathrooms: 2,
+  size: 400,
+  rating: 4.8,
+  image: 'assets/0b9a53c5-dde1-49c8-af78-1b9b3876147e.jpg' // Replace with actual image URL
+},
+{
+  name: 'Aurora Apartment',
+  location: 'Near Tafawa Balewa Square, Lagos, Nigeria',
+  price: 85000,
+  type: 'Luxury Room',
+  bedrooms: 2,
+  bathrooms: 2,
+  size: 400,
+  rating: 4.8,
+  image: 'assets/0b9a53c5-dde1-49c8-af78-1b9b3876147e.jpg' // Replace with actual image URL
+},
+{
+  name: 'Aurora Apartment',
+  location: 'Near Tafawa Balewa Square, Lagos, Nigeria',
+  price: 85000,
+  type: 'Luxury Room',
+  bedrooms: 2,
+  bathrooms: 2,
+  size: 400,
+  rating: 4.8,
+  image: 'assets/0b9a53c5-dde1-49c8-af78-1b9b3876147e.jpg' // Replace with actual image URL
+},
 ]);
 </script>
 
 <style lang="scss" scoped>
-@import 'https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap';
-h4 {
+.wrapper {
+  width: 100vw;
+}
+
+.text-h3 {
   font-family: 'poppins', serif;
-  font-weight: bold;
+  font-weight: 700;
   margin: 0;
   margin-top: 2.5rem;
 }
+
+.text-h4 {
+  font-family: 'poppins', serif;
+  font-weight: 600;
+  margin: 0;
+  margin-top: 2.5rem;
+}
+
+.text-h5 {
+  font-family: 'poppins', serif;
+  font-weight: 500;
+  margin: 0;
+  margin-top: 2.5rem;
+}
+
 h6 {
   font-family: 'poppins', serif;
   margin: 0;
 }
+
 p {
   font-family: 'poppins', serif;
 }
-.wrapper {
-  width: 100%;
-}
+
 .inner-body {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 1rem;
+  overflow-x: auto;
 }
+
 .body {
   background-color: inherit;
   border-radius: 15px;
-  padding: 1.5rem 0;
+  padding: 1.5rem;
+  overflow-x: auto;
+  max-width: 98vw
 }
+
 .cards {
   width: 100%;
   margin: 0;
   border-radius: 12px;
 }
+
 .description {
   border-radius: 12px;
 }

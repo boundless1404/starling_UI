@@ -10,13 +10,13 @@
         padding: 0.25rem 1rem;
       "
     >
-      <q-toolbar class="flex row justify-between">
+      <q-toolbar class="flex row justify-between items-center">
         <q-toolbar-title
-          class="q-mt-sm cursor-pointer"
+          :class="['cursor-pointer', $q.screen.gt.sm ? 'q-mt-sm' : '' ]"
           style="max-width: max-content"
         >
           <q-img
-            :width="$q.screen.lt.lg ? '8rem' : '10rem'"
+            :width="$q.screen.lt.lg ? '4rem' : '10rem'"
             fit="cover"
             src="/assets/starlings_logo.png"
           />
@@ -27,14 +27,15 @@
           class="flex row justify-right"
           style="width: 40%"
         ></div> -->
-        <div class="text-primary q-mr-xl">
+        <div class="text-primary q-mr-xl flex row items-end justify-end">
+        <div v-if="!$q.screen.lt.md">
           <q-btn
             color="black"
             label="Home"
             :size="$q.screen.lt.lg ? '0.5rem' : ''"
             flat
             no-caps
-            v-show="true"
+            
           />
           <q-btn
             color="black"
@@ -42,7 +43,7 @@
             :size="$q.screen.lt.lg ? '0.5rem' : ''"
             flat
             no-caps
-            v-show="true"
+            
           />
           <q-btn
             color="black"
@@ -50,25 +51,29 @@
             :size="$q.screen.lt.lg ? '0.5rem' : ''"
             flat
             no-caps
-            v-show="true"
+            
           />
-          <q-btn
+        </div>
+          <div class="flex row justify-end">
+            <q-btn
             color="black"
-            class="q-px-lg q-mx-sm cursor-pointer"
+            :class="['cursor-pointer ', $q.screen.gt.sm ? 'q-px-lg' : 'q-px-sm']"
             label="Get Started"
-            :size="$q.screen.lt.lg ? '0.6rem' : '0.8rem'"
+            :size="$q.screen.lt.lg ? $q.screen.lt.md ? '0.55rem' : '0.6rem' : '0.8rem'"
             flat
             no-caps
             @click="handleGetStarted"
           />
           <q-btn
             color="black"
-            class="q-px-lg cursor-pointer"
+            :class="['cursor-pointer ', $q.screen.gt.sm ? 'q-px-lg' : 'q-px-sm']"
             label="Sign In"
-            :size="$q.screen.lt.lg ? '0.6rem' : '0.8rem'"
+            :size="$q.screen.lt.lg ? $q.screen.lt.md ? '0.55rem' : '0.6rem' : '0.8rem'"
+            :flat="$q.screen.lt.md"
             no-caps
             @click="handleSignin"
           />
+          </div>
         </div>
         <q-btn color="primary" v-if="$q.screen.lt.md" flat round dense>
           <q-icon :name="menuIsActive ? 'close' : 'menu'" />
@@ -93,31 +98,51 @@
       <router-view v-else />
       <auth-dialog v-if="dialogOpen" :open="dialogOpen" :purpose="dialogPurpose" @close="closeDialog" />
       <!-- footer -->
-      <div
-        class="bg-white"
-        style="
-          position: relative;
-          bottom: 0;
-          width: 100%;
-          height: 8rem;
-          margin-top: 2rem;
-          z-index: 0 !important;
-        "
-      >
-        <div>
-          <div style="position: relative">
-            <q-img src="assets/Rectangle 110.png" />
-            <div
-              class="text-white text-center"
-              style="position: absolute; bottom: 0; z-index: 9999; width: 100%"
-            >
-              <span>&copy;2024</span> | <span>Starlings Properties</span>
-              <span> | </span>
-              <span>Powered by: boundlessedge</span>
-            </div>
+  <div class="footer-container">
+    <div class="footer-content row q-pa-md justify-between items-end">
+      <!-- Left Section: Brand and Social Icons -->
+      <div class="col-xs-12 col-md-4">
+        <div class="brand-info flex column justify-between">
+          <div class="">
+            <img src="/assets/starlings_logo.png" alt="Starling Logo" class="logo" />
+          <p class="brand-text">
+            Explore the world effortlessly with our comprehensive travel and hospitality solutions
+          </p>
+          </div>
+          <!-- Social Media Icons -->
+          <div class="social-icons">
+            <q-icon name="fab fa-instagram" />
+            <q-icon name="fas fa-times" />
+            <q-icon name="fab fa-facebook" />
+            <q-icon name="fab fa-tiktok" />
+            <q-icon name="fab fa-whatsapp" />
           </div>
         </div>
       </div>
+
+      <!-- Right Section: Newsletter Signup -->
+      <div class="col-xs-12 col-md-4 newsletter-section">
+        <h6 class="newsletter-title text-right">JOURNEY WITH US</h6>
+        <p class="newsletter-text">
+          Sign up for our newsletter and receive exclusive news and destination inspiration.
+          Join our mailing list today!
+        </p>
+        <q-input filled v-model="visitorEmail" placeholder="Enter your email" class="email-input" />
+        <q-btn color="primary" class="subscribe-btn">Subscribe</q-btn>
+      </div>
+    </div>
+
+    <!-- Bottom Footer: Copyright & Links -->
+    <div :class="['footer-bottom', $q.screen.lt.md ? 'height-sm' : '']">
+      <p>Copyright © starlingshsp.com. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Manage Cookies</a>
+      </div>
+      <q-img class="" src="/assets/starlings_logo.png" style="width: 100%" />
+    </div>
+  </div>
     </q-page-container>
   </q-layout>
 </template>
@@ -127,15 +152,18 @@ import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import LoadingSpinner from 'src/components/LoadingSpinner.vue';
 import AuthDialog from 'src/components/AuthDialog.vue';
+import { useQuasar } from 'quasar';
 
 // consts
 const router = useRouter();
+const $q = useQuasar();
 
 // refs
 const isLoading = ref(false);
 const menuIsActive = ref(false);
 const dialogOpen = ref(false);
 const dialogPurpose = ref<'signup' | 'signin'>('signup');
+const visitorEmail = ref('');
 
 // methods
 function closeDialog() {
@@ -179,12 +207,93 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-@font-face {
-  font-family: 'alegreya';
-  src: url('../css/fonts/AlegreyaSans-Bold.ttf');
+.footer-container {
+  background: #fff;
+  border-top: 1px solid #ddd;
+  text-align: center;
+  padding-bottom: 20px;
 }
 
-.alegreya {
-  font-family: 'alegreya';
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.brand-info {
+  text-align: left;
+  height: 100%;
+}
+
+.logo {
+  width: 8rem;
+  margin-bottom: 10px;
+}
+
+.brand-text {
+  font-size: 14px;
+  color: #333;
+}
+
+.social-icons {
+  display: flex;
+  gap: 10%;
+  margin-top: 10px;
+}
+
+.social-icons i {
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.newsletter-section {
+  text-align: right;
+}
+
+.newsletter-title {
+  font-weight: bold;
+}
+
+.email-input {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.subscribe-btn {
+  width: 100%;
+}
+
+.footer-bottom {
+  border-top: 1px solid #ddd;
+  padding: 10px;
+  font-size: 12px;
+  position: relative;
+  background: linear-gradient(360deg, rgba(0, 0, 0, 0.952) 20%, rgba(255, 255, 255, 0.952) 100%);
+  height: 25vw;
+  overflow: hidden;
+  &.height-sm {
+    height: 40vw;
+  }
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.footer-links a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.footer-bottom div img {
+  position: absolute;
+  top: 50rem;
+  left: 0;
+  height: 60%;
+  opacity:60% !important;
 }
 </style>

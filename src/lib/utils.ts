@@ -1,7 +1,58 @@
 import { Loading } from 'quasar';
 import { BaseModel } from '../models/base.model';
 import { Ref } from 'vue';
-import { ValidationArguments, ValidationError } from 'class-validator';
+import { registerDecorator, ValidationArguments, ValidationError, ValidationOptions } from 'class-validator';
+
+export function IsAfterCheckInDate() {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  return function (object: Object, propertyName: string) {
+    registerDecorator({
+      name: 'IsAfterCheckInDate',
+      target: object.constructor,
+      propertyName: propertyName,
+      options: { message: 'Check-out date must be at least one day after check-in date' },
+      validator: {
+        validate(value: any, args: ValidationArguments) {
+          debugger;
+          const checkInDate = (args.object as any).checkInDate;
+          if (!checkInDate || !value) return true; // Skip validation if either date is missing
+
+          const checkIn = new Date(checkInDate);
+          const checkOut = new Date(value);
+
+          checkIn.setHours(0, 0, 0, 0);
+          checkOut.setHours(0, 0, 0, 0);
+
+          return checkOut.getTime() > checkIn.getTime(); // Ensure checkOut is at least a day after checkIn
+        },
+      },
+    });
+  };
+}
+
+export function IsTodayOrLater(validationOptions?: ValidationOptions) {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  return function (object: Object, propertyName: string) {
+    registerDecorator({
+      name: 'isTodayOrLater',
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      validator: {
+        validate(value: any, args: ValidationArguments) {
+          if (!value) return true; // skip validation if no value is provided
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          const dateValue = new Date(value);
+          return dateValue >= today;
+        },
+        defaultMessage(args: ValidationArguments) {
+          return 'Check-in date must be today or later.';
+        },
+      },
+    });
+  };
+}
 
 export function getFieldError(model: BaseModel, field: string) {
   const fieldError = model.errors?.find((error) => error.property === field);

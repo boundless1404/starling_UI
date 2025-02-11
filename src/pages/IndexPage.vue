@@ -4,13 +4,13 @@
 
     <ServiceTabs />
     <!-- discover our services -->
-    <div>
+    <!-- <div>
       <SectionTitle
         title="DISCOVER OUR SERVICES"
         description="Hi John, Here are some of our service for you to pick from"
       />
       <ServiceDiscover />
-    </div>
+    </div> -->
 
     <!-- Why choose us -->
     <div>
@@ -24,7 +24,11 @@
     <!-- partners -->
     <div>
       <SectionTitle title="MEET OUR PARTNERS" />
-      <!-- <PartnersComponent /> -->
+     <div style="margin-top: -10vh;">
+      <PartnersComponent :duration="20" 
+      :pauseOnHover="true" 
+      :reverse="false" />
+     </div>
     </div>
 
     <!-- Customer review -->
@@ -33,36 +37,11 @@
         title="CUSTOMER REVIEW"
         description="see what our satisfied customers are saying"
       />
+      <!-- <div> -->
+        <customer-review-component />
+      <!-- </div> -->
     </div>
-    <!-- <div
-      class="q-px-md"
-      style="margin: calc(10rem + 15vw) 0 calc(2rem + 5vw) 0; height: 8vw"
-    >
-      <div style="font-size: calc(0.5rem + 2vw)">Our Partners</div>
-      <div class="flex row justify-center items-center" style="width: 100%">
-        <div>
-          <q-btn color="primary" round outline size="1vw">
-            <q-icon name="arrow_left" color="primary" />
-          </q-btn>
-        </div>
-        <div style="width: 78vw" class="flex row justify-around">
-          <div style="width: calc(2rem + 6vw); height: calc(0.8rem + 5vh)">
-            <q-img src="assets/hilton.png" />
-          </div>
-          <div style="width: calc(2rem + 6vw); height: calc(0.8rem + 5vh)">
-            <q-img src="assets/marriot.png" />
-          </div>
-          <div style="width: calc(2rem + 6vw); height: calc(0.8rem + 5vh)">
-            <q-img src="assets/radisson.png" />
-          </div>
-        </div>
-        <div>
-          <q-btn color="primary" round outline size="1vw">
-            <q-icon name="arrow_right" color="primary" />
-          </q-btn>
-        </div>
-      </div>
-    </div> -->
+
   </q-page>
 </template>
 
@@ -75,6 +54,7 @@ import PartnersComponent from 'src/components/PartnersComponent.vue';
 import ServiceTabs from 'src/components/ServiceTabs.vue';
 
 import { ref, computed } from 'vue';
+import CustomerReviewComponent from 'src/components/CustomerReviewComponent.vue';
 
 const circleWidth = ref('100px'); // Default width of the circle
 const circlePositionX = ref('50%'); // Default horizontal position (centered)

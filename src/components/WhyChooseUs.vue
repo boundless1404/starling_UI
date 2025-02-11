@@ -1,16 +1,18 @@
 <template>
-  <div class="wrapper">
-    <div class="body">
-      <div class="inner-body">
-        <q-card
-          v-for="(icon, index) in allIcons"
-          :key="index"
-          class="cards"
+  <div :class="['wrapper q-mt-sm', $q.screen.gt.md ? '' : $q.screen.lt.md ? 'padding-sm' :    'padding-md' ]">
+    <div class="row">
+      <div v-for="(icon, index) in allIcons"
+      :key="index" class="col-lg-4 col-md-6 col-sm-6 col-xs-12 q-pa-md">
+        <div
+          
+          class="cards text-overlay-container"
           flat
         >
-          <q-img :src="icon.iconUrl" style="margin: 3rem" />
-        </q-card>
+          <q-img :src="icon.iconUrl" />
+          <div class="text-overlay">{{ 'We serve at a local scale from a global stand point' }}</div>
+        </div>
       </div>
+      
     </div>
   </div>
 </template>
@@ -93,23 +95,48 @@ p {
 .wrapper {
   width: 100%;
   padding: 2rem 10rem;
-}
-.inner-body {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 2rem;
+  &.padding-md {
+    padding: 2rem 5rem;
+  }
+
+  &.padding-sm {
+    padding: 2rem 2rem;
+  }
 }
 .body {
   padding: 1rem;
 }
 .cards {
-  width: 100%;
   aspect-ratio: 1/1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-  border-radius: 15px;
+  border-radius: 16px;
   border: 1px solid black;
+}
+
+.text-overlay-container {
+  position: relative;
+}
+
+.text-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  font-size: 1.5rem;
+  opacity: 0;
+  color: white;
+  padding: 1rem;
+  transition: opacity 0.3s ease;
+  background-image: repeating-linear-gradient(90deg,
+     rgba(33, 33, 33, 0.06) 0px,
+      rgba(33, 33, 33, 0.06) 2px,
+       transparent 2px, transparent 4px),
+        linear-gradient(90deg, rgb(33, 33, 33), transparent), 
+        linear-gradient(0deg, rgb(33, 33, 33), transparent), 
+        linear-gradient(90deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4));
+  border-radius: 16px;
+}
+
+.cards:hover .text-overlay {
+  opacity: 1;
 }
 </style>
