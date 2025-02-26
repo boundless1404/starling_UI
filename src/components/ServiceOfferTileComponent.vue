@@ -1,77 +1,61 @@
 <template>
     <q-card :class="['apartment-card', $q.screen.gt.md ? $q.screen.gt.lg ? '' : 'width-lg' : $q.screen.lt.md ? 'width-sm' : 'width-md']">
         <!-- Apartment Image -->
-        <q-img :src="apartment.image" class="apartment-image">
+        <q-img :src="serviceOffer.files?.[0].url" class="apartment-image">
 
         </q-img>
         <div class="overlay" @click="showDialog">
             <!-- Apartment Details -->
             <div class="apartment-details">
-                <div class="apartment-title">{{ apartment.name }}</div>
-                <div class="apartment-location"><q-icon :color="'red-6'" name="place" :size="'1rem'" />{{ apartment.location }}</div>
+                <div class="apartment-title">{{ capitalize(serviceOffer.type?.replaceAll('_', ' ') || (serviceOffer as ServiceOffer).name) }}</div>
+                <div v-if="location" class="apartment-location"><q-icon :color="'red-6'" name="place" :size="'1rem'" />{{ location?.city + ', ' + location?.country}}</div>
                 <div class="flex row justify-between items-center">
-                    <div class="apartment-type">{{ apartment.type }}</div>
-                    <div class="apartment-price">₦{{ apartment.price.toLocaleString() }}</div>
+                    <div class="apartment-type">{{ serviceOffer.type }}</div>
+                    <div class="apartment-price">₦{{ serviceOffer.priceOptions?.[0].price.toLocaleString('en-US') }}</div>
                 </div>
             </div>
             <!-- Features Section -->
             <div class="features">
-                <div class="feature">
-                    <q-icon name="bed" size="20px" />
-                    <span>{{ apartment.bedrooms }} Bed</span>
-                </div>
                 <template v-if="$q.screen.gt.sm">
-                    <div class="feature">
-                    <q-icon name="bathtub" size="20px" />
-                    <span>{{ apartment.bathrooms }} Bath</span>
-                </div>
-                <div class="feature gt-xs">
-                    <q-icon name="square_foot" size="20px" />
-                    <span>{{ apartment.size }} sqft</span>
+                <div  v-for="(feature, index) of serviceOffer.features?.slice(0, 3)" :key="index" class="feature">
+                    <q-icon :name="feature.icon || 'safe'" size="20px" />
+                    <span>{{ feature.name }}</span>
                 </div>
                 </template>
                 <template v-else>
+                    <div  v-for="(feature, index) of serviceOffer.features?.slice(0, 2)" :key="index" class="feature">
+                    <q-icon :name="feature.icon || 'safe'" size="20px" />
+                    <span>{{ feature.name }}</span>
+                </div>
                     <span>+{{ 2 }} More</span>
                 </template>
-                <div class="feature">
-                    <q-icon name="star" color="yellow-8" size="20px" />
-                    <span>{{ apartment.rating }}</span>
-                </div>
             </div>
         </div>
 
-        <q-dialog v-model="dialogOpen">
-            <offer-details-component />
+        <q-dialog v-model="dialogOpen" full-height style="height: min-content; overflow: scroll;">
+            <offer-details-component :offer="serviceOffer" :current-booking-component-name="currentBookingComponentName" />
         </q-dialog>
     </q-card>
 </template>
 
 <script setup lang="ts">
-import { Q } from 'app/dist/spa/assets/QLayout.60eaca2e';
 import { useQuasar } from 'quasar';
-import { defineProps, ref } from 'vue';
+import { defineProps, onMounted, ref } from 'vue';
 import OfferDetailsComponent from './OfferDetailsComponent.vue';
+import SuitesModel from 'src/models/suite.model';
+import { ServiceOffer } from 'src/lib/types';
+import { capitalize } from 'lodash';
+import AutoServiceOfferModel from 'src/models/autoServiceOffer.model';
+import TourServiceOfferModel from 'src/models/tourServiceOffer.model';
+import VisaServiceOfferModel from 'src/models/visaServiceOffer.mode';
+import { BookingComponentName } from './PaymentComponent.vue';
 
 // Define apartment data as props for reusability
-const props = defineProps({
-    apartment: {
-        type: Object,
-        required: true,
-        default: () => ({
-            name: 'Aurora Apartment',
-            location: 'Near Tafawa Balewa Square, Lagos, Nigeria',
-            price: 85000,
-            type: 'Luxury Room',
-            bedrooms: 2,
-            bathrooms: 2,
-            size: 400,
-            rating: 4.8,
-            image: 'assets/0b9a53c5-dde1-49c8-af78-1b9b3876147e.jpg'
-        })
-    }
-});
+export type ServiceOfferType =  (SuitesModel | AutoServiceOfferModel | TourServiceOfferModel | VisaServiceOfferModel | ServiceOffer)
+const props = defineProps<{serviceOffer: ServiceOfferType, currentBookingComponentName?: BookingComponentName}>();
 
 const dialogOpen = ref(false);
+const location = ref((props.serviceOffer as SuitesModel).location);
 
 const showDialog = () => {
     // Open the dialog
@@ -80,6 +64,10 @@ const showDialog = () => {
 };
 
 const $q = useQuasar();
+
+onMounted(() => {
+    console.log('Service Offer Tile Component Mounted: ', props.serviceOffer);
+});
 </script>
 
 <style scoped lang="scss">
@@ -113,6 +101,7 @@ const $q = useQuasar();
 }
 
 .overlay {
+    cursor: pointer;
     position: absolute;
     bottom: 0;
     left: 2px;

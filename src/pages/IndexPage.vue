@@ -13,16 +13,16 @@
     </div> -->
 
     <!-- Why choose us -->
-    <div>
+    <div style="margin-bottom: 2rem;">
       <SectionTitle
-        title="WHY CHOOSE US"
-        description="At Starlings Hospitality, we believe that travel should be effortless, personalized, and unforgettable. We're more than just a booking platform; we're your trusted partner in crafting seamless travel experiences tailored to your unique desires. Here's why travelers choose Starlings for their journeys."
+      title="WHY CHOOSE US"
+      description="At Starlings Hospitality, we believe that travel should be effortless, personalized, and unforgettable. We're more than just a booking platform; we're your trusted partner in crafting seamless travel experiences tailored to your unique desires. Here's why travelers choose Starlings for their journeys."
       />
       <WhyChooseUs />
     </div>
 
     <!-- partners -->
-    <div>
+    <div style="margin-bottom: 2rem;">
       <SectionTitle title="MEET OUR PARTNERS" />
      <div style="margin-top: -10vh;">
       <PartnersComponent :duration="20" 
@@ -32,13 +32,13 @@
     </div>
 
     <!-- Customer review -->
-    <div>
+    <div style="margin-bottom: 2rem;">
       <SectionTitle
-        title="CUSTOMER REVIEW"
-        description="see what our satisfied customers are saying"
+      title="CUSTOMER REVIEW"
+      description="see what our satisfied customers are saying"
       />
       <!-- <div> -->
-        <customer-review-component />
+      <customer-review-component />
       <!-- </div> -->
     </div>
 
@@ -48,7 +48,6 @@
 <script setup lang="ts">
 import PageCarousel from '../components/PageCarousel.vue';
 import SectionTitle from '../components/SectionTitle.vue';
-import ServiceDiscover from '../components/ServiceDiscover.vue';
 import WhyChooseUs from 'src/components/WhyChooseUs.vue';
 import PartnersComponent from 'src/components/PartnersComponent.vue';
 import ServiceTabs from 'src/components/ServiceTabs.vue';

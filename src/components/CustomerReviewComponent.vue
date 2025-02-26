@@ -66,10 +66,10 @@ interface Review {
 
 // Sample images
 const images = ref([
-    'icons/thinkglobe.png',
-    'icons/starjournal.png',
-    'icons/securecheck.png',
-    'icons/sample-image.png'
+    'assets/Starling_Suite.png',
+    'assets/service-apartment.jpg',
+    'https://boundlessobs.s3.eu-north-1.amazonaws.com/test-images/7216482a-3fbb-4f22-96d4-ae100fcb32ef.jpg',
+    'https://boundlessobs.s3.eu-north-1.amazonaws.com/test-images/6889df68-8c28-4cee-9989-1bd9cdfce18b.jpg'
 ]);
 
 // Sample review data

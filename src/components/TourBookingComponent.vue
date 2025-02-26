@@ -1,114 +1,52 @@
 <template>
-
-    <q-form ref="bookingFormRef" @submit.prevent="addToBooking">
-        <q-card-section>
-            <div class="bg-grey-3 text-center q-py-sm q-mb-lg" style="border-radius: 25px;">
-                {{ serviceOfferProviderName }} {{ `${serviceOfferCategory? `, ${serviceOfferCategory}` : ''}` }}
-            </div>
-
-            <div class="row q-col-gutter-md">
-                <!-- First Name -->
-                <div class="col-12 col-sm-6">
-                    <q-input v-model="tourBookingModel.client.firstName" label="First Name" outlined rounded
-                        class="booking-input" :rules="[() => $validateField(tourBookingModel, 'client.firstName')]" />
-                </div>
-
-                <!-- Last Name -->
-                <div class="col-12 col-sm-6">
-                    <q-input v-model="tourBookingModel.client.lastName" label="Last Name" outlined rounded
-                        class="booking-input" :rules="[() => $validateField(tourBookingModel, 'client.lastName')]" />
-                </div>
-
-                <!-- Email -->
-                <div class="col-12 col-sm-6">
-                    <q-input v-model="tourBookingModel.client.email" label="Email" outlined rounded
-                        class="booking-input" type="email"
-                        :rules="[() => $validateField(tourBookingModel, 'client.email')]" />
-                </div>
-
-                <!-- Phone -->
-                <div class="col-12 col-sm-6">
-                    <div class="row">
-                        <div class="col-4">
-                            <q-select outlined rounded v-model="tourBookingModel.client.phoneCodeId"
-                                :options="phoneCodeIdOptions" bg-color="secondary"
-                                :rules="[() => $validateField(tourBookingModel, 'client.phoneCodeId')]" emit-value
-                                map-options />
-                        </div>
-                        <div class="col-8">
-                            <q-input v-model="tourBookingModel.client.phone" outlined rounded class="booking-input"
-                                type="tel" :rules="[() => $validateField(tourBookingModel, 'client.phone')]" />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Start Date -->
-                <div class="col-12 col-sm-6">
-                    <q-input v-model="tourBookingModel.date" label="Start Date" outlined rounded
-                        class="booking-input" :rules="[() => $validateField(tourBookingModel, 'startDate')]"
-                        readonly>
-                        <template v-slot:append>
-                            <q-icon name="event" class="cursor-pointer">
-                                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                    <q-date v-model="tourBookingModel.date" mask="YYYY-MM-DD" today-btn />
-                                </q-popup-proxy>
-                            </q-icon>
-                        </template>
-                    </q-input>
-                </div>
-
-                <!-- End Date -->
-                <!-- <div class="col-12 col-sm-6">
-                    <q-input v-model="autoBookingModel.endDate" label="End Date" outlined rounded
-                        class="booking-input" :rules="[() => $validateField(autoBookingModel, 'checkOutDate')]"
-                        readonly>
-                        <template v-slot:append>
-                            <q-icon name="event" class="cursor-pointer">
-                                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                    <q-date v-model="autoBookingModel.endDate" mask="YYYY-MM-DD" today-btn />
-                                </q-popup-proxy>
-                            </q-icon>
-                        </template>
-                    </q-input>
-                </div> -->
-            </div>
-
-            <!-- Price Selection -->
-            <div class="q-mt-lg">
-                <div class="row q-col-gutter-md">
-                    <div class="col-12 col-sm-6">
-                        <div class="text-subtitle1 q-mb-md">Price Options</div>
-                        <div class="row items-center q-gutter-sm col-12 col-md-auto; flex-wrap: wrap">
-                            <q-chip color="primary" text-color="white">
-                                {{ '\u20A6' }}{{ currentSelectedPriceOption?.price || tourBookingModel.price || 0 }}
-                                <q-tooltip>
-                                    {{ currentSelectedPriceOption?.description || '' }}
-                                </q-tooltip>
-                            </q-chip>
-                            <q-select v-show="priceSelectOptions && priceSelectOptions.length > 0" class="col" v-model="selectedAutoPriceId" :options="priceSelectOptions" dense
-                                options-dense outlined rounded emit-value map-options />
-                        </div>
-                    </div>
-                    <!-- <div class="col-12 col-sm-6">
-                        <div class="text-subtitle1 q-mb-md">Room Price</div>
-                        <div class="row items-center q-gutter-sm col-12 col-md-auto">
-                            <q-input class="col" style="" dense v-model.number="autoBookingModel.roomsCount"
-                                label="Number of Rooms" outlined rounded type="number"
-                                :rules="[() => $validateField(autoBookingModel, 'roomsCount')]" />
-                            <q-chip color="primary" text-color="white">
-                                {{ '\u20A6' }}{{ roomPriceComputed.toLocaleString('en-US') }}
-                            </q-chip>
-                        </div>
-                    </div> -->
-                </div>
-            </div>
-        </q-card-section>
-
-        <q-card-actions align="center" class="q-pa-md">
-            <q-btn label="Add To Booking" color="primary" class="full-width" rounded style="max-width: 400px"
-                @click="addToBooking" :loading="loading" />
-        </q-card-actions>
-    </q-form>
+<q-form ref="bookingFormRef" @submit.prevent="addToBooking">
+    <q-card class="booking-card">
+      <!-- Service Information -->
+    <div class="service-info row q-col-gutter-md">
+      <div class="col-12 col-md-8 service-text">
+        <h2 class="service-title">{{ serviceOfferProviderName }} {{ `${serviceOfferCategory? `, ${serviceOfferCategory}` : ''}` }}</h2>
+        <p class="service-location">📍 {{ serviceOfferLocation }}</p>
+        <p class="service-rating">⭐⭐⭐⭐⭐ 4.8</p>
+        <p class="service-price">&#8358;{{ currentSelectedPriceOption?.price || tourBookingModel.price || 0 }}</p>
+      </div>
+      <div class="col-12 col-md-4">
+        <q-img style="height: 100%; width:100%" :src="serviceOffer?.files?.[0].url" class="service-image" />
+      </div>
+      </div>
+      
+      <!-- Form Fields -->
+      <q-card-section>
+        <div class="row q-col-gutter-md">
+          <div class="col-12 col-sm-6">
+            <q-input v-model="tourBookingModel.client.firstName" label="First Name" outlined class="booking-input" :rules="[() => $validateField(tourBookingModel, 'client.firstName')]" />
+          </div>
+          <div class="col-12 col-sm-6">
+            <q-input v-model="tourBookingModel.client.lastName" label="Last Name" outlined class="booking-input" :rules="[() => $validateField(tourBookingModel, 'client.lastName')]" />
+          </div>
+          <div class="col-12 col-sm-6">
+            <q-input v-model="tourBookingModel.client.email" label="Email" outlined class="booking-input" type="email" :rules="[() => $validateField(tourBookingModel, 'client.email')]" />
+          </div>
+          <div class="col-12 col-sm-6 phone-input row justify-between">
+              <PhoneCodesComponents v-slot="{ phoneCodes }" >
+              <select-with-image-icon-component class="col-5" :phone-codes="phoneCodes"
+              :selected-phon-code-id="tourBookingModel.client.phoneCodeId || ''"
+              @update:selected-phon-code-id="updateSelectedPhoneCodeId" borderless ref="searchInputRef"
+              />
+            </PhoneCodesComponents>
+            <q-input v-model="tourBookingModel.client.phone" outlined class="booking-input phone-number col-7" type="tel" :rules="[() => $validateField(tourBookingModel, 'client.phone')]" />
+          </div>
+          <div class="col-12 col-sm-6">
+            <q-input v-model="tourBookingModel.date" label="Start Date" outlined class="booking-input" type="date" :rules="[() => $validateField(tourBookingModel, 'date')]" />
+          </div>
+        </div>
+      </q-card-section>
+      
+      <!-- Booking Button -->
+      <q-card-actions align="center">
+        <q-btn label="Add to Booking" class="booking-btn sec-bg-purple text-white"  @click="addToBooking" :loading="loading" />
+      </q-card-actions>
+    </q-card>
+  </q-form>
 </template>
 
 <script setup lang="ts">
@@ -118,7 +56,9 @@ import { asyncComputed } from '@vueuse/core';
 import { isModelValid } from 'src/lib/utils';
 import TourServiceOfferBookingViewModel from 'src/view-models/tourServiceOfferBooking.view-model';
 import TourServiceOfferBooking from 'src/models/tourServiceOfferBooking.model';
-import { OfferBookingProps } from './VisaBookingComponent.vue';
+import { OfferBookingProps } from './BookingsComponent.vue';
+import SelectWithImageIconComponent from './SelectWithImageIconComponent.vue';
+import PhoneCodesComponents from './PhoneCodesComponents.vue';
 
 const $q = useQuasar();
 
@@ -155,11 +95,15 @@ const phoneCodeIdOptions = computed(() => {
 });
 
 const roomPriceComputed = computed(() => {
-    console.log('this is the current selected price option in auto booking', props.currentSelectedPriceOption?.price)
+    console.log('this is the current selected price option in tour booking', props.currentSelectedPriceOption?.price)
     return (props.currentSelectedPriceOption?.price || 0) as number  * 1;
 })
 
 // Methods
+async function updateSelectedPhoneCodeId(value: string) {
+  tourBookingModel.client.phoneCodeId = value;
+}
+
 const addToBooking = async () => {
     bookingAdded.value = false;
     if (!isModelValid(tourBookingModel)) {
@@ -188,10 +132,6 @@ watch(() => props.serviceOfferPriceOptionId, (newVal) => {
     selectedAutoPriceId.value = String(newVal);
 })
 
-// watch(() => props.serviceOfferPrice, (newVal) => {
-//     tourBookingModel.price = (newVal || 0) as NonNullable<number>;
-// })
-
 // hooks
 onMounted(() => {
     console.log('tour booking mounted: -->',props.priceSelectOptions)
@@ -208,7 +148,6 @@ onMounted(() => {
     tourBookingModel.client.email = tourServiceBookingViewModel.currentUser?.userData?.email || 'Please, enter your email.';
     tourBookingModel.client.phone = tourServiceBookingViewModel.currentUser?.userData?.phone || 'Please, enter your phone number.';
         tourBookingModel.date = new Date().toISOString().split('T')[0];  // Set today's date as the default check-in date
-        // tourBookingModel.endDate = new Date(new Date().getTime() + 86400000).toISOString().split('T')[0]; // Set check-out date as one day after the check-in date
     }
 });
 
@@ -238,4 +177,28 @@ onMounted(() => {
     max-width: 300px;
     margin-top: 16px;
 }
+
+.booking-card {
+  max-width: 800px;
+  margin: auto;
+  padding: 16px;
+  border-radius: 12px;
+  background: #fff;
+}
+.service-info {
+  display: flex;
+  background: #000;
+  color: white;
+  padding: 16px;
+  border-radius: 12px;
+}
+.service-text { flex: 1; }
+.service-title { font-size: 1.5em; font-weight: bold; }
+.service-location, .suite-rating, .suite-price { margin: 4px 0; }
+.service-image { width: 150px; height: 100px; background: url('/path-to-image.jpg') center/cover; border-radius: 8px; }
+.booking-input { width: 100%; }
+.phone-input { display: flex; gap: 8px; }
+.phone-code { width: 30%; }
+.phone-number { flex: 1; }
+.booking-btn { width: 100%; max-width: 300px; margin-top: 16px; }
 </style>

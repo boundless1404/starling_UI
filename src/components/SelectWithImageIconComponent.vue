@@ -1,7 +1,7 @@
 <template>
     <div class="select-container" v-bind="restProps">
       <div class="selected-option" :style="{...(!borderless ? {} : {border: 'none'}),  ...($q.screen.xl ? {padding: '16px 8px 8px 8px'} : { padding: '16px 2px 2px 2px'})}" @click.stop="toggleDropdown">
-        <q-icon name="arrow_drop_down" />
+        <q-icon :class="[$q.screen.gt.sm ? 'q-ml-md text-h4' : 'q-ml-sm text-h6']" name="arrow_drop_down" />
         <img :class="[$q.screen.xl ? 'q-px-xs' : '']"
           :src="'https:'+selectedCountry?.flageUrl"
           alt="flag"
@@ -43,10 +43,12 @@
   </template>
   
 <script setup lang="ts">
-  import { PhoneCode } from 'src/lib/types';
+  import { useQuasar } from 'quasar';
+import { PhoneCode } from 'src/lib/types';
   import { ref, computed, useAttrs } from 'vue';
   
-  
+
+const $q = useQuasar();  
 const props = withDefaults(defineProps<{ phoneCodes: PhoneCode[], selectedPhonCodeId: string, borderless?: boolean}>(), {borderless: false});
 const emits = defineEmits(['update:selectedPhonCodeId']);
 

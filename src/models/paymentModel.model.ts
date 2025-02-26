@@ -6,7 +6,7 @@ export default class PaymentModel extends BaseModel {
 
     @IsNotEmpty()
     @IsEnum(['USD', 'NGN'])
-    currency: string;
+    currency = 'NGN' as 'USD' | 'NGN';
 
     @IsNotEmpty()
     @IsEmail()

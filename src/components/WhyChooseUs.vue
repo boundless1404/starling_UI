@@ -1,115 +1,65 @@
 <template>
-  <div :class="['wrapper q-mt-sm', $q.screen.gt.md ? '' : $q.screen.lt.md ? 'padding-sm' :    'padding-md' ]">
+  <div :class="['wrapper q-mt-sm', $q.screen.gt.md ? '' : $q.screen.lt.md ? 'padding-sm' : 'padding-md']">
     <div class="row">
-      <div v-for="(icon, index) in allIcons"
-      :key="index" class="col-lg-4 col-md-6 col-sm-6 col-xs-12 q-pa-md">
-        <div
-          
-          class="cards text-overlay-container"
-          flat
-        >
-          <q-img :src="icon.iconUrl" />
-          <div class="text-overlay">{{ 'We serve at a local scale from a global stand point' }}</div>
+      <div v-for="(icon, index) in allIcons" :key="index" class="col-lg-4 col-md-6 col-sm-6 col-xs-12 q-pa-md">
+        <div class="cards text-overlay-container">
+          <q-img :src="icon.iconUrl" class="icon-img" />
+          <div class="text-overlay">
+            <h3>{{ icon.title }}</h3>
+            <p>{{ icon.description }}</p>
+          </div>
         </div>
       </div>
-      
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { defineComponent, ref } from 'vue';
-// import { computed } from 'vue';
 import { useQuasar } from 'quasar';
 
-export type PageCarouselProps = {
-  title: string;
-  description?: string;
-};
-
-withDefaults(
-  defineProps<{
-    title?: string;
-    description?: string;
-  }>(),
-  {
-    title: 'This should be a section title',
-  }
-);
-
-// consts
 const $q = useQuasar();
 const allIcons = ref([
-  {
-    iconUrl: 'icons/thinkglobe.png',
-    title: 'Hilton',
-    description: 'lorem ipsum blah blah',
-  },
-  {
-    iconUrl: 'icons/starjournal.png',
-    title: 'Hilton',
-    description: 'lorem ipsum blah blah',
-  },
-  {
-    iconUrl: 'icons/securecheck.png',
-    title: 'Hilton',
-    description: 'lorem ipsum blah blah',
-  },
-  {
-    iconUrl: 'icons/thinksupport.png',
-    title: 'Hilton',
-    description: 'lorem ipsum blah blah',
-  },
-  {
-    iconUrl: 'icons/handheart.png',
-    title: 'Hilton',
-    description: 'lorem ipsum blah blah',
-  },
-  {
-    iconUrl: 'icons/plane.png',
-    title: 'Hilton',
-    description: 'lorem ipsum blah blah',
-  },
+  { iconUrl: 'icons/thinkglobe.png', title: 'Global Reach', description: 'We provide services worldwide.' },
+  { iconUrl: 'icons/starjournal.png', title: 'Innovative Solutions', description: 'Cutting-edge strategies for progress.' },
+  { iconUrl: 'icons/securecheck.png', title: 'Secure Transactions', description: 'Keeping your data and payments safe.' },
+  { iconUrl: 'icons/thinksupport.png', title: 'Dedicated Support', description: '24/7 assistance when you need it.' },
+  { iconUrl: 'icons/handheart.png', title: 'Community Engagement', description: 'Building stronger local connections.' },
+  { iconUrl: 'icons/plane.png', title: 'Seamless Travel', description: 'Hassle-free experiences worldwide.' },
 ]);
 
-defineComponent({
-  name: 'WhyChooseUs',
-});
+defineComponent({ name: 'WhyChooseUs' });
 </script>
 
 <style lang="scss" scoped>
-@import 'https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap';
-h1 {
-  font-family: 'poppins', serif;
-  font-weight: bold;
-  color: lightgray;
-  opacity: 0.2;
-}
-h3 {
-  font-family: 'poppins', serif;
-  font-weight: bold;
-}
-p {
-  font-family: 'poppins', serif;
-}
+@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap';
+
 .wrapper {
   width: 100%;
   padding: 2rem 10rem;
-  &.padding-md {
-    padding: 2rem 5rem;
-  }
+  &.padding-md { padding: 2rem 5rem; }
+  &.padding-sm { padding: 2rem 2rem; }
+}
 
-  &.padding-sm {
-    padding: 2rem 2rem;
-  }
-}
-.body {
-  padding: 1rem;
-}
 .cards {
   aspect-ratio: 1/1;
   border-radius: 16px;
-  border: 1px solid black;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.icon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .text-overlay-container {
@@ -120,19 +70,18 @@ p {
   position: absolute;
   top: 0;
   left: 0;
-  bottom: 0;
-  font-size: 1.5rem;
-  opacity: 0;
-  color: white;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   padding: 1rem;
-  transition: opacity 0.3s ease;
-  background-image: repeating-linear-gradient(90deg,
-     rgba(33, 33, 33, 0.06) 0px,
-      rgba(33, 33, 33, 0.06) 2px,
-       transparent 2px, transparent 4px),
-        linear-gradient(90deg, rgb(33, 33, 33), transparent), 
-        linear-gradient(0deg, rgb(33, 33, 33), transparent), 
-        linear-gradient(90deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4));
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
   border-radius: 16px;
 }
 

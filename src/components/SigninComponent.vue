@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { SignupConfirmationModel } from '../../src/models/signupConfirmationModel.model';
 import { asyncComputed } from '@vueuse/core';
 import { QForm, useQuasar } from 'quasar';
@@ -60,9 +60,8 @@ import { clearUIEffects, isModelValid } from 'src/lib/utils';
 import { loadingTimeout } from 'src/lib/projectConstants';
 
 // consts
-const emits = defineEmits(['toggle-auth-component']);
+const emits = defineEmits(['toggle-auth-component', 'signin-success']);
 const $q = useQuasar();
-const router = useRouter();
 let postSignupTimer: NodeJS.Timeout;
 
 // refs
@@ -119,7 +118,11 @@ async function signin() {
                 requestProcessingRef: requestingServer,
             });
 
-            await router.replace('/services');
+            useNotify({
+                type: 'positive',
+                message: 'Sign in successful',
+            });
+            emits('signin-success');
         },
         async onError(error) {
             useNotify({

@@ -1,7 +1,7 @@
 <template>
   <!-- The .slider-wrapper hides the overflowing content -->
   <!-- Adding the 'pause-hover' class conditionally allows pausing on hover -->
-  <div class="slider-wrapper" :class="{ 'pause-hover': pauseOnHover }">
+  <div class="slider-wrapper q-my-xl" :class="{ 'pause-hover': pauseOnHover }">
     <!-- The .slider-content is the moving container.
          It uses inline style binding to set the animation duration.
          If the `reverse` prop is true, a class is applied to reverse the animation direction. -->
@@ -9,7 +9,7 @@
       <!-- We duplicate the partners list so that as the first copy scrolls out, the second copy follows,
            creating a seamless loop. -->
       <div class="slider-item" v-for="(partner, index) in duplicatedPartners" :key="index">
-        <img :src="partner.logo" alt="Partner Logo" />
+        <img style="height: 5vw; width: 6vw;" :src="partner.logo" alt="Partner Logo" />
       </div>
     </div>
   </div>
@@ -25,20 +25,30 @@ interface Partner {
 
 // Example partners list. Adjust or replace with your own data source.
 const partners = ref<Partner[]>([
-  { logo: 'icons/thinkglobe.png' },
-  { logo: 'icons/starjournal.png' },
+  { logo: 'assets/eko_hotel_logo.jpg' },
+  { logo: 'assets/hilton_logo.jpg' },
   {
-    logo: 'icons/securecheck.png',
+    logo: 'assets/marriott_logo.jpg',
   },
   {
-    logo: 'icons/thinksupport.png',
+    logo: 'assets/radisson_blu_logo.jpg',
   },
   {
-    logo: 'icons/handheart.png',
+    logo: 'assets/transcorp_logo.webp',
+  },
+  { logo: 'assets/eko_hotel_logo.jpg' },
+  { logo: 'assets/hilton_logo.jpg' },
+  {
+    logo: 'assets/marriott_logo.jpg',
   },
   {
-    logo: 'icons/plane.png',
+    logo: 'assets/radisson_blu_logo.jpg',
   },
+  {
+    logo: 'assets/transcorp_logo.webp',
+  },
+  { logo: 'assets/eko_hotel_logo.jpg' },
+  { logo: 'assets/hilton_logo.jpg' },
 ]);
 
 /**

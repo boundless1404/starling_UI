@@ -21,6 +21,8 @@ const useAuthStore = defineStore('auth', {
         return this[field];
       };
     },
+
+
   },
   actions: {
     async initializeStore() {
@@ -40,6 +42,19 @@ const useAuthStore = defineStore('auth', {
           // TODO: handle error
         }
       );
+    },
+    userIsAuthenticated() {
+      return !!this.token;
+    },
+    async logout() {
+      this.$patch({
+        token: undefined,
+        userData: undefined,
+        profile: undefined,
+      });
+      await forageSetItem(StorageNamesEnum.AUTH_USER_DATA, null, (err) => {
+        // TODO: handle error
+      });
     },
   },
 });

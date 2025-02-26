@@ -3,17 +3,16 @@ import { BaseModel } from '../models/base.model';
 import { Ref } from 'vue';
 import { registerDecorator, ValidationArguments, ValidationError, ValidationOptions } from 'class-validator';
 
-export function IsAfterCheckInDate() {
+export function IsAfterDate(validationOptions?: ValidationOptions) {
   // eslint-disable-next-line @typescript-eslint/ban-types
   return function (object: Object, propertyName: string) {
     registerDecorator({
       name: 'IsAfterCheckInDate',
       target: object.constructor,
       propertyName: propertyName,
-      options: { message: 'Check-out date must be at least one day after check-in date' },
+      options: validationOptions,
       validator: {
         validate(value: any, args: ValidationArguments) {
-          debugger;
           const checkInDate = (args.object as any).checkInDate;
           if (!checkInDate || !value) return true; // Skip validation if either date is missing
 
@@ -145,4 +144,11 @@ export function getQueryString(options: Record<string, any>) {
 
 export function GetIsRequiredMessage(validationArgs: ValidationArguments) {
   return `${validationArgs.property} is required.`
+}
+
+export function removeUnwantedModelFields(model: BaseModel, fields: Array<keyof BaseModel> = ['clearValues', 'validate', 'errors']) {
+  fields.forEach((field) => {
+    delete model[field];
+  });
+  return model;
 }

@@ -47,15 +47,15 @@
           <!-- <div class=""></div> -->
           <template v-if="$q.screen.lt.md">
             <div :class="[headlineText, 'flex column flex-center']" style="font-size: 3rem">
-            <span :class="['text-gradient', ]" >Suite &</span>
-            <span :class="['text-gradient']">Apartments</span>
-          </div>
+              <span :class="['text-gradient',]">Suite &</span>
+              <span :class="['text-gradient']">Apartments</span>
+            </div>
           </template>
           <template v-else>
             <div :class="[headlineText, 'flex column flex-center']">
-            <span :class="['text-gradient', suiteTextStyle]">Suite &</span>
-            <span class="text-gradient">Apartments</span>
-          </div>
+              <span :class="['text-gradient', suiteTextStyle]">Suite &</span>
+              <span class="text-gradient">Apartments</span>
+            </div>
           </template>
         </q-carousel-slide>
         <q-carousel-slide name="auto 1">
@@ -79,15 +79,15 @@
         <q-carousel-slide name="suite 2">
           <template v-if="$q.screen.lt.md">
             <div :class="[headlineText, 'flex column flex-center']" style="font-size: 3rem">
-            <span :class="['text-gradient', ]" >Suite &</span>
-            <span :class="['text-gradient']">Apartments</span>
-          </div>
+              <span :class="['text-gradient',]">Suite &</span>
+              <span :class="['text-gradient']">Apartments</span>
+            </div>
           </template>
           <template v-else>
             <div :class="[headlineText, 'flex column']">
-            <span :class="['text-gradient', suiteTextStyle]">Suite &</span>
-            <span class="text-gradient">Apartments</span>
-          </div>
+              <span :class="['text-gradient', suiteTextStyle]">Suite &</span>
+              <span class="text-gradient">Apartments</span>
+            </div>
           </template>
         </q-carousel-slide>
         <q-carousel-slide name="auto 2">
@@ -128,36 +128,36 @@
         <q-carousel-slide name="auto 1">
           <div :class="[headlineText, 'flex flex-center']">
             <span style="font-size: 1.5rem; width: 80vw; color: white">
-              Discover your home away from home with Starlings. We offer
-              personalized suites and apartments, designed for comfort and
-              luxury. Experience seamless accommodation that caters to your
-              unique needs, from short stays to extended escapes. Enjoy curated
-              spaces that blend aspirational elegance with home-like
-              convenience. Let us redefine your travel experience.
+              Experience the freedom of the open road with Starlings. Our premium auto services offer a fleet of luxury
+              vehicles tailored to your travel needs. Whether you're exploring new destinations or commuting for
+              business,
+              enjoy the comfort, safety, and style of our top-tier automobiles. Let us elevate your journey with
+              unparalleled convenience and sophistication.
             </span>
           </div>
         </q-carousel-slide>
         <q-carousel-slide name="tour 1">
           <div :class="[headlineText, 'flex flex-center']">
             <span style="font-size: 1.5rem; width: 80vw; color: white">
-              Discover your home away from home with Starlings. We offer
-              personalized suites and apartments, designed for comfort and
-              luxury. Experience seamless accommodation that caters to your
-              unique needs, from short stays to extended escapes. Enjoy curated
-              spaces that blend aspirational elegance with home-like
-              convenience. Let us redefine your travel experience.
+              Embark on unforgettable adventures with Starlings. Our exclusive tours are crafted to immerse you in the
+              rich
+              culture and breathtaking landscapes of your destination. From guided city explorations to
+              off-the-beaten-path
+              excursions, experience the world like never before. Let us handle the details while you create lasting
+              memories on your journey.
             </span>
           </div>
         </q-carousel-slide>
         <q-carousel-slide name="visa 1">
           <div :class="[headlineText, 'flex flex-center']">
             <span style="font-size: 1.5rem; width: 80vw; color: white">
-              Discover your home away from home with Starlings. We offer
-              personalized suites and apartments, designed for comfort and
-              luxury. Experience seamless accommodation that caters to your
-              unique needs, from short stays to extended escapes. Enjoy curated
-              spaces that blend aspirational elegance with home-like
-              convenience. Let us redefine your travel experience.
+              Simplify your travel plans with Starlings. Our comprehensive visa services ensure a hassle-free
+              experience,
+              guiding you through every step of the application process. Whether for business, leisure, or study, we
+              provide
+              expert assistance to secure your visa promptly and efficiently. Trust Starlings to handle the
+              complexities, so
+              you can focus on your journey ahead.
             </span>
           </div>
         </q-carousel-slide>
@@ -176,36 +176,36 @@
         <q-carousel-slide name="auto 2">
           <div :class="[headlineText, 'flex flex-center']">
             <span style="font-size: 1.5rem; width: 80vw; color: white">
-              Discover your home away from home with Starlings. We offer
-              personalized suites and apartments, designed for comfort and
-              luxury. Experience seamless accommodation that caters to your
-              unique needs, from short stays to extended escapes. Enjoy curated
-              spaces that blend aspirational elegance with home-like
-              convenience. Let us redefine your travel experience.
+              Experience the freedom of the open road with Starlings. Our premium auto services offer a fleet of luxury
+              vehicles tailored to your travel needs. Whether you're exploring new destinations or commuting for
+              business,
+              enjoy the comfort, safety, and style of our top-tier automobiles. Let us elevate your journey with
+              unparalleled convenience and sophistication.
             </span>
           </div>
         </q-carousel-slide>
         <q-carousel-slide name="tour 2">
           <div :class="[headlineText, 'flex flex-center']">
             <span style="font-size: 1.5rem; width: 80vw; color: white">
-              Discover your home away from home with Starlings. We offer
-              personalized suites and apartments, designed for comfort and
-              luxury. Experience seamless accommodation that caters to your
-              unique needs, from short stays to extended escapes. Enjoy curated
-              spaces that blend aspirational elegance with home-like
-              convenience. Let us redefine your travel experience.
+              Embark on unforgettable adventures with Starlings. Our exclusive tours are crafted to immerse you in the
+              rich
+              culture and breathtaking landscapes of your destination. From guided city explorations to
+              off-the-beaten-path
+              excursions, experience the world like never before. Let us handle the details while you create lasting
+              memories on your journey.
             </span>
           </div>
         </q-carousel-slide>
         <q-carousel-slide name="visa 2">
           <div :class="[headlineText, 'flex flex-center']">
             <span style="font-size: 1.5rem; width: 80vw; color: white">
-              Discover your home away from home with Starlings. We offer
-              personalized suites and apartments, designed for comfort and
-              luxury. Experience seamless accommodation that caters to your
-              unique needs, from short stays to extended escapes. Enjoy curated
-              spaces that blend aspirational elegance with home-like
-              convenience. Let us redefine your travel experience.
+              Simplify your travel plans with Starlings. Our comprehensive visa services ensure a hassle-free
+              experience,
+              guiding you through every step of the application process. Whether for business, leisure, or study, we
+              provide
+              expert assistance to secure your visa promptly and efficiently. Trust Starlings to handle the
+              complexities, so
+              you can focus on your journey ahead.
             </span>
           </div>
         </q-carousel-slide>
@@ -266,7 +266,7 @@ const headlineText = computed(() => {
 });
 
 const suiteTextStyle = computed(() => {
-  switch(true) {
+  switch (true) {
     case $q.screen.gt.md:
       return 'gap-tight';
     case $q.screen.md:
@@ -358,7 +358,7 @@ defineComponent({
 }
 
 .gap-tight {
-  margin-bottom: calc(-4vw + -6vh);
+  margin-bottom: calc(-4vw + -4vh);
 }
 
 .gap-tight-sm {

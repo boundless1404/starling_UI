@@ -50,4 +50,12 @@ useMeta({
 .text-poppins-serif {
   font-family: 'poppins', serif;
 }
+
+.sec-text-purple {
+  color: var(--q-secondary-purple);
+}
+
+.sec-bg-purple {
+  background-color: var(--q-secondary-purple);
+}
 </style>

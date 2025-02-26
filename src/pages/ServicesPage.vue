@@ -89,9 +89,6 @@ async function gotoServicePage(serviceId: string, serviceName: string) {
     // add service offer to store
     await serviceViewModel.stores.serviceWithOffer
     ?.insertServiceOfferIntoService(serviceId, servicesPageModel.selectedService.offers as ServiceOffer[])
-
-    console.log('this is the service offers', serviceViewModel.stores.serviceWithOffer?.getItem(serviceId));
-    console.log('this is the service state', serviceViewModel.stores.serviceWithOffer?.$state)
   }
 }
 

@@ -2,6 +2,7 @@ import { IsDateString, IsNotEmpty, IsNumber, IsOptional, Min, ValidateNested } f
 import { BaseModel } from './base.model'
 import BookingClientModel from './bookingClient.model';
 import { Type } from 'class-transformer';
+import { IsAfterDate, IsTodayOrLater } from 'src/lib/utils';
 
 export default class SuiteBookingModel extends BaseModel {
 
@@ -15,10 +16,12 @@ export default class SuiteBookingModel extends BaseModel {
   
     @IsNotEmpty({ message: 'CheckInDate is required.' })
     @IsDateString({}, {message: 'Please, enter a valid date.'})
+    @IsTodayOrLater({message: 'CheckInDate must be today or later.'})
     checkInDate: string;
 
     @IsNotEmpty({ message: 'CheckOutDate is required.' })
     @IsDateString({}, {message: 'Please, enter a valid date.'})
+    @IsAfterDate({message: 'CheckOutDate must be after CheckInDate.'})
     checkOutDate: string;
 
     @IsNotEmpty({ message: 'NoOfAdults is required.' })

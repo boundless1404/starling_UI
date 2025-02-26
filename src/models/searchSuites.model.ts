@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 import { BaseModel } from './base.model';
-import { IsAfterCheckInDate, IsTodayOrLater } from 'src/lib/utils';
+import { IsAfterDate, IsTodayOrLater } from 'src/lib/utils';
 
 export class SearchSuitesModel extends BaseModel {
 
@@ -15,6 +15,6 @@ export class SearchSuitesModel extends BaseModel {
   @IsTodayOrLater({ message: 'Check-in date must be today or later.' })
   checkInDate?: string;
 
-  @IsAfterCheckInDate()
+  @IsAfterDate()
   checkOutDate?: string;
 }

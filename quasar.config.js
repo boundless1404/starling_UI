@@ -129,6 +129,7 @@ module.exports = configure(function (/* ctx */) {
           negative: '#e32227',
           info: '#31CCEC',
           warning: '#e87a00',
+          'secondary-purple': '#8a2be2',
 
           /* width, borders, spaces */
           'input-border-width': '1px',

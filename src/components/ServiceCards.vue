@@ -4,27 +4,34 @@
     <div :class="[$q.screen.lt.md ? 'text-subtitle1' : 'text-h6']">{{ groupDescription }}</div>
     <div class="body q-mx-auto">
       <div class="inner-body">
-        <ServiceOfferTileComponent v-for="(apartment, index) of serviceData" :key="index" :apartment="apartment" />
+        <ServiceOfferTileComponent v-for="(serviceOffer, index) of serviceOffers" :key="index" :service-offer="serviceOffer" :current-booking-component-name="currentBookingComponentName" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 // import { computed } from 'vue';
 import { useQuasar } from 'quasar';
 import ServiceOfferTileComponent from './ServiceOfferTileComponent.vue';
+import SuitesModel from 'src/models/suite.model';
+import AutoServiceOfferModel from 'src/models/autoServiceOffer.model';
+import TourServiceOfferModel from 'src/models/tourServiceOffer.model';
+import VisaServiceOfferModel from 'src/models/visaServiceOffer.mode';
+import { BookingComponentName } from './PaymentComponent.vue';
 
 export type PageCarouselProps = {
   title: string;
   description?: string;
 };
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     groupTitle?: string;
     groupDescription?: string;
+    serviceOffers: (SuitesModel | AutoServiceOfferModel | TourServiceOfferModel | VisaServiceOfferModel)[];
+    currentBookingComponentName?: BookingComponentName,
   }>(),
   {
     groupTitle: 'This should be a section title',
@@ -80,6 +87,10 @@ const serviceData = ref([
   image: 'assets/0b9a53c5-dde1-49c8-af78-1b9b3876147e.jpg' // Replace with actual image URL
 },
 ]);
+
+onMounted(() => {
+  console.log('ServiceCards component mounted', props.serviceOffers);
+})
 </script>
 
 <style lang="scss" scoped>
@@ -118,8 +129,7 @@ p {
 }
 
 .inner-body {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  display: flex;
   gap: 1rem;
   overflow-x: auto;
 }
