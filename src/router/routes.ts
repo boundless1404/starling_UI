@@ -33,7 +33,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/bookings',
     name: 'bookings',
-    component: () => import('layouts/AuthLayout.vue'),
+    component: () => import('layouts/LandingPageLayout.vue'),
     children: [{ path: '', component: () => import('pages/ViewbookingsPage.vue') }],
   },
 

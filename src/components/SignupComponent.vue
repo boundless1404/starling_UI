@@ -210,7 +210,7 @@
 </style>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watchEffect } from 'vue';
+import { onMounted, reactive, ref, watchEffect } from 'vue';
 import { SignupConfirmationModel } from '../../src/models/signupConfirmationModel.model';
 import { asyncComputed } from '@vueuse/core';
 import { QForm, useQuasar } from 'quasar';
@@ -230,9 +230,9 @@ import { PhoneCode } from 'src/lib/types';
 
 
 // consts
-const emits = defineEmits(['toggle-auth-component']);
+const emits = defineEmits(['toggle-auth-component', 'signup-success']);
 const $q = useQuasar();
-const router = useRouter();
+const $router = useRouter();
 let postSignupTimer: NodeJS.Timeout;
 const screen = $q.screen;
 
@@ -247,9 +247,6 @@ const confirmPasswordIsValid = ref(false);
 const currentPanel = ref(SignupPanels.SIGNUP_FORM);
 const requestingServer = ref(false);
 const signupFormRef = ref<QForm>();
-const phoneCodeIds = ref<{ name: string; id: string }[]>([
-  { name: '234', id: '151' },
-]);
 const tokenConfirmationFormRef = ref<QForm>();
 const phoneCodes = ref<PhoneCode[]>([]);
 // refs for password visibility
@@ -302,7 +299,7 @@ async function submitToken() {
   tokenConfirmationViewModel.submitToken(signupModel.email, {
     async onSuccess() {
       // clearUIEffects({ loader: $q.loading, timer: postSignupTimer });
-      await router.replace('/services');
+     emits('signup-success')
     },
     async onError(error) {
       // clearUIEffects({ loader: $q.loading, timer: postSignupTimer });

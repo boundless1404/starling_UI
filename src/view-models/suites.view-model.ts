@@ -44,7 +44,7 @@ export default class SuitesViewModel extends ViewModelBase<SuitesPageModel> {
   }) {
     //
     this.model.suites = await this.requestApi(
-      `${ServiceUrlEnum.Get_SUITES}?${getQueryString(options)}`
+      `${ServiceUrlEnum.GET_SUITES}?${getQueryString(options)}`
     );
   }
 

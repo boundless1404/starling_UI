@@ -16,6 +16,10 @@ export enum ServiceUrlEnum {
   GET_CATEGORIES = `${suitesPath}/categories`,
   GET_OFFERS = `${servicesPath}/offers`,
   GET_PHONE_CODE = `${servicesPath}/phone-codes`,
+  SEARCH_SUITES = `${servicesPath}/search/suites`,
+  SEARCH_AUTOS = `${servicesPath}/search/autos`,
+  SEARCH_TOURS =  `${servicesPath}/search/tours`,
+  SEARCH_VISAS = `${servicesPath}/search/visas`,
 }
 
 export enum ProfileTypes {
